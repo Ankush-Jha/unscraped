@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReLoop - Turn Waste Into Value</title>
+    <meta name="description" content="AI-powered waste-to-value marketplace. Scan, upcycle, trade, or recycle.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        .onboarding-container {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            padding: var(--space-6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: var(--space-8);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-8);
+        }
+
+        .brand-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--color-primary);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .brand-icon .icon {
+            font-size: 32px;
+            color: #000;
+        }
+
+        .brand-name {
+            font-size: var(--text-3xl);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-headline {
+            font-size: clamp(2.5rem, 12vw, 4rem);
+            font-weight: 900;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+            margin-bottom: var(--space-6);
+        }
+
+        .hero-headline .highlight {
+            color: var(--color-primary);
+            display: block;
+        }
+
+        .hero-description {
+            font-size: var(--text-lg);
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            max-width: 320px;
+            margin-bottom: var(--space-8);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-3);
+            margin-bottom: var(--space-10);
+        }
+
+        .feature-card {
+            background: var(--color-surface-dark);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-4);
+            text-align: center;
+            transition: all var(--transition-base);
+        }
+
+        .feature-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: var(--space-2);
+        }
+
+        .feature-title {
+            font-size: var(--text-sm);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .cta-section {
+            padding-bottom: var(--space-8);
+        }
+
+        .cta-button {
+            width: 100%;
+            height: 72px;
+            font-size: var(--text-xl);
+            font-weight: 900;
+            border-radius: var(--radius-2xl);
+            margin-bottom: var(--space-4);
+        }
+
+        .login-link {
+            text-align: center;
+            font-size: var(--text-base);
+            color: var(--color-text-tertiary);
+        }
+
+        .login-link a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Background decoration */
+        .bg-decoration {
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--color-primary-glow) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .bg-pattern {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 300px;
+            background: linear-gradient(to top, var(--color-surface-dark) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="onboarding-container">
+            <!-- Background decorations -->
+            <div class="bg-decoration"></div>
+            <div class="bg-pattern"></div>
+
+            <!-- Hero Section -->
+            <div class="hero-section fade-in">
+                <div class="brand-logo stagger-item">
+                    <div class="brand-icon">
+                        <span class="material-symbols-outlined icon icon-filled">recycling</span>
+                    </div>
+                    <span class="brand-name">ReLoop</span>
+                </div>
+
+                <h1 class="hero-headline stagger-item">
+                    Turn Waste
+                    <span class="highlight">Into Value</span>
+                </h1>
+
+                <p class="hero-description stagger-item">
+                    Scan any item with AI, get creative upcycling ideas, trade with your community, or schedule free
+                    recycling pickup.
+                </p>
+
+                <div class="features-grid">
+                    <div class="feature-card stagger-item">
+                        <div class="feature-icon">📸</div>
+                        <div class="feature-title">AI Scan</div>
+                    </div>
+                    <div class="feature-card stagger-item">
+                        <div class="feature-icon">💡</div>
+                        <div class="feature-title">Upcycle</div>
+                    </div>
+                    <div class="feature-card stagger-item">
+                        <div class="feature-icon">🪙</div>
+                        <div class="feature-title">Trade</div>
+                    </div>
+                    <div class="feature-card stagger-item">
+                        <div class="feature-icon">♻️</div>
+                        <div class="feature-title">Recycle</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="cta-section fade-in">
+                <a href="home.html" class="btn btn-primary cta-button">
+                    <span class="material-symbols-outlined icon">arrow_forward</span>
+                    Get Started
+                </a>
+
+                <p class="login-link">
+                    Already have an account? <a href="home.html">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

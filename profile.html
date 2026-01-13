@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - ReLoop</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-6) var(--space-4);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-border);
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .username {
+            font-size: var(--text-base);
+            font-weight: 600;
+            color: var(--color-text-secondary);
+        }
+
+        .main-content {
+            padding: 0 var(--space-4);
+            padding-bottom: 120px;
+        }
+
+        /* Hero Headline */
+        .hero-headline {
+            padding-top: var(--space-4);
+            padding-bottom: var(--space-6);
+        }
+
+        .headline-text {
+            font-size: clamp(2.5rem, 14vw, 3.5rem);
+            font-weight: 900;
+            line-height: 0.9;
+            text-transform: uppercase;
+            letter-spacing: -0.03em;
+        }
+
+        .headline-text .highlight {
+            color: var(--color-primary);
+        }
+
+        .headline-description {
+            margin-top: var(--space-4);
+            font-size: var(--text-base);
+            color: var(--color-text-tertiary);
+            max-width: 80%;
+        }
+
+        /* Impact Card */
+        .impact-card {
+            width: 100%;
+            aspect-ratio: 4/5;
+            background: var(--color-primary);
+            border: 3px solid #000;
+            border-radius: var(--radius-2xl);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: var(--space-8);
+        }
+
+        .impact-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .impact-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            mix-blend-mode: multiply;
+            filter: grayscale(100%) contrast(125%);
+        }
+
+        .impact-bg-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, var(--color-primary) 30%, transparent 100%);
+        }
+
+        .impact-content {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            padding: var(--space-6);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .impact-badge {
+            background: rgba(0, 0, 0, 0.9);
+            color: var(--color-text-primary);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: inline-flex;
+            width: fit-content;
+            margin-bottom: var(--space-3);
+            border: 1px solid var(--color-border);
+        }
+
+        .impact-title {
+            font-size: var(--text-4xl);
+            font-weight: 900;
+            color: #000;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-1);
+        }
+
+        .impact-value {
+            font-size: clamp(3rem, 16vw, 4rem);
+            font-weight: 900;
+            color: #000;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            margin-bottom: var(--space-2);
+        }
+
+        .impact-description {
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.8);
+            max-width: 80%;
+            line-height: 1.3;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-3);
+            margin-bottom: var(--space-8);
+        }
+
+        .stat-card {
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-5);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+
+        .stat-card:hover {
+            border-color: var(--color-primary);
+        }
+
+        .stat-card .bg-icon {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            font-size: 24px;
+            color: var(--color-text-muted);
+            transition: color var(--transition-base);
+        }
+
+        .stat-card:hover .bg-icon {
+            color: var(--color-primary);
+        }
+
+        .stat-value {
+            font-size: var(--text-3xl);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-1);
+        }
+
+        .stat-label {
+            font-size: var(--text-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-text-tertiary);
+        }
+
+        /* Wallet Section */
+        .wallet-card {
+            background: linear-gradient(135deg, var(--color-surface-card) 0%, var(--color-surface-dark) 100%);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-5);
+            margin-bottom: var(--space-6);
+        }
+
+        .wallet-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-4);
+        }
+
+        .wallet-label {
+            font-size: var(--text-sm);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-tertiary);
+        }
+
+        .wallet-actions {
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .wallet-action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-2) var(--space-3);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .wallet-action-btn:hover {
+            background: var(--color-primary);
+            color: #000;
+            border-color: var(--color-primary);
+        }
+
+        .wallet-amount {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .wallet-amount .icon {
+            font-size: 36px;
+            color: var(--color-primary);
+        }
+
+        .wallet-amount .value {
+            font-size: var(--text-4xl);
+            font-weight: 900;
+        }
+
+        /* Community Goal */
+        .community-card {
+            background: #e0e0e0;
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-6);
+            color: #000;
+        }
+
+        .community-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .community-label {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+        }
+
+        .community-title {
+            font-size: var(--text-lg);
+            font-weight: 700;
+        }
+
+        .community-progress {
+            width: 40px;
+            height: 40px;
+            background: #000;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: var(--text-sm);
+            font-weight: 700;
+        }
+
+        /* Share Button */
+        .share-section {
+            padding-bottom: var(--space-8);
+        }
+
+        .share-btn {
+            width: 100%;
+            height: 56px;
+            background: var(--color-text-primary);
+            border: none;
+            border-radius: var(--radius-xl);
+            color: #000;
+            font-family: var(--font-display);
+            font-size: var(--text-lg);
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-md);
+        }
+
+        .share-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .share-btn .icon {
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="page-header">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO5YCi5O8FCLfzUebEZGo06paGggAst7_OzvlELDu9jWEIQ4xRNKiu0nq2MbFhXCq0L7iCNg8iVmouKSptH3pdPELpp2ZmWltKoYBcpVPJ3iXnwH1iSv3_HUvnX-dfxhlu6mQu-hQ9-S9UbDOQKNj1BZTtRoVzHqZtlSk4vFQtFB2LwkyofmzIRoinY4RPXfh8WsYp8p0oXRpyHTQxjgkWdfVoQ15iV0ttkJ50gkYa8pj511ITFvI-V7vLnV7ZMHEwVUtiG1MxyRk"
+                        alt="User">
+                </div>
+                <span class="username">@StudentJane</span>
+            </div>
+            <a href="settings.html" class="icon-btn">
+                <span class="material-symbols-outlined">settings</span>
+            </a>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Headline -->
+            <div class="hero-headline fade-in">
+                <h1 class="headline-text">
+                    Your
+                    <span class="highlight">Year In</span>
+                    Green
+                </h1>
+                <p class="headline-description">
+                    You've turned waste into resources and made a massive dent in the local ecosystem.
+                </p>
+            </div>
+
+            <!-- Impact Card -->
+            <div class="impact-card stagger-item">
+                <div class="impact-bg">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhyuT4-4pYpRQFIzJ4vQBoskCFNyucRTBEqIJdwNR0xMHLsDBUwLJgpSC0nXgtDjMiI684QVzXSXvzUhWbXluEno02z-7pjVlCeTpIXHwqoZRoub2m1sypKTinI5Y9JWJjX4tt6yZN_YsXEgN9kzAca0614fi3HlA7vbaNuKS5bBNAPW5b-WVnuQ23vJdsrPwSqJm3BqG1d52hay1PG-kCLh8iFvNrneyG25OXTxp0nXFwtGWdgFfl2qcHwBMYFWFOMs3UQfqyVHQ"
+                        alt="Forest">
+                    <div class="impact-bg-overlay"></div>
+                </div>
+                <div class="impact-content">
+                    <span class="impact-badge">Impact Hero</span>
+                    <div class="impact-title">YOU SAVED</div>
+                    <div class="impact-value">12 TREES!</div>
+                    <p class="impact-description">That's enough oxygen for 24 people for an entire year.</p>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card stagger-item">
+                    <span class="material-symbols-outlined bg-icon icon-filled">shopping_bag</span>
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Items Sold</div>
+                </div>
+                <div class="stat-card stagger-item">
+                    <span class="material-symbols-outlined bg-icon icon-filled">recycling</span>
+                    <div class="stat-value">15kg</div>
+                    <div class="stat-label">Waste Diverted</div>
+                </div>
+                <div class="stat-card stagger-item">
+                    <span class="material-symbols-outlined bg-icon icon-filled">savings</span>
+                    <div class="stat-value">$120</div>
+                    <div class="stat-label">Earned</div>
+                </div>
+                <div class="stat-card stagger-item">
+                    <span class="material-symbols-outlined bg-icon icon-filled">emoji_events</span>
+                    <div class="stat-value">Top 5%</div>
+                    <div class="stat-label">Seller Rank</div>
+                </div>
+            </div>
+
+            <!-- Wallet Section -->
+            <div class="wallet-card stagger-item">
+                <div class="wallet-header">
+                    <span class="wallet-label">My Coins</span>
+                    <div class="wallet-actions">
+                        <button class="wallet-action-btn">History</button>
+                        <button class="wallet-action-btn">Cash Out</button>
+                    </div>
+                </div>
+                <div class="wallet-amount">
+                    <span class="material-symbols-outlined icon icon-filled">eco</span>
+                    <span class="value coin-value">850</span>
+                </div>
+            </div>
+
+            <!-- Community Goal -->
+            <div class="community-card stagger-item">
+                <div class="community-info">
+                    <span class="community-label">Community Goal</span>
+                    <span class="community-title">Campus Goal Reached!</span>
+                </div>
+                <div class="community-progress">42%</div>
+            </div>
+
+            <!-- Share Button -->
+            <div class="share-section">
+                <button class="share-btn">
+                    Share My Story
+                    <span class="material-symbols-outlined icon">ios_share</span>
+                </button>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="home.html" class="nav-link">
+                        <span class="material-symbols-outlined icon">home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="search.html" class="nav-link">
+                        <span class="material-symbols-outlined icon">search</span>
+                    </a>
+                </li>
+                <li class="nav-item nav-add-btn">
+                    <a href="result.html" class="icon-btn">
+                        <span class="material-symbols-outlined icon">add</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <span class="material-symbols-outlined icon">chat_bubble</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link active">
+                        <span class="material-symbols-outlined icon icon-filled">person</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

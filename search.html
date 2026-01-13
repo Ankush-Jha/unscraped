@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - ReLoop</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        .search-header {
+            padding: var(--space-4);
+            position: sticky;
+            top: 0;
+            background: var(--color-bg-dark);
+            z-index: var(--z-nav);
+        }
+
+        .search-input-group {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            padding: var(--space-3) var(--space-4);
+            transition: all var(--transition-base);
+        }
+
+        .search-input-group:focus-within {
+            border-color: var(--color-primary);
+        }
+
+        .search-input-group .icon {
+            font-size: 24px;
+            color: var(--color-text-muted);
+        }
+
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--color-text-primary);
+            font-family: var(--font-display);
+            font-size: var(--text-base);
+        }
+
+        .search-input::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .main-content {
+            padding: 0 var(--space-4);
+            padding-bottom: 120px;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            display: flex;
+            gap: var(--space-2);
+            overflow-x: auto;
+            padding: var(--space-4) 0;
+            scrollbar-width: none;
+        }
+
+        .filters-section::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chip {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            padding: var(--space-2) var(--space-4);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .filter-chip:hover {
+            border-color: var(--color-border-hover);
+        }
+
+        .filter-chip.active {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: #000;
+        }
+
+        .filter-chip .icon {
+            font-size: 18px;
+        }
+
+        /* Recent Searches */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-4);
+        }
+
+        .section-title {
+            font-size: var(--text-sm);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-tertiary);
+        }
+
+        .section-action {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--color-primary);
+            cursor: pointer;
+        }
+
+        .recent-list {
+            margin-bottom: var(--space-8);
+        }
+
+        .recent-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3) 0;
+            border-bottom: 1px solid var(--color-border);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .recent-item:hover {
+            padding-left: var(--space-2);
+        }
+
+        .recent-item .icon {
+            font-size: 20px;
+            color: var(--color-text-muted);
+        }
+
+        .recent-item .text {
+            flex: 1;
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+        }
+
+        .recent-item .arrow {
+            font-size: 18px;
+            color: var(--color-text-muted);
+        }
+
+        /* Trending Section */
+        .trending-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-3);
+            margin-bottom: var(--space-8);
+        }
+
+        .trending-card {
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-4);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .trending-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        .trending-rank {
+            font-size: var(--text-3xl);
+            font-weight: 900;
+            color: var(--color-primary);
+            opacity: 0.3;
+            line-height: 1;
+            margin-bottom: var(--space-2);
+        }
+
+        .trending-term {
+            font-size: var(--text-base);
+            font-weight: 700;
+            margin-bottom: var(--space-1);
+        }
+
+        .trending-count {
+            font-size: var(--text-sm);
+            color: var(--color-text-muted);
+        }
+
+        /* Categories Section */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-3);
+        }
+
+        .category-card {
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-4);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .category-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        .category-card .icon {
+            font-size: 32px;
+            color: var(--color-primary);
+            margin-bottom: var(--space-2);
+        }
+
+        .category-card .label {
+            font-size: var(--text-sm);
+            font-weight: 700;
+            color: var(--color-text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Search Header -->
+        <header class="search-header">
+            <div class="search-input-group">
+                <span class="material-symbols-outlined icon">search</span>
+                <input type="text" class="search-input" placeholder="Search items, categories...">
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Filters -->
+            <div class="filters-section">
+                <button class="filter-chip active">
+                    <span class="material-symbols-outlined icon">tune</span>
+                    All Filters
+                </button>
+                <button class="filter-chip">
+                    <span class="material-symbols-outlined icon">near_me</span>
+                    Within 1mi
+                </button>
+                <button class="filter-chip">
+                    <span class="material-symbols-outlined icon">sell</span>
+                    Under 50 coins
+                </button>
+                <button class="filter-chip">
+                    <span class="material-symbols-outlined icon">local_fire_department</span>
+                    Deals
+                </button>
+            </div>
+
+            <!-- Recent Searches -->
+            <section class="recent-section mb-6">
+                <div class="section-header">
+                    <span class="section-title">Recent Searches</span>
+                    <span class="section-action">Clear All</span>
+                </div>
+                <div class="recent-list">
+                    <div class="recent-item">
+                        <span class="material-symbols-outlined icon">history</span>
+                        <span class="text">vintage lamp</span>
+                        <span class="material-symbols-outlined arrow">north_east</span>
+                    </div>
+                    <div class="recent-item">
+                        <span class="material-symbols-outlined icon">history</span>
+                        <span class="text">calculus textbook</span>
+                        <span class="material-symbols-outlined arrow">north_east</span>
+                    </div>
+                    <div class="recent-item">
+                        <span class="material-symbols-outlined icon">history</span>
+                        <span class="text">denim jacket</span>
+                        <span class="material-symbols-outlined arrow">north_east</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Trending -->
+            <section class="trending-section mb-6">
+                <div class="section-header">
+                    <span class="section-title">Trending Now</span>
+                </div>
+                <div class="trending-grid">
+                    <a href="marketplace.html" class="trending-card stagger-item">
+                        <div class="trending-rank">01</div>
+                        <div class="trending-term">Desk Lamps</div>
+                        <div class="trending-count">234 listings</div>
+                    </a>
+                    <a href="marketplace.html" class="trending-card stagger-item">
+                        <div class="trending-rank">02</div>
+                        <div class="trending-term">Textbooks</div>
+                        <div class="trending-count">189 listings</div>
+                    </a>
+                    <a href="marketplace.html" class="trending-card stagger-item">
+                        <div class="trending-rank">03</div>
+                        <div class="trending-term">Furniture</div>
+                        <div class="trending-count">156 listings</div>
+                    </a>
+                    <a href="marketplace.html" class="trending-card stagger-item">
+                        <div class="trending-rank">04</div>
+                        <div class="trending-term">Electronics</div>
+                        <div class="trending-count">142 listings</div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Browse Categories -->
+            <section class="categories-section">
+                <div class="section-header">
+                    <span class="section-title">Browse Categories</span>
+                </div>
+                <div class="categories-grid">
+                    <a href="marketplace.html" class="category-card stagger-item">
+                        <span class="material-symbols-outlined icon">chair</span>
+                        <div class="label">Furniture</div>
+                    </a>
+                    <a href="marketplace.html" class="category-card stagger-item">
+                        <span class="material-symbols-outlined icon">devices</span>
+                        <div class="label">Tech</div>
+                    </a>
+                    <a href="marketplace.html" class="category-card stagger-item">
+                        <span class="material-symbols-outlined icon">menu_book</span>
+                        <div class="label">Books</div>
+                    </a>
+                    <a href="marketplace.html" class="category-card stagger-item">
+                        <span class="material-symbols-outlined icon">checkroom</span>
+                        <div class="label">Clothes</div>
+                    </a>
+                    <a href="marketplace.html" class="category-card stagger-item">
+                        <span class="material-symbols-outlined icon">kitchen</span>
+                        <div class="label">Kitchen</div>
+                    </a>
+                    <a href="marketplace.html" class="category-card stagger-item">
+                        <span class="material-symbols-outlined icon">sports_esports</span>
+                        <div class="label">Games</div>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="home.html" class="nav-link">
+                        <span class="material-symbols-outlined icon">home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="search.html" class="nav-link active">
+                        <span class="material-symbols-outlined icon icon-filled">search</span>
+                    </a>
+                </li>
+                <li class="nav-item nav-add-btn">
+                    <a href="result.html" class="icon-btn">
+                        <span class="material-symbols-outlined icon">add</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <span class="material-symbols-outlined icon">chat_bubble</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <span class="material-symbols-outlined icon">person</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

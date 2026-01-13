@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Listing - ReLoop</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-6) var(--space-4);
+        }
+
+        .page-title {
+            font-size: var(--text-lg);
+            font-weight: 700;
+        }
+
+        .main-content {
+            padding: 0 var(--space-4);
+            padding-bottom: 160px;
+        }
+
+        /* Image Upload */
+        .image-upload-section {
+            margin-bottom: var(--space-6);
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-3);
+        }
+
+        .image-upload-main {
+            aspect-ratio: 1;
+            background: var(--color-surface-card);
+            border: 2px dashed var(--color-border);
+            border-radius: var(--radius-xl);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-upload-main:hover {
+            border-color: var(--color-primary);
+            background: rgba(34, 195, 88, 0.05);
+        }
+
+        .image-upload-main .icon {
+            font-size: 48px;
+            color: var(--color-text-muted);
+        }
+
+        .image-upload-main .label {
+            font-size: var(--text-sm);
+            color: var(--color-text-muted);
+            font-weight: 600;
+        }
+
+        .image-upload-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-upload-secondary {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .image-upload-small {
+            flex: 1;
+            background: var(--color-surface-card);
+            border: 2px dashed var(--color-border);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .image-upload-small:hover {
+            border-color: var(--color-primary);
+        }
+
+        .image-upload-small .icon {
+            font-size: 24px;
+            color: var(--color-text-muted);
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: var(--space-6);
+        }
+
+        .section-title {
+            font-size: var(--text-sm);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-tertiary);
+            margin-bottom: var(--space-3);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--space-4);
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            color: var(--color-text-primary);
+            font-family: var(--font-display);
+            font-size: var(--text-base);
+            transition: all var(--transition-base);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-glow);
+        }
+
+        .form-input::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Price Input */
+        .price-input-group {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .coin-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: var(--color-primary);
+            border-radius: var(--radius-lg);
+            flex-shrink: 0;
+        }
+
+        .coin-icon .icon {
+            font-size: 28px;
+            color: #000;
+        }
+
+        .price-input-group .form-input {
+            flex: 1;
+            font-size: var(--text-xl);
+            font-weight: 700;
+        }
+
+        .ai-estimate {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-3);
+            background: rgba(34, 195, 88, 0.1);
+            border: 1px solid var(--color-primary);
+            border-radius: var(--radius-lg);
+            margin-top: var(--space-3);
+        }
+
+        .ai-estimate .icon {
+            font-size: 18px;
+            color: var(--color-primary);
+        }
+
+        .ai-estimate .text {
+            font-size: var(--text-sm);
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        /* Category Select */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-2);
+        }
+
+        .category-option {
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-3);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .category-option:hover {
+            border-color: var(--color-border-hover);
+        }
+
+        .category-option.selected {
+            border-color: var(--color-primary);
+            background: rgba(34, 195, 88, 0.1);
+        }
+
+        .category-option .icon {
+            font-size: 24px;
+            margin-bottom: var(--space-1);
+            color: var(--color-text-secondary);
+        }
+
+        .category-option.selected .icon {
+            color: var(--color-primary);
+        }
+
+        .category-option .label {
+            font-size: var(--text-xs);
+            font-weight: 600;
+            color: var(--color-text-tertiary);
+        }
+
+        .category-option.selected .label {
+            color: var(--color-primary);
+        }
+
+        /* Condition Select */
+        .condition-options {
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .condition-option {
+            flex: 1;
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-3);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .condition-option:hover {
+            border-color: var(--color-border-hover);
+        }
+
+        .condition-option.selected {
+            border-color: var(--color-primary);
+            background: rgba(34, 195, 88, 0.1);
+        }
+
+        .condition-option .label {
+            font-size: var(--text-sm);
+            font-weight: 700;
+            color: var(--color-text-secondary);
+        }
+
+        .condition-option.selected .label {
+            color: var(--color-primary);
+        }
+
+        /* Info Box */
+        .info-box {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--space-6);
+        }
+
+        .info-box .icon {
+            font-size: 24px;
+            color: var(--color-info);
+            flex-shrink: 0;
+        }
+
+        .info-box .content {
+            flex: 1;
+        }
+
+        .info-box .title {
+            font-size: var(--text-base);
+            font-weight: 700;
+            margin-bottom: var(--space-1);
+        }
+
+        .info-box .text {
+            font-size: var(--text-sm);
+            color: var(--color-text-tertiary);
+            line-height: 1.5;
+        }
+
+        /* Bottom CTA */
+        .bottom-cta {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: linear-gradient(to top, var(--color-bg-dark) 60%, transparent);
+            padding: var(--space-12) var(--space-4) var(--space-8);
+            z-index: var(--z-nav);
+        }
+
+        .submit-btn {
+            width: 100%;
+            height: 64px;
+            background: var(--color-primary);
+            border: none;
+            border-radius: var(--radius-xl);
+            font-family: var(--font-display);
+            font-size: var(--text-lg);
+            font-weight: 900;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            box-shadow: var(--shadow-glow);
+            transition: all var(--transition-base);
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .submit-btn .icon {
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="page-header">
+            <a href="home.html" class="icon-btn">
+                <span class="material-symbols-outlined">close</span>
+            </a>
+            <h1 class="page-title">Create Listing</h1>
+            <div style="width: 40px;"></div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Image Upload -->
+            <section class="image-upload-section fade-in">
+                <div class="image-grid">
+                    <label class="image-upload-main" for="main-image">
+                        <span class="material-symbols-outlined icon">add_a_photo</span>
+                        <span class="label">Add Photos</span>
+                        <input type="file" id="main-image" accept="image/*" hidden>
+                    </label>
+                    <div class="image-upload-secondary">
+                        <label class="image-upload-small" for="image-2">
+                            <span class="material-symbols-outlined icon">add</span>
+                            <input type="file" id="image-2" accept="image/*" hidden>
+                        </label>
+                        <label class="image-upload-small" for="image-3">
+                            <span class="material-symbols-outlined icon">add</span>
+                            <input type="file" id="image-3" accept="image/*" hidden>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Title -->
+            <section class="form-section stagger-item">
+                <label class="section-title">Title</label>
+                <input type="text" class="form-input" placeholder="What are you selling?">
+            </section>
+
+            <!-- Description -->
+            <section class="form-section stagger-item">
+                <label class="section-title">Description</label>
+                <textarea class="form-input form-textarea"
+                    placeholder="Describe your item (condition, size, brand, etc.)"></textarea>
+            </section>
+
+            <!-- Category -->
+            <section class="form-section stagger-item">
+                <label class="section-title">Category</label>
+                <div class="category-grid">
+                    <div class="category-option selected">
+                        <span class="material-symbols-outlined icon">chair</span>
+                        <div class="label">Furniture</div>
+                    </div>
+                    <div class="category-option">
+                        <span class="material-symbols-outlined icon">devices</span>
+                        <div class="label">Tech</div>
+                    </div>
+                    <div class="category-option">
+                        <span class="material-symbols-outlined icon">menu_book</span>
+                        <div class="label">Books</div>
+                    </div>
+                    <div class="category-option">
+                        <span class="material-symbols-outlined icon">checkroom</span>
+                        <div class="label">Clothes</div>
+                    </div>
+                    <div class="category-option">
+                        <span class="material-symbols-outlined icon">kitchen</span>
+                        <div class="label">Kitchen</div>
+                    </div>
+                    <div class="category-option">
+                        <span class="material-symbols-outlined icon">more_horiz</span>
+                        <div class="label">Other</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Condition -->
+            <section class="form-section stagger-item">
+                <label class="section-title">Condition</label>
+                <div class="condition-options">
+                    <div class="condition-option">
+                        <div class="label">New</div>
+                    </div>
+                    <div class="condition-option selected">
+                        <div class="label">Like New</div>
+                    </div>
+                    <div class="condition-option">
+                        <div class="label">Good</div>
+                    </div>
+                    <div class="condition-option">
+                        <div class="label">Fair</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Price -->
+            <section class="form-section stagger-item">
+                <label class="section-title">Price in Coins</label>
+                <div class="price-input-group">
+                    <div class="coin-icon">
+                        <span class="material-symbols-outlined icon icon-filled">eco</span>
+                    </div>
+                    <input type="number" class="form-input" placeholder="0" value="120">
+                </div>
+                <div class="ai-estimate">
+                    <span class="material-symbols-outlined icon">auto_awesome</span>
+                    <span class="text">AI suggests 100-150 coins based on similar items</span>
+                </div>
+            </section>
+
+            <!-- Info Box -->
+            <div class="info-box stagger-item">
+                <span class="material-symbols-outlined icon">schedule</span>
+                <div class="content">
+                    <div class="title">15-Day Listing Period</div>
+                    <div class="text">Items not sold within 15 days will automatically be transferred to our recycling
+                        partner network. You'll earn Recycle Credits instead.</div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom CTA -->
+        <div class="bottom-cta">
+            <button class="submit-btn" onclick="window.location.href='marketplace.html'">
+                <span class="material-symbols-outlined icon">rocket_launch</span>
+                Publish Listing
+            </button>
+        </div>
+    </div>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Category selection
+        document.querySelectorAll('.category-option').forEach(option => {
+            option.addEventListener('click', function () {
+                document.querySelectorAll('.category-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Condition selection
+        document.querySelectorAll('.condition-option').forEach(option => {
+            option.addEventListener('click', function () {
+                document.querySelectorAll('.condition-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+
+</html>

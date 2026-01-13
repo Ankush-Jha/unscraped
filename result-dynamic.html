@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Result - ReLoop</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-6);
+        }
+
+        .result-header .status {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .result-header .status .icon {
+            font-size: 16px;
+        }
+
+        .result-content {
+            padding: 0 var(--space-6);
+            padding-bottom: 120px;
+        }
+
+        /* Captured Image */
+        .captured-image {
+            width: 100%;
+            aspect-ratio: 4/3;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 2px solid var(--color-border);
+            margin-bottom: var(--space-6);
+            position: relative;
+        }
+
+        .captured-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .confidence-badge {
+            position: absolute;
+            top: var(--space-3);
+            right: var(--space-3);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-primary);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .item-identified {
+            margin-bottom: var(--space-6);
+        }
+
+        .item-label {
+            font-size: var(--text-sm);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-primary);
+            margin-bottom: var(--space-2);
+        }
+
+        .item-name {
+            font-size: clamp(2rem, 10vw, 3rem);
+            font-weight: 900;
+            line-height: 0.9;
+            text-transform: uppercase;
+            letter-spacing: -0.03em;
+        }
+
+        .item-details {
+            display: flex;
+            gap: var(--space-3);
+            margin-top: var(--space-3);
+            flex-wrap: wrap;
+        }
+
+        .detail-tag {
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-xs);
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+        }
+
+        .detail-tag .icon {
+            font-size: 14px;
+            color: var(--color-primary);
+        }
+
+        /* Option Cards */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+        }
+
+        .option-card {
+            background: var(--color-surface-card);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-6);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            cursor: pointer;
+        }
+
+        .option-card:hover {
+            border-color: var(--color-border-hover);
+            transform: translateY(-2px);
+        }
+
+        .option-card.featured {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 30px var(--color-primary-glow);
+        }
+
+        .option-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+
+        .option-emoji {
+            font-size: var(--text-3xl);
+        }
+
+        .option-title {
+            font-size: var(--text-2xl);
+            font-weight: 900;
+            text-transform: uppercase;
+            font-style: italic;
+            letter-spacing: 0.02em;
+        }
+
+        .option-subtitle {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-text-tertiary);
+        }
+
+        .option-description {
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--space-4);
+        }
+
+        /* Upcycle Ideas List */
+        .ideas-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .idea-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .idea-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .idea-icon .icon {
+            color: var(--color-primary);
+            font-size: 24px;
+        }
+
+        .idea-title {
+            font-size: var(--text-base);
+            font-weight: 700;
+        }
+
+        .idea-desc {
+            font-size: var(--text-sm);
+            color: var(--color-text-muted);
+        }
+
+        .idea-difficulty {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            margin-left: auto;
+        }
+
+        .idea-difficulty.easy {
+            background: rgba(34, 195, 88, 0.2);
+            color: var(--color-primary);
+        }
+
+        .idea-difficulty.medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--color-warning);
+        }
+
+        .idea-difficulty.hard {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--color-error);
+        }
+
+        /* Trade Button */
+        .trade-button {
+            width: 100%;
+            height: 72px;
+            background: var(--color-primary);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+            border: none;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 0 #000;
+            transition: all var(--transition-base);
+            text-decoration: none;
+        }
+
+        .trade-button:hover {
+            box-shadow: none;
+            transform: translate(2px, 2px);
+        }
+
+        .trade-button:active {
+            transform: scale(0.98);
+        }
+
+        .trade-button .text {
+            font-size: var(--text-xl);
+            font-weight: 900;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .trade-button .icon {
+            font-size: 28px;
+            color: #000;
+        }
+
+        .coin-estimate {
+            text-align: center;
+            margin-top: var(--space-3);
+            font-size: var(--text-lg);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+        }
+
+        .coin-estimate .icon {
+            font-size: 24px;
+        }
+
+        /* Recycle Option */
+        .recycle-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+        }
+
+        .recycle-info .icon {
+            font-size: 24px;
+            color: var(--color-primary);
+        }
+
+        .recycle-info .text {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+        }
+
+        .recyclable-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-xs);
+            font-weight: 700;
+        }
+
+        .recyclable-badge.yes {
+            background: rgba(34, 195, 88, 0.2);
+            color: var(--color-primary);
+        }
+
+        .recyclable-badge.no {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--color-error);
+        }
+
+        /* No result state */
+        .no-result {
+            text-align: center;
+            padding: var(--space-16) var(--space-6);
+        }
+
+        .no-result .icon {
+            font-size: 64px;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-4);
+        }
+
+        .no-result .title {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+        }
+
+        .no-result .description {
+            font-size: var(--text-base);
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-6);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="result-header">
+            <a href="home.html" class="icon-btn">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
+            <span class="status">
+                <span class="material-symbols-outlined icon">auto_awesome</span>
+                AI Scan Complete
+            </span>
+            <a href="home.html" class="icon-btn">
+                <span class="material-symbols-outlined">close</span>
+            </a>
+        </header>
+
+        <!-- Result Content -->
+        <main class="result-content" id="result-content">
+            <!-- Content will be dynamically inserted -->
+            <div class="no-result" id="no-result">
+                <span class="material-symbols-outlined icon">photo_camera</span>
+                <div class="title">No Scan Result</div>
+                <div class="description">Scan an item to see AI-powered analysis</div>
+                <a href="home.html" class="btn btn-primary">Go to Scanner</a>
+            </div>
+        </main>
+    </div>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Get scan result from session storage
+        document.addEventListener('DOMContentLoaded', () => {
+            const resultJson = sessionStorage.getItem('reloop_scan_result');
+
+            if (resultJson) {
+                try {
+                    const result = JSON.parse(resultJson);
+                    displayResult(result);
+                } catch (error) {
+                    console.error('Failed to parse result:', error);
+                }
+            }
+        });
+
+        function displayResult(result) {
+            const content = document.getElementById('result-content');
+            const noResult = document.getElementById('no-result');
+
+            // Hide no result message
+            noResult.style.display = 'none';
+
+            // Build ideas HTML
+            const ideasHtml = result.upcycleIdeas?.map((idea, index) => {
+                const icons = ['auto_fix_high', 'construction', 'brush'];
+                const difficultyClass = idea.difficulty?.toLowerCase() || 'easy';
+                return `
+                    <div class="idea-item">
+                        <div class="idea-icon">
+                            <span class="material-symbols-outlined icon">${icons[index % 3]}</span>
+                        </div>
+                        <div style="flex: 1;">
+                            <div class="idea-title">${idea.title}</div>
+                            <div class="idea-desc">${idea.description}</div>
+                        </div>
+                        <span class="idea-difficulty ${difficultyClass}">${idea.difficulty}</span>
+                    </div>
+                `;
+            }).join('') || '';
+
+            // Get category icon
+            const categoryIcons = {
+                furniture: 'chair',
+                tech: 'devices',
+                books: 'menu_book',
+                clothes: 'checkroom',
+                kitchen: 'kitchen',
+                other: 'category'
+            };
+            const categoryIcon = categoryIcons[result.category?.toLowerCase()] || 'category';
+
+            // Build result HTML
+            const html = `
+                <!-- Captured Image -->
+                ${result.capturedImage ? `
+                    <div class="captured-image fade-in">
+                        <img src="${result.capturedImage}" alt="Scanned item">
+                        <span class="confidence-badge">${Math.round((result.confidence || 0.95) * 100)}% Match</span>
+                    </div>
+                ` : ''}
+                
+                <div class="item-identified fade-in">
+                    <span class="item-label">AI Identified:</span>
+                    <h1 class="item-name">${result.objectName || 'Unknown Item'}</h1>
+                    <div class="item-details">
+                        <span class="detail-tag">
+                            <span class="material-symbols-outlined icon">${categoryIcon}</span>
+                            ${result.category || 'Other'}
+                        </span>
+                        <span class="detail-tag">
+                            <span class="material-symbols-outlined icon">deployed_code</span>
+                            ${result.material || 'Unknown'}
+                        </span>
+                        <span class="detail-tag">
+                            <span class="material-symbols-outlined icon">verified</span>
+                            ${result.condition || 'Good'}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="options-container">
+                    <!-- Upcycle Option -->
+                    ${result.upcycleIdeas?.length ? `
+                        <div class="option-card stagger-item">
+                            <div class="option-header">
+                                <span class="option-emoji">🎨</span>
+                                <div>
+                                    <h2 class="option-title">Reuse It</h2>
+                                    <span class="option-subtitle">${result.upcycleIdeas.length} Creative Ideas</span>
+                                </div>
+                            </div>
+                            
+                            <div class="ideas-list">
+                                ${ideasHtml}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    <!-- Trade Option -->
+                    <div class="option-card featured stagger-item">
+                        <div class="option-header">
+                            <span class="option-emoji">🤝</span>
+                            <div>
+                                <h2 class="option-title">Trade It</h2>
+                                <span class="option-subtitle">Earn Coins</span>
+                            </div>
+                        </div>
+                        
+                        <p class="option-description">
+                            Don't need it? List it on the marketplace and earn coins that you can use for other items!
+                        </p>
+                        
+                        <a href="create-listing.html" class="trade-button" onclick="prefillListing()">
+                            <span class="text">List For Coins</span>
+                            <span class="material-symbols-outlined icon">currency_exchange</span>
+                        </a>
+                        <div class="coin-estimate">
+                            <span class="material-symbols-outlined icon icon-filled">eco</span>
+                            Est. ${result.estimatedCoins || 50} Coins
+                        </div>
+                    </div>
+                    
+                    <!-- Recycle Option -->
+                    <a href="recycle.html" class="option-card stagger-item">
+                        <div class="option-header">
+                            <span class="option-emoji">♻️</span>
+                            <div>
+                                <h2 class="option-title">Recycle It</h2>
+                                <span class="option-subtitle">Free Pickup</span>
+                            </div>
+                        </div>
+                        
+                        <p class="option-description">
+                            Can't reuse or trade? Schedule a free recycling pickup. We'll ensure it's processed responsibly.
+                        </p>
+                        
+                        <div style="display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;">
+                            <div class="recycle-info" style="flex: 1;">
+                                <span class="material-symbols-outlined icon">local_shipping</span>
+                                <span class="text">Next pickup: Tomorrow, 2-4 PM</span>
+                            </div>
+                            <span class="recyclable-badge ${result.recyclable ? 'yes' : 'no'}">
+                                <span class="material-symbols-outlined icon" style="font-size: 14px;">
+                                    ${result.recyclable ? 'check_circle' : 'cancel'}
+                                </span>
+                                ${result.recyclable ? 'Recyclable' : 'Not Recyclable'}
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            `;
+
+            content.innerHTML = html;
+
+            // Re-initialize animations
+            initAnimations();
+        }
+
+        function prefillListing() {
+            // Store result for create-listing page to use
+            const resultJson = sessionStorage.getItem('reloop_scan_result');
+            if (resultJson) {
+                sessionStorage.setItem('reloop_new_listing', resultJson);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Result - ReLoop</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-6);
+        }
+
+        .result-header .status {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--color-primary);
+        }
+
+        .result-content {
+            padding: 0 var(--space-6);
+            padding-bottom: 180px;
+        }
+
+        .item-identified {
+            margin-bottom: var(--space-6);
+        }
+
+        .item-label {
+            font-size: var(--text-sm);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-primary);
+            margin-bottom: var(--space-2);
+        }
+
+        .item-name {
+            font-size: clamp(2.5rem, 12vw, 3.5rem);
+            font-weight: 900;
+            line-height: 0.85;
+            text-transform: uppercase;
+            letter-spacing: -0.03em;
+        }
+
+        /* Option Cards */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+        }
+
+        .option-card {
+            background: var(--color-surface-card);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-6);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .option-card:hover {
+            border-color: var(--color-border-hover);
+            transform: translateY(-2px);
+        }
+
+        .option-card.featured {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 30px var(--color-primary-glow);
+        }
+
+        .option-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+
+        .option-emoji {
+            font-size: var(--text-3xl);
+        }
+
+        .option-title {
+            font-size: var(--text-3xl);
+            font-weight: 900;
+            text-transform: uppercase;
+            font-style: italic;
+            letter-spacing: 0.02em;
+        }
+
+        .option-subtitle {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-text-tertiary);
+        }
+
+        .option-description {
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--space-4);
+        }
+
+        /* Upcycle Ideas List */
+        .ideas-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .idea-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .idea-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .idea-icon .icon {
+            color: var(--color-primary);
+            font-size: 24px;
+        }
+
+        .idea-title {
+            font-size: var(--text-lg);
+            font-weight: 700;
+        }
+
+        .idea-desc {
+            font-size: var(--text-sm);
+            color: var(--color-text-muted);
+        }
+
+        /* Trade Button */
+        .trade-button {
+            width: 100%;
+            height: 80px;
+            background: var(--color-primary);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+            border: none;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 0 #000;
+            transition: all var(--transition-base);
+            text-decoration: none;
+        }
+
+        .trade-button:hover {
+            box-shadow: none;
+            transform: translate(2px, 2px);
+        }
+
+        .trade-button:active {
+            transform: scale(0.98);
+        }
+
+        .trade-button .text {
+            font-size: var(--text-xl);
+            font-weight: 900;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .trade-button .icon {
+            font-size: 28px;
+            color: #000;
+        }
+
+        .coin-estimate {
+            text-align: center;
+            margin-top: var(--space-3);
+            font-size: var(--text-sm);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-primary);
+            opacity: 0.8;
+        }
+
+        /* Recycle Option */
+        .recycle-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+        }
+
+        .recycle-info .icon {
+            font-size: 24px;
+            color: var(--color-primary);
+        }
+
+        .recycle-info .text {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+        }
+
+        /* Bottom Sticky CTA */
+        .bottom-cta {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: linear-gradient(to top, var(--color-bg-dark) 60%, transparent);
+            padding: var(--space-12) var(--space-4) var(--space-8);
+            z-index: var(--z-nav);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: var(--space-3);
+        }
+
+        .cta-buttons .btn {
+            flex: 1;
+            height: 56px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="result-header">
+            <a href="home.html" class="icon-btn">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
+            <span class="status">Scan Complete</span>
+            <a href="home.html" class="icon-btn">
+                <span class="material-symbols-outlined">close</span>
+            </a>
+        </header>
+
+        <!-- Result Content -->
+        <main class="result-content">
+            <div class="item-identified fade-in">
+                <span class="item-label">Item Identified:</span>
+                <h1 class="item-name">Vintage<br>Lamp</h1>
+            </div>
+
+            <div class="options-container">
+                <!-- Upcycle Option -->
+                <a href="upcycle.html" class="option-card stagger-item">
+                    <div class="option-header">
+                        <span class="option-emoji">🎨</span>
+                        <div>
+                            <h2 class="option-title">Reuse It</h2>
+                            <span class="option-subtitle">3 Community Ideas</span>
+                        </div>
+                    </div>
+
+                    <div class="ideas-list">
+                        <div class="idea-item">
+                            <div class="idea-icon">
+                                <span class="material-symbols-outlined icon">potted_plant</span>
+                            </div>
+                            <div>
+                                <div class="idea-title">Upcycle to Planter</div>
+                                <div class="idea-desc">Use the ceramic base</div>
+                            </div>
+                        </div>
+                        <div class="idea-item">
+                            <div class="idea-icon">
+                                <span class="material-symbols-outlined icon">format_paint</span>
+                            </div>
+                            <div>
+                                <div class="idea-title">Restore & Paint</div>
+                                <div class="idea-desc">Matte black finish</div>
+                            </div>
+                        </div>
+                        <div class="idea-item">
+                            <div class="idea-icon">
+                                <span class="material-symbols-outlined icon">lightbulb</span>
+                            </div>
+                            <div>
+                                <div class="idea-title">Smart Lamp Mod</div>
+                                <div class="idea-desc">Add RGB functionality</div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Trade Option -->
+                <div class="option-card featured stagger-item">
+                    <div class="option-header">
+                        <span class="option-emoji">🤝</span>
+                        <div>
+                            <h2 class="option-title">Trade It</h2>
+                            <span class="option-subtitle">High Demand on Campus</span>
+                        </div>
+                    </div>
+
+                    <p class="option-description">
+                        Don't need it? This item is in high demand. List it now and earn coins!
+                    </p>
+
+                    <a href="create-listing.html" class="trade-button">
+                        <span class="text">List For Coins</span>
+                        <span class="material-symbols-outlined icon">currency_exchange</span>
+                    </a>
+                    <div class="coin-estimate">Est. 450 Coins</div>
+                </div>
+
+                <!-- Recycle Option -->
+                <a href="recycle.html" class="option-card stagger-item">
+                    <div class="option-header">
+                        <span class="option-emoji">♻️</span>
+                        <div>
+                            <h2 class="option-title">Recycle It</h2>
+                            <span class="option-subtitle">Free Pickup Available</span>
+                        </div>
+                    </div>
+
+                    <p class="option-description">
+                        Can't reuse or trade? Schedule a free recycling pickup. We'll ensure it's processed responsibly.
+                    </p>
+
+                    <div class="recycle-info">
+                        <span class="material-symbols-outlined icon">local_shipping</span>
+                        <span class="text">Next available pickup: Tomorrow, 2-4 PM</span>
+                    </div>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

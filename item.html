@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Details - ReLoop</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        .item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-6) var(--space-4);
+            position: relative;
+            z-index: 20;
+        }
+
+        .header-right {
+            display: flex;
+            gap: var(--space-3);
+        }
+
+        .main-content {
+            padding: 0 var(--space-4);
+            padding-bottom: 160px;
+        }
+
+        /* Product Image */
+        .product-hero {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: var(--radius-2xl);
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            margin-bottom: var(--space-6);
+        }
+
+        .product-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(10%) contrast(110%);
+        }
+
+        .product-status {
+            position: absolute;
+            bottom: var(--space-4);
+            left: var(--space-4);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-primary);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-primary);
+        }
+
+        /* Product Info */
+        .product-info {
+            margin-bottom: var(--space-8);
+        }
+
+        .product-title {
+            font-size: clamp(2rem, 10vw, 2.5rem);
+            font-weight: 900;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-3);
+        }
+
+        .price-section {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .price-coins {
+            font-size: var(--text-4xl);
+            font-weight: 900;
+            color: var(--color-primary);
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            filter: drop-shadow(0 2px 10px var(--color-primary-glow));
+        }
+
+        .price-coins .icon {
+            font-size: 42px;
+        }
+
+        .price-divider {
+            width: 1px;
+            height: 32px;
+            background: var(--color-border);
+        }
+
+        .price-original {
+            font-size: var(--text-lg);
+            color: var(--color-text-muted);
+            text-decoration: line-through;
+        }
+
+        /* Seller Card */
+        .seller-card {
+            background: var(--color-primary);
+            border: 3px solid #000;
+            border-radius: var(--radius-2xl);
+            padding: var(--space-5);
+            margin-bottom: var(--space-6);
+            color: #000;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 4px 4px 0 0 var(--color-surface-card);
+            transition: all var(--transition-base);
+        }
+
+        .seller-card:hover {
+            box-shadow: 6px 6px 0 0 var(--color-surface-card);
+            transform: translate(-2px, -2px);
+        }
+
+        .seller-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-5);
+        }
+
+        .seller-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .seller-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-full);
+            border: 2px solid #000;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .seller-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .seller-name {
+            font-size: var(--text-xl);
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: var(--space-1);
+        }
+
+        .seller-badge {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .seller-badge .icon {
+            font-size: 14px;
+        }
+
+        .seller-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-3);
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--radius-xl);
+            padding: var(--space-3);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: var(--text-2xl);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            opacity: 0.6;
+            letter-spacing: 0.1em;
+        }
+
+        /* Details Grid */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+
+        .detail-card {
+            background: var(--color-surface-card);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .detail-card .bg-icon {
+            position: absolute;
+            top: var(--space-2);
+            right: var(--space-2);
+            font-size: 48px;
+            color: var(--color-primary);
+            opacity: 0.1;
+        }
+
+        .detail-label {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-primary);
+            margin-bottom: var(--space-1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .detail-value {
+            font-size: var(--text-xl);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Description */
+        .description-card {
+            background: #000;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+        }
+
+        .description-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-3);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-text-muted);
+        }
+
+        .description-header .icon {
+            font-size: 14px;
+        }
+
+        .description-text {
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Location */
+        .location-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-4);
+        }
+
+        .location-info .icon {
+            font-size: 18px;
+        }
+
+        .location-info span {
+            font-size: var(--text-sm);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Bottom CTA */
+        .bottom-cta {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: linear-gradient(to top, var(--color-bg-dark) 60%, transparent);
+            padding: var(--space-12) var(--space-4) var(--space-8);
+            z-index: var(--z-nav);
+        }
+
+        .trade-button {
+            width: 100%;
+            height: 64px;
+            background: var(--color-primary);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-glow);
+            transition: all var(--transition-base);
+            text-decoration: none;
+        }
+
+        .trade-button:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .trade-button:active {
+            transform: scale(0.98);
+        }
+
+        .trade-button .text {
+            font-size: var(--text-xl);
+            font-weight: 900;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .trade-button .icon {
+            font-size: 28px;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="item-header">
+            <a href="marketplace.html" class="icon-btn">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
+            <div class="header-right">
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">favorite_border</span>
+                </button>
+                <button class="icon-btn">
+                    <span class="material-symbols-outlined">ios_share</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Product Image -->
+            <div class="product-hero fade-in">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOZLbQifWnnYreCLEPRRXYOgzNYuIJC4xQEp-JQfLaHVnfmh7ZAdk15-aNDuU0RPAemdPt7nAAjh3llfm0LG2xKLXs49cIEsbH2e8PqV3IK15t3n9H7GwTmtcsexm9BYgnT-tRBXW6WMPkE9gPXhVMTkBr3qTmEeFDgb5IYE_bPeeVLgQTcdoNR3tRR8LNBihFnfE73hPE7LdYWDSS5LfHzCUPaMF405A4BjVyBH8x2eUZK1NBupbH02J9j1WolQ0l52EeOiQy2dw"
+                    alt="Vintage Denim Jacket">
+                <span class="product-status">Available for Trade</span>
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info stagger-item">
+                <h1 class="product-title">Vintage Denim Jacket</h1>
+                <div class="price-section">
+                    <span class="price-coins">
+                        <span class="material-symbols-outlined icon icon-filled">eco</span>
+                        25
+                    </span>
+                    <div class="price-divider"></div>
+                    <span class="price-original">$45</span>
+                </div>
+            </div>
+
+            <!-- Seller Card -->
+            <div class="seller-card stagger-item">
+                <div class="seller-header">
+                    <div class="seller-info">
+                        <div class="seller-avatar">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO5YCi5O8FCLfzUebEZGo06paGggAst7_OzvlELDu9jWEIQ4xRNKiu0nq2MbFhXCq0L7iCNg8iVmouKSptH3pdPELpp2ZmWltKoYBcpVPJ3iXnwH1iSv3_HUvnX-dfxhlu6mQu-hQ9-S9UbDOQKNj1BZTtRoVzHqZtlSk4vFQtFB2LwkyofmzIRoinY4RPXfh8WsYp8p0oXRpyHTQxjgkWdfVoQ15iV0ttkJ50gkYa8pj511ITFvI-V7vLnV7ZMHEwVUtiG1MxyRk"
+                                alt="Seller">
+                        </div>
+                        <div>
+                            <div class="seller-name">@StudentJane</div>
+                            <div class="seller-badge">
+                                <span class="material-symbols-outlined icon icon-filled">verified</span>
+                                Top 5% Seller
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="seller-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">15kg</div>
+                        <div class="stat-label">CO2 Saved</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Details Grid -->
+            <div class="details-grid stagger-item">
+                <div class="detail-card">
+                    <span class="material-symbols-outlined bg-icon">check_circle</span>
+                    <div class="detail-label">Condition</div>
+                    <div class="detail-value">Excellent</div>
+                </div>
+                <div class="detail-card">
+                    <span class="material-symbols-outlined bg-icon">straighten</span>
+                    <div class="detail-label">Size</div>
+                    <div class="detail-value">Medium</div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="description-card stagger-item">
+                <div class="description-header">
+                    <span class="material-symbols-outlined icon">info</span>
+                    Description
+                </div>
+                <p class="description-text">
+                    Authentic vintage denim jacket from the 90s. Perfectly worn in with no major flaws. Great for
+                    layering in the fall. Saved from a local thrift shop!
+                </p>
+            </div>
+
+            <!-- Location -->
+            <div class="location-info stagger-item">
+                <span class="material-symbols-outlined icon">location_on</span>
+                <span>North Campus • 0.5mi away</span>
+            </div>
+        </main>
+
+        <!-- Bottom CTA -->
+        <div class="bottom-cta">
+            <a href="trade.html" class="trade-button">
+                <span class="text">Request Trade</span>
+                <span class="material-symbols-outlined icon">swap_horiz</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - ReLoop</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        .greeting-section {
+            padding: var(--space-4) var(--space-5);
+        }
+
+        .greeting-label {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-1);
+        }
+
+        .greeting-title {
+            font-size: var(--text-2xl);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        /* Stories Section */
+        .stories-section {
+            padding: var(--space-4) 0;
+            padding-left: var(--space-5);
+        }
+
+        /* Camera Section */
+        .camera-section {
+            padding: 0 var(--space-5);
+            margin-bottom: var(--space-6);
+        }
+
+        .camera-frame {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/5;
+            border-radius: var(--radius-2xl);
+            border: 4px solid var(--color-text-primary);
+            overflow: hidden;
+            background: var(--color-surface-dark);
+        }
+
+        .camera-preview,
+        #camera-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #camera-video {
+            display: none;
+            transform: scaleX(1);
+        }
+
+        #camera-video.front-camera {
+            transform: scaleX(-1);
+        }
+
+        .camera-preview.hidden {
+            display: none;
+        }
+
+        #camera-video.active {
+            display: block;
+        }
+
+        .camera-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 50%, rgba(0, 0, 0, 0.2) 100%);
+            pointer-events: none;
+        }
+
+        .camera-controls {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            z-index: 10;
+        }
+
+        .camera-control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--color-border);
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .camera-control-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+            border-color: var(--color-primary);
+        }
+
+        .camera-control-btn.active {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: #000;
+        }
+
+        .viewfinder {
+            position: absolute;
+            inset: var(--space-8);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .viewfinder-corner {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-color: var(--color-primary);
+            border-style: solid;
+        }
+
+        .viewfinder-corner.top-left {
+            top: 0;
+            left: 0;
+            border-width: 4px 0 0 4px;
+        }
+
+        .viewfinder-corner.top-right {
+            top: 0;
+            right: 0;
+            border-width: 4px 4px 0 0;
+        }
+
+        .viewfinder-corner.bottom-left {
+            bottom: 0;
+            left: 0;
+            border-width: 0 0 4px 4px;
+        }
+
+        .viewfinder-corner.bottom-right {
+            bottom: 0;
+            right: 0;
+            border-width: 0 4px 4px 0;
+        }
+
+        .viewfinder-label {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-border);
+            font-size: var(--text-sm);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .viewfinder-label.ready {
+            background: rgba(34, 195, 88, 0.2);
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .detection-badge {
+            position: absolute;
+            bottom: var(--space-6);
+            left: var(--space-6);
+            right: var(--space-6);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-3);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            z-index: 10;
+        }
+
+        .detection-badge.ready {
+            border-color: var(--color-primary);
+            background: rgba(34, 195, 88, 0.1);
+        }
+
+        .detection-icon {
+            color: var(--color-primary);
+            font-size: 24px;
+        }
+
+        .detection-label {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-primary);
+        }
+
+        .detection-text {
+            font-size: var(--text-base);
+            font-weight: 700;
+        }
+
+        /* Scan Button */
+        .scan-section {
+            padding: 0 var(--space-5);
+            padding-bottom: var(--space-6);
+        }
+
+        .scan-button {
+            width: 100%;
+            height: 72px;
+            background: var(--color-primary);
+            border: 3px solid #000;
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            box-shadow: 0 0 20px var(--color-primary-glow);
+            text-decoration: none;
+        }
+
+        .scan-button:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .scan-button:active {
+            transform: scale(0.98);
+        }
+
+        .scan-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .scan-button .icon {
+            font-size: 36px;
+            color: #000;
+        }
+
+        .scan-button-text {
+            font-size: var(--text-2xl);
+            font-weight: 900;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .upload-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-4);
+            margin-top: var(--space-4);
+        }
+
+        .upload-link {
+            font-size: var(--text-sm);
+            font-weight: 700;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: color var(--transition-base);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .upload-link:hover {
+            color: var(--color-text-primary);
+        }
+
+        .upload-link .icon {
+            font-size: 18px;
+        }
+
+        #file-upload {
+            display: none;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            padding: 0 var(--space-5);
+            padding-bottom: 140px;
+        }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-3);
+        }
+
+        .quick-action-card {
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-4);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .quick-action-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        .quick-action-icon {
+            font-size: 28px;
+            margin-bottom: var(--space-2);
+            color: var(--color-primary);
+        }
+
+        .quick-action-label {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-secondary);
+        }
+
+        /* Camera permission prompt */
+        .camera-prompt {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--space-6);
+            background: var(--color-surface-dark);
+        }
+
+        .camera-prompt .icon {
+            font-size: 64px;
+            color: var(--color-primary);
+            margin-bottom: var(--space-4);
+        }
+
+        .camera-prompt .title {
+            font-size: var(--text-lg);
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+        }
+
+        .camera-prompt .description {
+            font-size: var(--text-sm);
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-4);
+        }
+
+        .camera-prompt .btn {
+            padding: var(--space-3) var(--space-6);
+        }
+
+        /* Hidden canvas for capture */
+        #capture-canvas {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-title">
+                <span class="header-subtitle">ReLoop</span>
+                <h1 class="header-main">Namaste, Priya</h1>
+            </div>
+            <div class="header-actions">
+                <div class="coin-badge">
+                    <span class="material-symbols-outlined icon icon-filled">eco</span>
+                    <span class="value coin-value">850</span>
+                </div>
+                <a href="notifications.html" class="icon-btn">
+                    <span class="material-symbols-outlined">notifications</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Stories Section -->
+        <section class="stories-section">
+            <div class="section-header" style="padding-right: var(--space-5);">
+                <h2 class="section-title">Success Stories</h2>
+            </div>
+            <div class="stories-row">
+                <div class="story-item stagger-item">
+                    <div class="story-avatar add">
+                        <span class="material-symbols-outlined">add</span>
+                    </div>
+                    <span class="story-name">Add New</span>
+                </div>
+                <div class="story-item stagger-item">
+                    <div class="story-avatar">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXNdMMYG7s_pH44YUMySsgMOxvWfeEGTE8Hx0Zy1YYyxulGswbycpN2qunOF8AiksxwCrTMiTlbWeTfRGdO_GR34UalUrwHHD_J1GuGElyDMYq68KgRtldjyV0KhbS4Q2N4L8JLiEZ7gciXaZoaiwaNypLsFswsOc5uocrxu6C9B1Qof1Jhz0o50D_QTWjSAGr-GbmAdHfwCZqEoTWNijdA-p82_MMjX1BURruAz1pYa5nKkoIcAkRFa3UovvanybDEC7BjDLPDO0"
+                            alt="Anjali">
+                    </div>
+                    <span class="story-name">Anjali</span>
+                </div>
+                <div class="story-item stagger-item">
+                    <div class="story-avatar">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDET0ad7LiSUlhwJjz4bIzJWPwNY2_-9RZgxNEZGpvfT-LY_0Tho0HbJeQEGXH0pcvKkdLbQGA_-_UnYd7GJD3dZYVePIiz3Qdceu8pOpRkkRmNe6SWVwTApFKgk4EQ5-PIhQBkz2qHRNRNxKalR-sGDkB_0j1oc4ASPIIR4q0ZtU4mKlr3CELwQ2YnLZaPliqYitkj3OIhxmWMZJ18I-cpFPHCWxBcVsSG0agq3n9TozE5D-Utj5_D3qSxyCwe513iTWceo73yZkM"
+                            alt="Rahul">
+                    </div>
+                    <span class="story-name">Rahul</span>
+                </div>
+                <div class="story-item stagger-item">
+                    <div class="story-avatar inactive">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnu_nYgzzTxmWWJtN0-wtLY9tR0-244AJdoYr8xj5xv2LR58ibNqu35mlMxfl5Djo_QdaFKCh-g0d-gJzln9DOnPKaJVc4JdSwhxh7A9G59Nj0gvFUoBZiF_bH6Ma6Chr6duSjS5g8CkNgv4JI6Hcu4wyBbxydIMTaDnj8iIJvNSuHMibJx_HIgRbsp5v2V1X-M-y_2GHsY-GjgwodeYn3V0tvCd4nLmUyl6VyaAh7UHuXKFTMiQWv8GZpmVey9kD-uUQYctjo0PY"
+                            alt="IIT Delhi">
+                    </div>
+                    <span class="story-name">IIT Delhi</span>
+                </div>
+                <div class="story-item stagger-item">
+                    <div class="story-avatar inactive">
+                        <div
+                            style="width: 100%; height: 100%; background: var(--color-surface-card); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: var(--text-sm); color: var(--color-text-muted);">
+                            AK</div>
+                    </div>
+                    <span class="story-name">Arjun</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Camera Section -->
+        <section class="camera-section fade-in">
+            <div class="camera-frame" id="camera-frame">
+                <!-- Fallback image (shown when camera not active) -->
+                <img class="camera-preview" id="camera-fallback"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDET0ad7LiSUlhwJjz4bIzJWPwNY2_-9RZgxNEZGpvfT-LY_0Tho0HbJeQEGXH0pcvKkdLbQGA_-_UnYd7GJD3dZYVePIiz3Qdceu8pOpRkkRmNe6SWVwTApFKgk4EQ5-PIhQBkz2qHRNRNxKalR-sGDkB_0j1oc4ASPIIR4q0ZtU4mKlr3CELwQ2YnLZaPliqYitkj3OIhxmWMZJ18I-cpFPHCWxBcVsSG0agq3n9TozE5D-Utj5_D3qSxyCwe513iTWceo73yZkM"
+                    alt="Camera preview">
+
+                <!-- Real camera video -->
+                <video id="camera-video" autoplay playsinline muted></video>
+
+                <!-- Hidden canvas for image capture -->
+                <canvas id="capture-canvas"></canvas>
+
+                <div class="camera-overlay"></div>
+
+                <div class="camera-controls">
+                    <button class="camera-control-btn" id="flash-btn" title="Toggle flash">
+                        <span class="material-symbols-outlined">flash_off</span>
+                    </button>
+                    <button class="camera-control-btn" id="flip-btn" title="Switch camera">
+                        <span class="material-symbols-outlined">flip_camera_ios</span>
+                    </button>
+                    <button class="camera-control-btn" id="settings-btn" title="AI Settings"
+                        onclick="showApiKeyModal()">
+                        <span class="material-symbols-outlined">tune</span>
+                    </button>
+                </div>
+
+                <div class="viewfinder">
+                    <div class="viewfinder-corner top-left"></div>
+                    <div class="viewfinder-corner top-right"></div>
+                    <div class="viewfinder-corner bottom-left"></div>
+                    <div class="viewfinder-corner bottom-right"></div>
+                    <span class="viewfinder-label" id="viewfinder-label">Tap to Start Camera</span>
+                </div>
+
+                <div class="detection-badge" id="detection-badge">
+                    <span class="material-symbols-outlined detection-icon" id="detection-icon">videocam_off</span>
+                    <div>
+                        <span class="detection-label" id="detection-status">Camera Off</span>
+                        <span class="detection-text" id="detection-text">Tap frame to enable camera</span>
+                    </div>
+                </div>
+
+                <!-- Camera permission prompt -->
+                <div class="camera-prompt" id="camera-prompt" style="display: none;">
+                    <span class="material-symbols-outlined icon">photo_camera</span>
+                    <div class="title">Camera Access Needed</div>
+                    <div class="description">Allow camera access to scan items with AI</div>
+                    <button class="btn btn-primary" onclick="startCamera()">Enable Camera</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scan Button -->
+        <section class="scan-section">
+            <button class="scan-button" id="scan-button" onclick="performScan()">
+                <span class="material-symbols-outlined icon">qr_code_scanner</span>
+                <span class="scan-button-text">Scan Item</span>
+            </button>
+
+            <div class="upload-section">
+                <label class="upload-link" for="file-upload">
+                    <span class="material-symbols-outlined icon">photo_library</span>
+                    Upload from gallery
+                </label>
+                <input type="file" id="file-upload" accept="image/*" onchange="handleFileUpload(event)">
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <div class="section-header">
+                <h2 class="section-title">Quick Actions</h2>
+            </div>
+            <div class="quick-actions-grid">
+                <a href="marketplace.html" class="quick-action-card stagger-item">
+                    <span class="material-symbols-outlined quick-action-icon">storefront</span>
+                    <span class="quick-action-label">Browse</span>
+                </a>
+                <a href="create-listing.html" class="quick-action-card stagger-item">
+                    <span class="material-symbols-outlined quick-action-icon">sell</span>
+                    <span class="quick-action-label">Sell</span>
+                </a>
+                <a href="recycle.html" class="quick-action-card stagger-item">
+                    <span class="material-symbols-outlined quick-action-icon">recycling</span>
+                    <span class="quick-action-label">Recycle</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="home.html" class="nav-link active">
+                        <span class="material-symbols-outlined icon icon-filled">home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="search.html" class="nav-link">
+                        <span class="material-symbols-outlined icon">search</span>
+                    </a>
+                </li>
+                <li class="nav-item nav-add-btn">
+                    <a href="#" class="icon-btn" onclick="performScan(); return false;">
+                        <span class="material-symbols-outlined icon">add</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <span class="material-symbols-outlined icon">chat_bubble</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <span class="material-symbols-outlined icon">person</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <script src="js/app.js"></script>
+    <script src="js/scanner.js"></script>
+    <script>
+        let cameraStarted = false;
+        let flashOn = false;
+
+        // Initialize camera on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const video = document.getElementById('camera-video');
+            const canvas = document.getElementById('capture-canvas');
+
+            // Initialize scanner
+            await window.reloopScanner.init(video, canvas);
+
+            // Check if API key is set
+            if (!window.reloopScanner.apiKey) {
+                // Show subtle indicator that setup is needed
+                document.getElementById('settings-btn').classList.add('active');
+            }
+
+            // Click on camera frame to start camera
+            document.getElementById('camera-frame').addEventListener('click', async (e) => {
+                // Don't trigger if clicking controls
+                if (e.target.closest('.camera-controls')) return;
+
+                if (!cameraStarted) {
+                    await startCamera();
+                }
+            });
+        });
+
+        async function startCamera() {
+            try {
+                const video = document.getElementById('camera-video');
+                const fallback = document.getElementById('camera-fallback');
+                const viewfinderLabel = document.getElementById('viewfinder-label');
+                const detectionBadge = document.getElementById('detection-badge');
+                const detectionIcon = document.getElementById('detection-icon');
+                const detectionStatus = document.getElementById('detection-status');
+                const detectionText = document.getElementById('detection-text');
+
+                // Try to start camera
+                await window.reloopScanner.startCamera();
+
+                // Update UI
+                fallback.classList.add('hidden');
+                video.classList.add('active');
+                viewfinderLabel.textContent = 'Ready to Scan';
+                viewfinderLabel.classList.add('ready');
+                detectionBadge.classList.add('ready');
+                detectionIcon.textContent = 'auto_awesome';
+                detectionStatus.textContent = 'AI Ready';
+                detectionText.textContent = 'Point at any item to scan';
+
+                cameraStarted = true;
+
+            } catch (error) {
+                console.error('Camera start error:', error);
+                showToast('Camera access denied. Please enable camera permissions.', 'error');
+
+                // Show permission prompt
+                document.getElementById('camera-prompt').style.display = 'flex';
+            }
+        }
+
+        // Toggle camera (front/back)
+        document.getElementById('flip-btn')?.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (cameraStarted) {
+                await window.reloopScanner.toggleCamera();
+                const video = document.getElementById('camera-video');
+                video.classList.toggle('front-camera', window.reloopScanner.facingMode === 'user');
+                showToast('Camera switched', 'success');
+            }
+        });
+
+        // Toggle flash (if supported)
+        document.getElementById('flash-btn')?.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            flashOn = !flashOn;
+            const flashBtn = document.getElementById('flash-btn');
+            const icon = flashBtn.querySelector('.material-symbols-outlined');
+
+            if (flashOn) {
+                icon.textContent = 'flash_on';
+                flashBtn.classList.add('active');
+
+                // Try to enable flash (if track supports it)
+                if (window.reloopScanner.stream) {
+                    const track = window.reloopScanner.stream.getVideoTracks()[0];
+                    const capabilities = track.getCapabilities?.();
+                    if (capabilities?.torch) {
+                        await track.applyConstraints({ advanced: [{ torch: true }] });
+                    }
+                }
+            } else {
+                icon.textContent = 'flash_off';
+                flashBtn.classList.remove('active');
+
+                // Turn off flash
+                if (window.reloopScanner.stream) {
+                    const track = window.reloopScanner.stream.getVideoTracks()[0];
+                    const capabilities = track.getCapabilities?.();
+                    if (capabilities?.torch) {
+                        await track.applyConstraints({ advanced: [{ torch: false }] });
+                    }
+                }
+            }
+        });
+
+        // Perform scan
+        async function performScan() {
+            // Check if API key is set
+            if (!window.reloopScanner.apiKey) {
+                showApiKeyModal();
+                return;
+            }
+
+            // Start camera if not started
+            if (!cameraStarted) {
+                await startCamera();
+                // Give camera time to initialize
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+
+            // Show scanning overlay
+            const overlay = showScanningOverlay();
+
+            try {
+                const result = await window.reloopScanner.scan();
+
+                // Navigate to result page
+                window.location.href = 'result-dynamic.html';
+
+            } catch (error) {
+                console.error('Scan error:', error);
+                hideScanningOverlay();
+
+                if (error.message.includes('API key')) {
+                    showApiKeyModal();
+                } else {
+                    showToast(error.message || 'Scan failed. Please try again.', 'error');
+                }
+            }
+        }
+
+        // Handle file upload
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Check if API key is set
+            if (!window.reloopScanner.apiKey) {
+                showApiKeyModal();
+                return;
+            }
+
+            // Show scanning overlay
+            const overlay = showScanningOverlay();
+
+            try {
+                const result = await window.reloopScanner.analyzeFile(file);
+
+                // Navigate to result page
+                window.location.href = 'result-dynamic.html';
+
+            } catch (error) {
+                console.error('Upload error:', error);
+                hideScanningOverlay();
+
+                if (error.message.includes('API key')) {
+                    showApiKeyModal();
+                } else {
+                    showToast(error.message || 'Analysis failed. Please try again.', 'error');
+                }
+            }
+
+            // Reset file input
+            event.target.value = '';
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (window.reloopScanner) {
+                window.reloopScanner.stopCamera();
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - ReLoop</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-6) var(--space-4);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .page-title {
+            font-size: var(--text-xl);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        .main-content {
+            padding: var(--space-4);
+            padding-bottom: 100px;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-4);
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--space-6);
+        }
+
+        .profile-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            border: 2px solid var(--color-primary);
+            position: relative;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar .edit-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 24px;
+            height: 24px;
+            background: var(--color-primary);
+            border: 2px solid var(--color-bg-dark);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-avatar .edit-badge .icon {
+            font-size: 14px;
+            color: #000;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: var(--text-lg);
+            font-weight: 700;
+            margin-bottom: var(--space-1);
+        }
+
+        .profile-email {
+            font-size: var(--text-sm);
+            color: var(--color-text-muted);
+        }
+
+        /* Settings Group */
+        .settings-group {
+            margin-bottom: var(--space-6);
+        }
+
+        .group-title {
+            font-size: var(--text-sm);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-muted);
+            padding: 0 var(--space-4);
+            margin-bottom: var(--space-2);
+        }
+
+        .settings-list {
+            background: var(--color-surface-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-4);
+            border-bottom: 1px solid var(--color-border);
+            cursor: pointer;
+            transition: background var(--transition-base);
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-item:hover {
+            background: var(--color-surface-dark);
+        }
+
+        .settings-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .settings-icon .icon {
+            font-size: 20px;
+            color: var(--color-text-secondary);
+        }
+
+        .settings-content {
+            flex: 1;
+        }
+
+        .settings-label {
+            font-size: var(--text-base);
+            font-weight: 600;
+        }
+
+        .settings-description {
+            font-size: var(--text-sm);
+            color: var(--color-text-muted);
+        }
+
+        .settings-arrow {
+            font-size: 20px;
+            color: var(--color-text-muted);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 28px;
+            background: var(--color-text-muted);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: background var(--transition-base);
+        }
+
+        .toggle-switch.active {
+            background: var(--color-primary);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            border-radius: var(--radius-full);
+            transition: transform var(--transition-base);
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(20px);
+        }
+
+        /* Danger Zone */
+        .danger-item {
+            color: var(--color-error);
+        }
+
+        .danger-item .settings-icon {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .danger-item .settings-icon .icon {
+            color: var(--color-error);
+        }
+
+        /* Version */
+        .version-info {
+            text-align: center;
+            padding: var(--space-8);
+            color: var(--color-text-muted);
+            font-size: var(--text-sm);
+        }
+
+        .version-info .logo {
+            font-size: var(--text-lg);
+            font-weight: 900;
+            color: var(--color-primary);
+            margin-bottom: var(--space-2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="page-header">
+            <a href="profile.html" class="icon-btn">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
+            <h1 class="page-title">Settings</h1>
+            <div style="width: 40px;"></div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Profile Section -->
+            <div class="profile-section stagger-item">
+                <div class="profile-avatar">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO5YCi5O8FCLfzUebEZGo06paGggAst7_OzvlELDu9jWEIQ4xRNKiu0nq2MbFhXCq0L7iCNg8iVmouKSptH3pdPELpp2ZmWltKoYBcpVPJ3iXnwH1iSv3_HUvnX-dfxhlu6mQu-hQ9-S9UbDOQKNj1BZTtRoVzHqZtlSk4vFQtFB2LwkyofmzIRoinY4RPXfh8WsYp8p0oXRpyHTQxjgkWdfVoQ15iV0ttkJ50gkYa8pj511ITFvI-V7vLnV7ZMHEwVUtiG1MxyRk"
+                        alt="User">
+                    <div class="edit-badge">
+                        <span class="material-symbols-outlined icon">edit</span>
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-name">StudentJane</div>
+                    <div class="profile-email">jane@university.edu</div>
+                </div>
+            </div>
+
+            <!-- Account Settings -->
+            <div class="settings-group stagger-item">
+                <div class="group-title">Account</div>
+                <div class="settings-list">
+                    <div class="settings-item">
+                        <div class="settings-icon">
+                            <span class="material-symbols-outlined icon">person</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-label">Edit Profile</div>
+                        </div>
+                        <span class="material-symbols-outlined settings-arrow">chevron_right</span>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-icon">
+                            <span class="material-symbols-outlined icon">location_on</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-label">Addresses</div>
+                            <div class="settings-description">2 saved addresses</div>
+                        </div>
+                        <span class="material-symbols-outlined settings-arrow">chevron_right</span>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-icon">
+                            <span class="material-symbols-outlined icon">account_balance_wallet</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-label">Payment Methods</div>
+                        </div>
+                        <span class="material-symbols-outlined settings-arrow">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preferences -->
+            <div class="settings-group stagger-item">
+                <div class="group-title">Preferences</div>
+                <div class="settings-list">
+                    <div class="settings-item">
+                        <div class="settings-icon">
+                            <span class="material-symbols-outlined icon">notifications</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-label">Push Notifications</div>
+                        </div>
+                        <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-icon">
+                            <span class="material-symbols-outlined icon">email</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-label">Email Updates</div>
+                        </div>
+                        <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-icon">
+                            <span class="material-symbols-outlined icon">dark_mode</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-label">Dark Mode</div>
+                        </div>
+                        <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-icon">
+                            <span class="material-symbols-outlined icon">language</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-label">Language</div>
+                            <div class="settings-description">English</div>
+                        </div>
+                        <span class="material-symbols-outlined settings-arrow">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support -->
+            <div class="settings-group stagger-item">
+                <div class="group-title">Support</div>
+                <div class="settings-list">
+                    <div class="settings-item">
+                        <div class="settings-icon">
+                            <span class="material-symbols-outlined icon">help</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-label">Help Center</div>
+                        </div>
+                        <span class="material-symbols-outlined settings-arrow">chevron_right</span>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-icon">
+                            <span class="material-symbols-outlined icon">chat</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-label">Contact Support</div>
+                        </div>
+                        <span class="material-symbols-outlined settings-arrow">chevron_right</span>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-icon">
+                            <span class="material-symbols-outlined icon">description</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-label">Terms of Service</div>
+                        </div>
+                        <span class="material-symbols-outlined settings-arrow">chevron_right</span>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-icon">
+                            <span class="material-symbols-outlined icon">privacy_tip</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-label">Privacy Policy</div>
+                        </div>
+                        <span class="material-symbols-outlined settings-arrow">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="settings-group stagger-item">
+                <div class="settings-list">
+                    <div class="settings-item danger-item" onclick="window.location.href='index.html'">
+                        <div class="settings-icon">
+                            <span class="material-symbols-outlined icon">logout</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="settings-label">Log Out</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Version Info -->
+            <div class="version-info">
+                <div class="logo">ReLoop</div>
+                Version 1.0.0
+            </div>
+        </main>
+    </div>
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>
