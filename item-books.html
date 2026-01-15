@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Books Bundle - ReLoop</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        .item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-6) var(--space-4);
+            position: relative;
+            z-index: 20;
+        }
+
+        .header-right {
+            display: flex;
+            gap: var(--space-3);
+        }
+
+        .main-content {
+            padding: 0 var(--space-4);
+            padding-bottom: 160px;
+        }
+
+        .product-hero {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: var(--radius-2xl);
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            margin-bottom: var(--space-6);
+        }
+
+        .product-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-status {
+            position: absolute;
+            bottom: var(--space-4);
+            left: var(--space-4);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-primary);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-primary);
+        }
+
+        .product-urgency-badge {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            background: var(--color-error);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .product-urgency-badge .icon {
+            font-size: 14px;
+        }
+
+        .product-info {
+            margin-bottom: var(--space-8);
+        }
+
+        .product-title {
+            font-size: clamp(2rem, 10vw, 2.5rem);
+            font-weight: 900;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-3);
+        }
+
+        .price-section {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .price-coins {
+            font-size: var(--text-4xl);
+            font-weight: 900;
+            color: var(--color-primary);
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            filter: drop-shadow(0 2px 10px var(--color-primary-glow));
+        }
+
+        .price-coins .icon {
+            font-size: 42px;
+        }
+
+        .price-divider {
+            width: 1px;
+            height: 32px;
+            background: var(--color-border);
+        }
+
+        .price-original {
+            font-size: var(--text-lg);
+            color: var(--color-text-muted);
+            text-decoration: line-through;
+        }
+
+        .seller-card {
+            background: var(--color-primary);
+            border: 3px solid #000;
+            border-radius: var(--radius-2xl);
+            padding: var(--space-5);
+            margin-bottom: var(--space-6);
+            color: #000;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 4px 4px 0 0 var(--color-surface-card);
+            transition: all var(--transition-base);
+        }
+
+        .seller-card:hover {
+            box-shadow: 6px 6px 0 0 var(--color-surface-card);
+            transform: translate(-2px, -2px);
+        }
+
+        .seller-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-5);
+        }
+
+        .seller-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .seller-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-full);
+            border: 2px solid #000;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .seller-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .seller-name {
+            font-size: var(--text-xl);
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: var(--space-1);
+        }
+
+        .seller-badge {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .seller-badge .icon {
+            font-size: 14px;
+        }
+
+        .seller-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-3);
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--radius-xl);
+            padding: var(--space-3);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: var(--text-2xl);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            opacity: 0.6;
+            letter-spacing: 0.1em;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+
+        .detail-card {
+            background: var(--color-surface-card);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .detail-card .bg-icon {
+            position: absolute;
+            top: var(--space-2);
+            right: var(--space-2);
+            font-size: 48px;
+            color: var(--color-primary);
+            opacity: 0.1;
+        }
+
+        .detail-label {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-primary);
+            margin-bottom: var(--space-1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .detail-value {
+            font-size: var(--text-xl);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .description-card {
+            background: #000;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+        }
+
+        .description-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-3);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-text-muted);
+        }
+
+        .description-header .icon {
+            font-size: 14px;
+        }
+
+        .description-text {
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .location-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-4);
+        }
+
+        .location-info .icon {
+            font-size: 18px;
+        }
+
+        .location-info span {
+            font-size: var(--text-sm);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .bottom-cta {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: linear-gradient(to top, var(--color-bg-dark) 60%, transparent);
+            padding: var(--space-12) var(--space-4) var(--space-8);
+            z-index: var(--z-nav);
+        }
+
+        .trade-button {
+            width: 100%;
+            height: 64px;
+            background: var(--color-primary);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-glow);
+            transition: all var(--transition-base);
+            text-decoration: none;
+        }
+
+        .trade-button:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .trade-button:active {
+            transform: scale(0.98);
+        }
+
+        .trade-button .text {
+            font-size: var(--text-xl);
+            font-weight: 900;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .trade-button .icon {
+            font-size: 28px;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="item-header">
+            <a href="marketplace.html" class="icon-btn">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
+            <div class="header-right">
+                <button class="icon-btn"><span class="material-symbols-outlined">favorite_border</span></button>
+                <button class="icon-btn"><span class="material-symbols-outlined">ios_share</span></button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="product-hero fade-in">
+                <img src="images/study-books.png" alt="Study Books Bundle">
+                <span class="product-status">Available for Trade</span>
+                <span class="product-urgency-badge">
+                    <span class="material-symbols-outlined icon">schedule</span>
+                    2 days left
+                </span>
+            </div>
+
+            <div class="product-info stagger-item">
+                <h1 class="product-title">Engineering Books Bundle</h1>
+                <div class="price-section">
+                    <span class="price-coins">
+                        <span class="material-symbols-outlined icon icon-filled">eco</span>
+                        120
+                    </span>
+                    <div class="price-divider"></div>
+                    <span class="price-original">₹4,500</span>
+                </div>
+            </div>
+
+            <div class="seller-card stagger-item">
+                <div class="seller-header">
+                    <div class="seller-info">
+                        <div class="seller-avatar">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuApkHqu9en_dVgoUQ5TxuxRwSW6yU7PlEVw7qMyX8NYJDg5JUimrQSXFdhHGR7Ud2rtjzu9TqorwH8tqn4yq11F-adrhv8T3hnPTMvRdQ-v3SZWx1-8DrFuTzQST64A5ZZq8xq-yoUiNvp-gHkAnPzdsCJR_pOBj-7tSGs4IiPI9oXnbKHMS34Bt4v54Q6TNgD0u3_T1dsJPK3GntZKruZiOGgQeu27ZTXDWSkfiLbcEZphBARRLRjk3i0msDHXE1vMz2nlqIHfcWI"
+                                alt="Seller">
+                        </div>
+                        <div>
+                            <div class="seller-name">@BookWorm2024</div>
+                            <div class="seller-badge">
+                                <span class="material-symbols-outlined icon icon-filled">verified</span>
+                                Trusted Seller
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="seller-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">25kg</div>
+                        <div class="stat-label">CO2 Saved</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-grid stagger-item">
+                <div class="detail-card">
+                    <span class="material-symbols-outlined bg-icon">check_circle</span>
+                    <div class="detail-label">Condition</div>
+                    <div class="detail-value">Good</div>
+                </div>
+                <div class="detail-card">
+                    <span class="material-symbols-outlined bg-icon">menu_book</span>
+                    <div class="detail-label">Books</div>
+                    <div class="detail-value">9 Books</div>
+                </div>
+            </div>
+
+            <div class="description-card stagger-item">
+                <div class="description-header">
+                    <span class="material-symbols-outlined icon">info</span>
+                    Description
+                </div>
+                <p class="description-text">
+                    Complete bundle of engineering textbooks including Physics (Principles of Physics), Chemistry
+                    (Organic Chemistry), Mathematics (Advanced Calculus, Linear Algebra), Quantum Mechanics, and
+                    Biology. Some highlighting but all pages intact. Perfect for first and second-year engineering
+                    students. Saving you thousands!
+                </p>
+            </div>
+
+            <div class="location-info stagger-item">
+                <span class="material-symbols-outlined icon">location_on</span>
+                <span>Library Block • 0.8km away</span>
+            </div>
+        </main>
+
+        <div class="bottom-cta">
+            <a href="trade.html" class="trade-button">
+                <span class="text">Request Trade</span>
+                <span class="material-symbols-outlined icon">swap_horiz</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="noise-overlay"></div>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
