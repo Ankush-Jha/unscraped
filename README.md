@@ -54,6 +54,59 @@ http://localhost:3000
 
 ---
 
+## 📁 Project Structure
+
+```
+reloop/
+├── index.html          # Entry point (redirects to onboarding)
+├── home.html           # Main dashboard
+├── onboarding.html     # Welcome & signup flow
+│
+├── 📦 Marketplace
+│   ├── marketplace.html    # Browse items
+│   ├── item.html           # Item details template
+│   ├── item-*.html         # Specific items (books, charger, etc.)
+│   ├── search.html         # Search page
+│   └── trade.html          # Trade confirmation
+│
+├── 🔍 AI Scanner
+│   ├── scanning.html       # AI analysis animation
+│   ├── scan1.html          # Scan results summary
+│   ├── scan2.html          # Detailed upcycle ideas
+│   ├── result.html         # Static result page
+│   └── result-dynamic.html # Dynamic result page
+│
+├── 🏆 Gamification
+│   ├── missions.html       # Daily missions
+│   ├── achievements.html   # Badges & achievements
+│   ├── leaderboard.html    # Campus rankings
+│   ├── level-up.html       # Level up celebration
+│   └── wrapped.html        # Eco Wrapped summary
+│
+├── 👤 User
+│   ├── profile.html        # User profile
+│   ├── settings.html       # App settings
+│   ├── notifications.html  # Notifications
+│   └── messages.html       # Chat list
+│
+├── 📖 Stories
+│   ├── success-stories.html    # All stories
+│   └── story-*.html            # Individual stories
+│
+├── 🪙 Rewards
+│   ├── redeem.html         # Coin redemption
+│   └── recycle.html        # Recycling info
+│
+├── 🎨 Assets
+│   ├── css/styles.css      # Global styles
+│   ├── js/app.js           # Main JavaScript
+│   └── images/             # All images & screenshots
+│
+└── README.md
+```
+
+---
+
 ## ✨ Features
 
 - **🔍 AI Item Scanner** - Scan items to get upcycle ideas and coin estimates
@@ -61,19 +114,6 @@ http://localhost:3000
 - **🪙 Eco Coins** - Earn coins for trades, redeem for campus rewards
 - **🏆 Gamification** - Daily missions, achievements, campus leaderboard
 - **📊 Eco Wrapped** - Your sustainability stats, Spotify-Wrapped style
-
----
-
-## 📁 Key Pages
-
-| Page | Description |
-|------|-------------|
-| `home.html` | Main dashboard with stories, scan, rankings |
-| `marketplace.html` | Browse items for trade |
-| `profile.html` | User stats, wallet, achievements |
-| `redeem.html` | Spend coins on campus rewards |
-| `wrapped.html` | Eco Wrapped sustainability summary |
-| `missions.html` | Daily missions for bonus coins |
 
 ---
 
