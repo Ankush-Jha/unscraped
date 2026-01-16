@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AI Reuse Ideas - ReLoop</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&amp;family=Manrope:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#29a35c",
+                        "background-light": "#f2f2f2",
+                        "background-dark": "#141414",
+                        "surface-dark": "#262626",
+                    },
+                    fontFamily: {
+                        "display": ["Epilogue", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                    backgroundImage: {
+                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.05%22/%3E%3C/svg%3E')",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .text-stroke-1 {
+            -webkit-text-stroke: 1px currentColor;
+        }
+
+        .text-stroke-2 {
+            -webkit-text-stroke: 2px currentColor;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary selection:text-white antialiased">
+    <div
+        class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto overflow-x-hidden border-x border-white/5 shadow-2xl">
+        <header class="flex items-center justify-between p-6 pb-2 z-20">
+            <div class="flex items-center gap-2">
+                <div class="h-8 w-8 rounded-full overflow-hidden border border-white/20">
+                    <img alt="User Avatar" class="h-full w-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO5YCi5O8FCLfzUebEZGo06paGggAst7_OzvlELDu9jWEIQ4xRNKiu0nq2MbFhXCq0L7iCNg8iVmouKSptH3pdPELpp2ZmWltKoYBcpVPJ3iXnwH1iSv3_HUvnX-dfxhlu6mQu-hQ9-S9UbDOQKNj1BZTtRoVzHqZtlSk4vFQtFB2LwkyofmzIRoinY4RPXfh8WsYp8p0oXRpyHTQxjgkWdfVoQ15iV0ttkJ50gkYa8pj511ITFvI-V7vLnV7ZMHEwVUtiG1MxyRk" />
+                </div>
+                <span class="text-sm font-body font-medium text-white/80">@StudentJane</span>
+            </div>
+            <a href="home.html"
+                class="flex items-center justify-center h-10 w-10 rounded-full hover:bg-white/10 transition-colors text-white">
+                <span class="material-symbols-outlined" style="font-size: 24px;">close</span>
+            </a>
+        </header>
+        <main class="flex-1 flex flex-col px-4 pb-32 relative z-10">
+            <div class="pt-6 pb-6">
+                <h1
+                    class="text-[52px] leading-[0.9] font-black uppercase tracking-tighter text-white break-words mix-blend-normal">
+                    <span class="block text-primary">AI Reuse</span>
+                    <span class="block">Ideas</span>
+                </h1>
+                <p class="mt-4 text-white/60 font-body text-sm max-w-[90%]">
+                    Based on your scan, here are creative ways to upcycle this ceramic vase or trade it.
+                </p>
+            </div>
+            <div
+                class="w-full bg-primary rounded-2xl border-[3px] border-black relative overflow-hidden group mb-8 shadow-[0_0_0_1px_rgba(255,255,255,0.1)] p-6">
+                <div class="relative z-10 flex flex-col items-start w-full">
+                    <div class="flex items-center justify-between w-full mb-2">
+                        <div
+                            class="bg-black/90 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-white/20 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+                            AI Match Found
+                        </div>
+                        <div class="text-black font-black text-sm tracking-wide opacity-60">98% ACCURACY</div>
+                    </div>
+                    <div class="flex items-end justify-between w-full mt-2">
+                        <div>
+                            <h2
+                                class="text-5xl font-black text-black leading-none tracking-tighter decoration-4 underline decoration-black underline-offset-4 mb-2">
+                                CERAMIC<br />VASE
+                            </h2>
+                            <p
+                                class="font-body text-black/80 font-bold text-sm leading-tight uppercase tracking-widest">
+                                Home Decor Item
+                            </p>
+                        </div>
+                        <div
+                            class="h-20 w-20 bg-black/10 rounded-full flex items-center justify-center border-2 border-black/20">
+                            <span class="material-symbols-outlined text-black" style="font-size: 40px;">vase</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-noise opacity-30 mix-blend-overlay pointer-events-none"></div>
+            </div>
+            <div class="flex flex-col gap-3">
+                <h3 class="text-sm font-bold text-white/40 uppercase tracking-widest mb-1 px-1">Top Suggestions</h3>
+                <button
+                    class="bg-surface-dark border border-white/10 rounded-xl p-4 flex items-center justify-between group hover:border-primary/50 transition-all active:scale-[0.98]">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="h-16 w-24 bg-white/5 rounded-lg flex items-center justify-center overflow-hidden border border-white/10 group-hover:border-primary/30 transition-colors relative shrink-0">
+                            <img alt="Planter"
+                                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmBArm1-qivHmH2f3J5jpclm8HqM0X2zwqLHl0-05SYeI0vzTCVlVk_ltvLboNbpuqfpnIKGduqxKZYInKTPqerY486Ddbz0goGPiJiMI4QRE4oW_dQ5FNjaRwQSNod4U9RYrEhR-2kFzBnqSHodiFultzCNeUcXvDRA8KZsky8acgHuCx9c6eGMyDpeh6w5bxKr7uLjz0ThTBHZI-cqubEC_J0pk5gU5i9iGTrW6qT8wPLvHBguCIyxVUwOk7D6cZpUbN65z5C0A" />
+                            <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white drop-shadow-md"
+                                    style="font-size: 20px;">play_circle</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-start text-left">
+                            <span class="text-lg font-bold text-white leading-tight">Indoor Succulent Planter</span>
+                            <span class="text-xs font-body text-white/50">Perfect for small plants</span>
+                        </div>
+                    </div>
+                    <div
+                        class="px-3 py-1 bg-white/5 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-wider text-primary">
+                        Easy
+                    </div>
+                </button>
+                <button
+                    class="bg-surface-dark border border-white/10 rounded-xl p-4 flex items-center justify-between group hover:border-primary/50 transition-all active:scale-[0.98]">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="h-16 w-24 bg-white/5 rounded-lg flex items-center justify-center overflow-hidden border border-white/10 group-hover:border-primary/30 transition-colors relative shrink-0">
+                            <img alt="Candle"
+                                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPToU1c9vL_z6Nl_n23e1cDYy848IYksi-9u6a_gzmNPENJmnlMS3_gJhhxikI89XUCgj1u4OUu4vsnQKAa_HZIH_0R7Zb2uVDqxeGlaYHcWQGuY1iS_oQNWXyhtoYFNHtglaqeWaUDgUwT0FlV0SNX_QFnMwTUiarqiWKGE1GhNc_s-Pm09njJSWDKZ83W6H4ZaFKoVOQqVoJYUZI4aRI9QtxVm-ZoRV0JkT0zIv7DPvpR8NuLMsNK3RA1GCrK4s4ySXQezPNLLg" />
+                            <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white drop-shadow-md"
+                                    style="font-size: 20px;">play_circle</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-start text-left">
+                            <span class="text-lg font-bold text-white leading-tight">Decorative Candle Holder</span>
+                            <span class="text-xs font-body text-white/50">Add LED candles for ambiance</span>
+                        </div>
+                    </div>
+                    <div
+                        class="px-3 py-1 bg-white/5 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-wider text-primary">
+                        Easy
+                    </div>
+                </button>
+                <button
+                    class="bg-surface-dark border border-white/10 rounded-xl p-4 flex items-center justify-between group hover:border-primary/50 transition-all active:scale-[0.98]">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="h-16 w-24 bg-white/5 rounded-lg flex items-center justify-center overflow-hidden border border-white/10 group-hover:border-primary/30 transition-colors relative shrink-0">
+                            <img alt="Desk Organizer"
+                                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4tBuYv-sixesubRZ13Yhip9njzmOyrwVutuhtcaVXPGgthM6bTVoBliKgVfvKhbXuPuuXiUeAfvtoF1Bmuqw5ZVNFHocIXKHvO5ezjILS9M9mbOLH6k5ZjW3PV4Kyb8m1QVEbdPgToWY2vBF9UoQsf2X1UXEbzbnmsROTXyxE4A0X-kTy0EEUHfKTfJzB1yq0x8Hp_iNLdBdZdPWPDf5G4JrLMWvC3MWqUle5RNTGNRHLISAZiLOXrW4sKnFDfoiVhN8XJy_A0tk" />
+                            <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white drop-shadow-md"
+                                    style="font-size: 20px;">play_circle</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-start text-left">
+                            <span class="text-lg font-bold text-white leading-tight">Pen & Brush Holder</span>
+                            <span class="text-xs font-body text-white/50">Organize your desk in style</span>
+                        </div>
+                    </div>
+                    <div
+                        class="px-3 py-1 bg-white/5 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-wider text-primary">
+                        Easy
+                    </div>
+                </button>
+                <button
+                    class="bg-surface-dark border border-white/10 rounded-xl p-4 flex items-center justify-between group hover:border-primary/50 transition-all active:scale-[0.98]">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="h-16 w-24 bg-white/5 rounded-lg flex items-center justify-center overflow-hidden border border-white/10 group-hover:border-primary/30 transition-colors relative shrink-0">
+                            <img alt="Makeup Holder"
+                                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQJypCXa3HVP-9OlGxxG4KmH36-4IMLkzqZq-Q7ql44GJfOps7HZqRxfsx0IlAv8qtyfK9mf5Kq6rZAZe4W0IJFSNcKgN4Qo7NnVUJQU6_zqw7mi7HcBL_ZXtQKlkOyNHVklPm9sU6f1U1hbU48tRa9mrplIGUz6hd4_-4Rjyc7Xrduj_6-Be3RGL_Y01q15KzROpm0aLnlApIR2bI_HQiUIMknJh8N5e2LghDVlsLd42ILyttkxAdLYSKjObK948QZO9a-GmY79A" />
+                            <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-white drop-shadow-md"
+                                    style="font-size: 20px;">play_circle</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-start text-left">
+                            <span class="text-lg font-bold text-white leading-tight">Makeup Brush Holder</span>
+                            <span class="text-xs font-body text-white/50">Vanity organization</span>
+                        </div>
+                    </div>
+                    <div
+                        class="px-3 py-1 bg-white/5 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-wider text-primary">
+                        Easy
+                    </div>
+                </button>
+            </div>
+        </main>
+        <div
+            class="fixed bottom-0 w-full max-w-md bg-gradient-to-t from-background-dark via-background-dark to-transparent pt-12 pb-8 px-4 z-30 pointer-events-none">
+            <div class="flex gap-3 pointer-events-auto">
+                <a href="create-listing.html"
+                    class="flex-1 border-2 border-white/20 hover:bg-white/10 text-white font-bold text-sm h-14 rounded-xl flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+                    <span class="material-symbols-outlined text-[20px]">storefront</span>
+                    LIST FOR TRADING
+                </a>
+                <a href="home.html"
+                    class="flex-1 bg-primary hover:bg-green-500 text-black font-black text-sm h-14 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+                    <span class="material-symbols-outlined text-[20px] font-semibold">bookmark</span>
+                    SAVE IDEA
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="fixed inset-0 pointer-events-none opacity-[0.03] z-50 bg-noise mix-blend-overlay"></div>
+</body>
+
+</html>

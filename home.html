@@ -1192,10 +1192,10 @@
                 <h1 class="header-main">Namaste, Priya</h1>
             </div>
             <div class="header-actions">
-                <div class="coin-badge">
+                <a href="redeem.html" class="coin-badge" style="text-decoration: none; color: inherit;">
                     <span class="material-symbols-outlined icon icon-filled">eco</span>
                     <span class="value coin-value">850</span>
-                </div>
+                </a>
                 <a href="notifications.html" class="icon-btn">
                     <span class="material-symbols-outlined">notifications</span>
                 </a>
@@ -1231,6 +1231,18 @@
                         <div class="pill-content">
                             <span class="pill-label">Missions</span>
                             <span class="pill-value">2 Active</span>
+                        </div>
+                        <span class="material-symbols-outlined arrow-icon">chevron_right</span>
+                    </a>
+
+                    <a href="redeem.html" class="progress-pill"
+                        style="background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.3);">
+                        <div class="pill-icon-wrap">
+                            <span class="material-symbols-outlined icon" style="color: #FBBF24;">redeem</span>
+                        </div>
+                        <div class="pill-content">
+                            <span class="pill-label">Redeem</span>
+                            <span class="pill-value" style="color: #FBBF24;">850 Coins</span>
                         </div>
                         <span class="material-symbols-outlined arrow-icon">chevron_right</span>
                     </a>
@@ -1512,15 +1524,20 @@
             setupModalControls();
         });
 
-        // Open camera modal
+        // Open camera modal - redirects to mock scan flow
         async function openCameraModal() {
+            // For demo: Go to scanning animation page
+            window.location.href = 'scanning.html';
+            return;
+
+            // Original camera logic (commented out for demo)
+            /*
             const modal = document.getElementById('camera-modal');
             modal.classList.add('active');
             cameraModalOpen = true;
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
-
-            // Start camera automatically
+            document.body.style.overflow = 'hidden';
             await startCamera();
+            */
         }
 
         // Close camera modal
@@ -1650,7 +1667,7 @@
             }
         }
 
-        // Handle file upload
+        // Handle file upload - MOCK: Always shows vase data
         async function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1660,31 +1677,8 @@
                 closeCameraModal();
             }
 
-            // Check if API key is set
-            if (!window.reloopScanner.apiKey) {
-                showApiKeyModal();
-                return;
-            }
-
-            // Show scanning overlay
-            const overlay = showScanningOverlay();
-
-            try {
-                const result = await window.reloopScanner.analyzeFile(file);
-
-                // Navigate to result page
-                window.location.href = 'result-dynamic.html';
-
-            } catch (error) {
-                console.error('Upload error:', error);
-                hideScanningOverlay();
-
-                if (error.message.includes('API key')) {
-                    showApiKeyModal();
-                } else {
-                    showToast(error.message || 'Analysis failed. Please try again.', 'error');
-                }
-            }
+            // Navigate to scanning animation page
+            window.location.href = 'scanning.html';
 
             // Reset file input
             event.target.value = '';
