@@ -8,9 +8,19 @@
 
 ## 🎬 Demo
 
+### Onboarding Flow
 <p align="center">
-  <img src="images/demo.webp" width="300" alt="ReLoop Demo"/>
+  <img src="assets/recordings/onboarding_flow.webp" width="300" alt="Onboarding Flow Demo"/>
 </p>
+
+*Navigate through the beautiful onboarding experience - from welcome slides to the home dashboard.*
+
+### AI Scanning & Recommendations
+<p align="center">
+  <img src="assets/recordings/scanning_ai_flow.webp" width="300" alt="Scanning AI Flow Demo"/>
+</p>
+
+*Scan items with AI to get upcycling ideas, recycling info, and trade recommendations.*
 
 ---
 
@@ -21,6 +31,7 @@
   <img src="images/screenshot-marketplace.png" width="200" alt="Marketplace"/>
   <img src="images/screenshot-profile.png" width="200" alt="Profile"/>
 </p>
+
 
 ---
 
