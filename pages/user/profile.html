@@ -587,20 +587,26 @@
             }
 
             try {
-                // Fetch user doc first as it's a dependency for rendering basic info
-                const userDoc = await db.collection('users').doc(userId).get();
-                if (!userDoc.exists) {
-                    console.log('User document not found');
-                    return;
+                let user = {};
+                // Force Mock Data if user doc missing or empty (for demo)
+                if (userDoc.exists) {
+                    user = userDoc.data();
+                } else {
+                    console.log('User doc not found, using full mock profile');
+                    user = {
+                        name: 'Eco Warrior',
+                        itemsTraded: 12,
+                        co2Saved: 24.5,
+                        coins: 850,
+                        xp: 2450
+                    };
                 }
-
-                const user = userDoc.data();
 
                 // Update UI concurrently
                 requestAnimationFrame(async () => {
                     document.querySelector('.username').textContent = `@${user.name || 'User'}`;
                     const coinValue = document.querySelector('.coin-value');
-                    if (coinValue) coinValue.textContent = user.coins || 0;
+                    if (coinValue) coinValue.textContent = user.coins || 850;
 
                     // Stats
                     const itemsEl = document.getElementById('stat-items-sold');
@@ -608,16 +614,16 @@
                     const earnedEl = document.getElementById('stat-earned');
                     const rankEl = document.getElementById('stat-rank');
 
-                    // Mock Data Fallback for Profile Stats
+                    // Mock Data Fallback values
                     const mockStats = {
                         itemsTraded: 12,
                         co2Saved: 24.5,
                         coins: 850
                     };
 
-                    if (itemsEl) itemsEl.textContent = user.itemsTraded || mockStats.itemsTraded;
-                    if (co2El) co2El.textContent = `${user.co2Saved || mockStats.co2Saved}kg`;
-                    if (earnedEl) earnedEl.textContent = user.coins || mockStats.coins;
+                    if (itemsEl) itemsEl.textContent = (user.itemsTraded !== undefined) ? user.itemsTraded : mockStats.itemsTraded;
+                    if (co2El) co2El.textContent = `${(user.co2Saved !== undefined) ? user.co2Saved : mockStats.co2Saved}kg`;
+                    if (earnedEl) earnedEl.textContent = (user.coins !== undefined) ? user.coins : mockStats.coins;
 
                     // Rank fetch with mock fallback
                     if (rankEl) {
