@@ -1595,24 +1595,30 @@
                 const leaderboard = await GamificationService.getLeaderboard('xp', 3);
                 const container = document.getElementById('leaderboard-preview-list');
 
-                if (container && leaderboard.length > 0) {
-                    container.innerHTML = leaderboard.map((entry, index) => {
-                        return `
-                        <div class="leaderboard-row">
-                            <div class="lb-rank">${index + 1}</div>
-                            <div class="lb-avatar">
-                                <img src="${entry.user.avatar || 'https://via.placeholder.com/40'}" alt="${entry.user.name}">
+                if (container) {
+                    if (leaderboard.length > 0) {
+                        container.innerHTML = leaderboard.map((entry, index) => {
+                            return `
+                                <div class="leaderboard-row ${entry.id === currentUserId ? 'highlight' : ''}">
+                                    <div class="lb-rank ${entry.id === currentUserId ? 'you' : ''}">${entry.rank}</div>
+                                    <div class="lb-avatar ${entry.id === currentUserId ? 'you' : ''}">
+                                        <img src="${entry.photoURL || 'https://ui-avatars.com/api/?name=' + entry.name}" alt="${entry.name}">
+                                    </div>
+                                    <div class="lb-info">
+                                        <div class="lb-name ${entry.id === currentUserId ? 'you' : ''}">${entry.name}${entry.id === currentUserId ? ' (You)' : ''}</div>
+                                        <div class="lb-dept">${entry.levelTitle || 'Rookie'}</div>
+                                    </div>
+                                    <div class="lb-points ${entry.id === currentUserId ? 'you' : ''}">${entry.xp || 0} XP</div>
+                                </div>
+                            `;
+                        }).join('');
+                    } else {
+                        container.innerHTML = `
+                            <div class="leaderboard-row" style="justify-content: center; padding: 20px; color: var(--color-text-muted);">
+                                No rankings yet. Be the first!
                             </div>
-                            <div class="lb-info">
-                                <div class="lb-name">${entry.user.name} ${index === 0 ? '👑' : ''}</div>
-                                <div class="lb-dept">${entry.user.campus || 'Campus'}</div>
-                            </div>
-                            <div class="lb-points">${entry.xp >= 1000 ? (entry.xp / 1000).toFixed(1) + 'k' : entry.xp}</div>
-                        </div>
                         `;
-                    }).join('');
-                } else if (container) {
-                    container.innerHTML = '<div style="padding:15px; text-align:center; color:white;">No players yet</div>';
+                    }
                 }
 
                 // Get User Rank
