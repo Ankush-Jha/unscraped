@@ -20,1402 +20,236 @@
     <link rel="stylesheet" href="../../css/styles.css">
 
     <style>
+        /* CSS from original file that might be needed */
         .greeting-section {
             padding: var(--space-4) var(--space-5);
-        }
-
-        .greeting-label {
-            font-size: var(--text-xs);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--color-text-muted);
-            margin-bottom: var(--space-1);
-        }
-
-        .greeting-title {
-            font-size: var(--text-2xl);
-            font-weight: 900;
-            letter-spacing: -0.02em;
         }
     </style>
 </head>
 
 <body>
-    <div class="greeting-section fade-in">
-        <div class="greeting-label">Good Morning</div>
-        <div class="greeting-title">
-            Hello, <br> <span style="color: var(--color-primary);">Friend</span>
-        </div>
-    </div>
-
-    <!-- Stories Section -->
-    <style>
-        .stories-section {
-            padding: var(--space-2) 0;
-            padding-left: var(--space-4);
-        }
-
-        /* ========================================
-           Compact Scan Card (replaces large camera)
-           ======================================== */
-        .scan-card-section {
-            padding: 0 var(--space-4);
-            margin-bottom: var(--space-2);
-        }
-
-        .scan-card {
-            position: relative;
-            background: linear-gradient(135deg, var(--color-surface-dark) 0%, rgba(34, 195, 88, 0.05) 100%);
-            border: 2px solid var(--color-border);
-            border-radius: var(--radius-xl);
-            padding: var(--space-3) var(--space-4);
-            cursor: pointer;
-            transition: all var(--transition-base);
-            overflow: hidden;
-        }
-
-        .scan-card:hover {
-            border-color: var(--color-primary);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(34, 195, 88, 0.15);
-        }
-
-        .scan-card:active {
-            transform: translateY(0) scale(0.99);
-        }
-
-        .scan-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(34, 195, 88, 0.1), transparent);
-            animation: scanCardShimmer 3s ease-in-out infinite;
-        }
-
-        @keyframes scanCardShimmer {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(200%);
-            }
-        }
-
-        .scan-card-content {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: var(--space-3);
-        }
-
-        .scan-card-icon-wrap {
-            position: relative;
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, var(--color-primary) 0%, #1a8a4a 100%);
-            border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-shadow: 0 4px 16px rgba(34, 195, 88, 0.3);
-        }
-
-        .scan-card-icon-wrap::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border: 2px solid var(--color-primary);
-            border-radius: calc(var(--radius-xl) + 4px);
-            opacity: 0.3;
-            animation: scanIconPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes scanIconPulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-                opacity: 0.3;
-            }
-
-            50% {
-                transform: scale(1.1);
-                opacity: 0.1;
-            }
-        }
-
-        .scan-card-icon-wrap .icon {
-            font-size: 28px;
-            color: #000;
-        }
-
-        .scan-card-text {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .scan-card-title {
-            font-size: var(--text-lg);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
-            line-height: 1;
-        }
-
-        .scan-card-subtitle {
-            font-size: 11px;
-            color: var(--color-text-tertiary);
-            line-height: 1.3;
-            margin-top: 2px;
-        }
-
-        .scan-card-arrow {
-            width: 32px;
-            height: 32px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-full);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all var(--transition-base);
-        }
-
-        .scan-card:hover .scan-card-arrow {
-            background: var(--color-primary);
-        }
-
-        .scan-card-arrow .icon {
-            font-size: 24px;
-            color: var(--color-text-secondary);
-            transition: all var(--transition-base);
-        }
-
-        .scan-card:hover .scan-card-arrow .icon {
-            color: #000;
-            transform: translateX(2px);
-        }
-
-        /* Upload Button Row */
-        .upload-row {
-            display: flex;
-            gap: var(--space-2);
-            margin-top: var(--space-2);
-        }
-
-        .upload-btn {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--space-1);
-            padding: var(--space-2);
-            background: var(--color-surface-dark);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            transition: all var(--transition-base);
-        }
-
-        .upload-btn:hover {
-            border-color: var(--color-primary);
-            color: var(--color-text-primary);
-        }
-
-        .upload-btn .icon {
-            font-size: 18px;
-        }
-
-        /* ========================================
-           Camera Modal (Fullscreen)
-           ======================================== */
-        .camera-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            background: var(--color-bg-dark);
-            display: none;
-            flex-direction: column;
-            animation: modalFadeIn 0.3s ease-out;
-        }
-
-        .camera-modal.active {
-            display: flex;
-        }
-
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .camera-modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: var(--space-4) var(--space-5);
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .camera-modal-title {
-            font-size: var(--text-lg);
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-        }
-
-        .camera-modal-title .icon {
-            color: var(--color-primary);
-        }
-
-        .camera-modal-close {
-            width: 40px;
-            height: 40px;
-            background: var(--color-surface-dark);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-full);
-            color: var(--color-text-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all var(--transition-base);
-        }
-
-        .camera-modal-close:hover {
-            background: var(--color-error);
-            border-color: var(--color-error);
-        }
-
-        .camera-modal-body {
-            flex: 1;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .camera-modal-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .camera-modal-video.front-camera {
-            transform: scaleX(-1);
-        }
-
-        .camera-modal-overlay {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .camera-modal-viewfinder {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            max-width: 300px;
-            aspect-ratio: 1;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: var(--radius-xl);
-        }
-
-        .modal-corner {
-            position: absolute;
-            width: 32px;
-            height: 32px;
-            border-color: var(--color-primary);
-            border-style: solid;
-        }
-
-        .modal-corner.tl {
-            top: -2px;
-            left: -2px;
-            border-width: 4px 0 0 4px;
-            border-radius: 8px 0 0 0;
-        }
-
-        .modal-corner.tr {
-            top: -2px;
-            right: -2px;
-            border-width: 4px 4px 0 0;
-            border-radius: 0 8px 0 0;
-        }
-
-        .modal-corner.bl {
-            bottom: -2px;
-            left: -2px;
-            border-width: 0 0 4px 4px;
-            border-radius: 0 0 0 8px;
-        }
-
-        .modal-corner.br {
-            bottom: -2px;
-            right: -2px;
-            border-width: 0 4px 4px 0;
-            border-radius: 0 0 8px 0;
-        }
-
-        .camera-modal-scan-line {
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--color-primary);
-            box-shadow: 0 0 20px 5px rgba(34, 195, 88, 0.8);
-            animation: modalScanLine 2s ease-in-out infinite;
-        }
-
-        @keyframes modalScanLine {
-
-            0%,
-            100% {
-                top: 20%;
-                opacity: 0.8;
-            }
-
-            50% {
-                top: 80%;
-                opacity: 1;
-            }
-        }
-
-        .camera-modal-controls {
-            position: absolute;
-            top: var(--space-4);
-            right: var(--space-4);
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-3);
-        }
-
-        .modal-control-btn {
-            width: 44px;
-            height: 44px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-full);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all var(--transition-base);
-        }
-
-        .modal-control-btn:hover {
-            background: rgba(0, 0, 0, 0.8);
-            border-color: var(--color-primary);
-        }
-
-        .modal-control-btn.active {
-            background: var(--color-primary);
-            color: #000;
-        }
-
-        .camera-modal-footer {
-            padding: var(--space-5);
-            padding-bottom: calc(var(--space-8) + env(safe-area-inset-bottom));
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.8));
-        }
-
-        .modal-capture-btn {
-            width: 100%;
-            height: 64px;
-            background: var(--color-primary);
-            border: none;
-            border-radius: var(--radius-xl);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--space-3);
-            cursor: pointer;
-            transition: all var(--transition-base);
-            box-shadow: 0 0 30px rgba(34, 195, 88, 0.4);
-        }
-
-        .modal-capture-btn:hover {
-            filter: brightness(1.1);
-            transform: scale(1.02);
-        }
-
-        .modal-capture-btn:active {
-            transform: scale(0.98);
-        }
-
-        .modal-capture-btn .icon {
-            font-size: 28px;
-            color: #000;
-        }
-
-        .modal-capture-btn span:last-child {
-            font-size: var(--text-lg);
-            font-weight: 900;
-            color: #000;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .modal-upload-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--space-2);
-            margin-top: var(--space-4);
-            font-size: var(--text-sm);
-            font-weight: 600;
-            color: var(--color-text-muted);
-            cursor: pointer;
-            transition: color var(--transition-base);
-        }
-
-        .modal-upload-link:hover {
-            color: var(--color-text-primary);
-        }
-
-        /* Quick Actions - Compact */
-        .quick-actions {
-            padding: 0 var(--space-4);
-            margin-bottom: var(--space-2);
-        }
-
-        .quick-actions-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--space-2);
-        }
-
-        .quick-action-card {
-            background: var(--color-surface-card);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            padding: var(--space-3);
-            text-align: center;
-            cursor: pointer;
-            transition: all var(--transition-base);
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .quick-action-card:hover {
-            border-color: var(--color-primary);
-            transform: translateY(-2px);
-        }
-
-        .quick-action-icon {
-            font-size: 24px;
-            margin-bottom: var(--space-1);
-            color: var(--color-primary);
-        }
-
-        .quick-action-label {
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--color-text-secondary);
-        }
-
-        /* ========================================
-           Leaderboard Snippet Card
-           ======================================== */
-        .leaderboard-snippet {
-            padding: 0 var(--space-4);
-            padding-bottom: var(--space-4);
-        }
-
-        .leaderboard-card {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-            border: 2px solid #FFD23F;
-            border-radius: var(--radius-2xl);
-            overflow: hidden;
-            cursor: pointer;
-            transition: all var(--transition-base);
-            text-decoration: none;
-            display: block;
-            color: inherit;
-            position: relative;
-        }
-
-        .leaderboard-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(255, 210, 63, 0.2);
-        }
-
-        .leaderboard-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100px;
-            height: 100%;
-            background: linear-gradient(to left, rgba(255, 210, 63, 0.1), transparent);
-        }
-
-        .leaderboard-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: var(--space-3) var(--space-4);
-            border-bottom: 1px solid rgba(255, 210, 63, 0.2);
-        }
-
-        .leaderboard-card-title {
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-        }
-
-        .leaderboard-card-title .icon {
-            font-size: 20px;
-            color: #FFD23F;
-        }
-
-        .leaderboard-card-title span:last-child {
-            font-size: var(--text-sm);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #FFD23F;
-        }
-
-        .leaderboard-card-action {
-            display: flex;
-            align-items: center;
-            gap: var(--space-1);
-            font-size: var(--text-xs);
-            font-weight: 700;
-            color: var(--color-text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .leaderboard-card-action .icon {
-            font-size: 16px;
-            transition: transform var(--transition-base);
-        }
-
-        .leaderboard-card:hover .leaderboard-card-action .icon {
-            transform: translateX(3px);
-        }
-
-        .leaderboard-list-snippet {
-            padding: var(--space-3) var(--space-4);
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-2);
-        }
-
-        .leaderboard-row {
-            display: flex;
-            align-items: center;
-            padding: var(--space-2);
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: var(--radius-lg);
-            transition: background var(--transition-base);
-        }
-
-        .leaderboard-row:hover {
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .leaderboard-row.highlight {
-            background: linear-gradient(135deg, rgba(34, 195, 88, 0.1), rgba(34, 195, 88, 0.05));
-            border: 1px solid rgba(34, 195, 88, 0.3);
-        }
-
-        .lb-rank {
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(135deg, #FFD23F 0%, #FFB300 100%);
-            border-radius: var(--radius-full);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: 900;
-            color: #000;
-            margin-right: var(--space-2);
-            flex-shrink: 0;
-        }
-
-        .lb-rank.you {
-            background: var(--color-primary);
-        }
-
-        .lb-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            margin-right: var(--space-2);
-            flex-shrink: 0;
-            border: 1px solid rgba(255, 210, 63, 0.3);
-        }
-
-        .lb-avatar.you {
-            border-color: var(--color-primary);
-        }
-
-        .lb-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .lb-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .lb-name {
-            font-size: var(--text-sm);
-            font-weight: 700;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .lb-name.you {
-            color: var(--color-primary);
-        }
-
-        .lb-dept {
-            font-size: 9px;
-            color: var(--color-text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .lb-points {
-            font-family: monospace;
-            font-size: var(--text-sm);
-            font-weight: 700;
-            color: #FFD23F;
-        }
-
-        .lb-points.you {
-            color: var(--color-primary);
-        }
-
-        .leaderboard-your-rank {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: var(--space-3) var(--space-4);
-            background: var(--color-primary);
-            margin-top: var(--space-2);
-        }
-
-        .your-rank-info {
-            display: flex;
-            align-items: center;
-            gap: var(--space-3);
-        }
-
-        .your-rank-badge {
-            width: 36px;
-            height: 36px;
-            background: #000;
-            border-radius: var(--radius-full);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: var(--text-sm);
-            font-weight: 900;
-            color: var(--color-primary);
-        }
-
-        .your-rank-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .your-rank-label {
-            font-size: var(--text-lg);
-            font-weight: 900;
-            color: #000;
-            text-transform: uppercase;
-        }
-
-        .your-rank-motivate {
-            font-size: 10px;
-            font-weight: 700;
-            color: rgba(0, 0, 0, 0.7);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .your-rank-points {
-            text-align: right;
-        }
-
-        .your-rank-pts-label {
-            font-size: 9px;
-            font-weight: 700;
-            color: rgba(0, 0, 0, 0.6);
-            text-transform: uppercase;
-        }
-
-        .your-rank-pts-value {
-            font-family: monospace;
-            font-size: var(--text-xl);
-            font-weight: 900;
-            color: #000;
-        }
-
-        /* Hidden elements */
-        #file-upload,
-        #capture-canvas {
-            display: none;
-        }
-
-        /* ========================================
-           Progress Ribbon Navbar - Animated
-           ======================================== */
-        .progress-ribbon {
-            position: sticky;
-            top: 64px;
-            z-index: 25;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 100%);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--color-border);
-            padding: var(--space-3) var(--space-4);
-            overflow: hidden;
-        }
-
-        .progress-ribbon::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg,
-                    transparent 0%,
-                    rgba(34, 195, 88, 0.03) 50%,
-                    transparent 100%);
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-
-            0%,
-            100% {
-                opacity: 0.5;
-                transform: translateX(-100%);
-            }
-
-            50% {
-                opacity: 1;
-                transform: translateX(100%);
-            }
-        }
-
-        .progress-ribbon-inner {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-3);
-        }
-
-        /* XP Section */
-        .xp-section {
-            display: flex;
-            align-items: center;
-            gap: var(--space-3);
-            text-decoration: none;
-            color: inherit;
-            padding: var(--space-2);
-            margin: calc(var(--space-2) * -1);
-            border-radius: var(--radius-lg);
-            transition: all var(--transition-base);
-        }
-
-        .xp-section:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .xp-info {
-            flex-shrink: 0;
-        }
-
-        .xp-level {
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-        }
-
-        .level-badge {
-            background: linear-gradient(135deg, var(--color-primary) 0%, #1a8a4a 100%);
-            color: #000;
-            font-size: 10px;
-            font-weight: 900;
-            padding: 4px 8px;
-            border-radius: var(--radius-md);
-            letter-spacing: 0.05em;
-            box-shadow: 0 2px 8px rgba(34, 195, 88, 0.3);
-            animation: levelPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes levelPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 2px 8px rgba(34, 195, 88, 0.3);
-            }
-
-            50% {
-                box-shadow: 0 2px 16px rgba(34, 195, 88, 0.5);
-            }
-        }
-
-        .xp-text {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--color-text-tertiary);
-            letter-spacing: 0.02em;
-        }
-
-        .xp-bar-container {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .xp-bar {
-            position: relative;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-full);
-            overflow: hidden;
-        }
-
-        .xp-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--color-primary) 0%, #4ade80 100%);
-            border-radius: var(--radius-full);
-            position: relative;
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .xp-bar-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg,
-                    transparent 0%,
-                    rgba(255, 255, 255, 0.4) 50%,
-                    transparent 100%);
-            animation: xpShine 2s ease-in-out infinite;
-        }
-
-        @keyframes xpShine {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(200%);
-            }
-        }
-
-        .xp-bar-glow {
-            position: absolute;
-            top: -2px;
-            bottom: -2px;
-            left: 0;
-            width: 82%;
-            background: var(--color-primary);
-            filter: blur(8px);
-            opacity: 0.3;
-            border-radius: var(--radius-full);
-        }
-
-        /* Progress Action Pills */
-        .progress-actions {
-            display: flex;
-            gap: var(--space-2);
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            padding: 2px 0;
-        }
-
-        .progress-actions::-webkit-scrollbar {
-            display: none;
-        }
-
-        .progress-pill {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-            padding: var(--space-2) var(--space-3);
-            background: var(--color-surface-dark);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-xl);
-            text-decoration: none;
-            color: inherit;
-            transition: all var(--transition-base);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-pill::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity var(--transition-base);
-        }
-
-        .progress-pill:hover {
-            transform: translateY(-2px);
-            border-color: transparent;
-        }
-
-        .progress-pill:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        /* Ranking Pill */
-        .ranking-pill::before {
-            background: linear-gradient(135deg, rgba(255, 210, 63, 0.15) 0%, transparent 60%);
-        }
-
-        .ranking-pill:hover {
-            border-color: rgba(255, 210, 63, 0.5);
-            box-shadow: 0 4px 20px rgba(255, 210, 63, 0.2);
-        }
-
-        .ranking-pill:hover::before {
-            opacity: 1;
-        }
-
-        .ranking-pill .icon {
-            color: #FFD23F;
-        }
-
-        /* Missions Pill */
-        .missions-pill::before {
-            background: linear-gradient(135deg, rgba(34, 195, 88, 0.15) 0%, transparent 60%);
-        }
-
-        .missions-pill:hover {
-            border-color: rgba(34, 195, 88, 0.5);
-            box-shadow: 0 4px 20px rgba(34, 195, 88, 0.2);
-        }
-
-        .missions-pill:hover::before {
-            opacity: 1;
-        }
-
-        .missions-pill .icon {
-            color: var(--color-primary);
-        }
-
-        /* Badges Pill */
-        .badges-pill::before {
-            background: linear-gradient(135deg, rgba(186, 104, 200, 0.15) 0%, transparent 60%);
-        }
-
-        .badges-pill:hover {
-            border-color: rgba(186, 104, 200, 0.5);
-            box-shadow: 0 4px 20px rgba(186, 104, 200, 0.2);
-        }
-
-        .badges-pill:hover::before {
-            opacity: 1;
-        }
-
-        .badges-pill .icon {
-            color: #BA68C8;
-        }
-
-        .pill-icon-wrap {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            flex-shrink: 0;
-        }
-
-        .pill-icon-wrap .icon {
-            font-size: 20px;
-            transition: transform var(--transition-base);
-        }
-
-        .progress-pill:hover .pill-icon-wrap .icon {
-            transform: scale(1.15);
-        }
-
-        /* Pulse ring animation for ranking */
-        .pulse-ring {
-            position: absolute;
-            inset: -4px;
-            border: 2px solid rgba(255, 210, 63, 0.4);
-            border-radius: 50%;
-            animation: pulseRing 2s ease-out infinite;
-        }
-
-        @keyframes pulseRing {
-            0% {
-                transform: scale(0.8);
-                opacity: 1;
-            }
-
-            100% {
-                transform: scale(1.4);
-                opacity: 0;
-            }
-        }
-
-        /* Notification dot for missions */
-        .notification-dot {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            min-width: 16px;
-            height: 16px;
-            background: #ef4444;
-            border-radius: var(--radius-full);
-            font-size: 9px;
-            font-weight: 700;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 4px;
-            animation: notifBounce 2s ease-in-out infinite;
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
-        }
-
-        @keyframes notifBounce {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.1);
-            }
-        }
-
-        .pill-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-            min-width: 0;
-            flex: 1;
-        }
-
-        .pill-label {
-            font-size: 9px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--color-text-muted);
-        }
-
-        .pill-value {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--color-text-primary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .arrow-icon {
-            font-size: 18px;
-            color: var(--color-text-muted);
-            flex-shrink: 0;
-            transition: all var(--transition-base);
-            opacity: 0.5;
-        }
-
-        .progress-pill:hover .arrow-icon {
-            opacity: 1;
-            transform: translateX(2px);
-            color: var(--color-text-primary);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 380px) {
-            .progress-actions {
-                gap: var(--space-1);
-            }
-
-            .progress-pill {
-                padding: var(--space-2);
-            }
-
-            .pill-content {
-                display: none;
-            }
-
-            .arrow-icon {
-                display: none;
-            }
-
-            .pill-icon-wrap {
-                width: 36px;
-                height: 36px;
-            }
-
-            .pill-icon-wrap .icon {
-                font-size: 22px;
-            }
-        }
-    </style>
-    </head>
-
-    <body>
-        <div class="app-container">
-            <!-- Header -->
-            <header class="header">
-                <div class="header-title">
-                    <span class="header-subtitle">ReLoop</span>
-                    <h1 class="header-main">Namaste, Priya</h1>
-                </div>
-                <div class="header-actions">
-                    <a href="../rewards/redeem.html" class="coin-badge" style="text-decoration: none; color: inherit;">
-                        <span class="material-symbols-outlined icon icon-filled">eco</span>
-                        <span class="value coin-value">850</span>
-                    </a>
-                    <a href="../user/notifications.html" class="icon-btn">
-                        <span class="material-symbols-outlined">notifications</span>
-                    </a>
-                </div>
-            </header>
-
-            <!-- Progress Navbar Ribbon -->
-            <div class="progress-ribbon">
-                <div class="progress-ribbon-inner">
-                    <!-- XP Progress -->
-                    <a href="../user/profile.html" class="xp-section">
-                        <div class="xp-info">
-                            <span class="xp-level">
-                                <span class="level-badge">LVL 12</span>
-                                <span class="xp-text">2,450 / 3,000 XP</span>
-                            </span>
-                        </div>
-                        <div class="xp-bar-container">
-                            <div class="xp-bar">
-                                <div class="xp-bar-fill" style="width: 82%;"></div>
-                                <div class="xp-bar-glow"></div>
-                            </div>
-                        </div>
-                    </a>
-
-                    <!-- Quick Action Pills -->
-                    <div class="progress-actions">
-                        <a href="../gamification/missions.html" class="progress-pill missions-pill">
-                            <div class="pill-icon-wrap">
-                                <span class="material-symbols-outlined icon">target</span>
-                                <span class="notification-dot">2</span>
-                            </div>
-                            <div class="pill-content">
-                                <span class="pill-label">Missions</span>
-                                <span class="pill-value">2 Active</span>
-                            </div>
-                            <span class="material-symbols-outlined arrow-icon">chevron_right</span>
-                        </a>
-
-                        <a href="../gamification/achievements.html" class="progress-pill badges-pill">
-                            <div class="pill-icon-wrap">
-                                <span class="material-symbols-outlined icon">emoji_events</span>
-                            </div>
-                            <div class="pill-content">
-                                <span class="pill-label">Badges</span>
-                                <span class="pill-value">8 Earned</span>
-                            </div>
-                            <span class="material-symbols-outlined arrow-icon">chevron_right</span>
-                        </a>
-                    </div>
-                </div>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-title">
+                <span class="header-subtitle">ReLoop</span>
+                <h1 class="header-main">Namaste, <span id="user-greeting-name" style="color: inherit;">Friend</span>
+                </h1>
             </div>
+            <div class="header-actions">
+                <a href="../rewards/redeem.html" class="coin-badge" style="text-decoration: none; color: inherit;">
+                    <span class="material-symbols-outlined icon icon-filled">eco</span>
+                    <span class="value coin-value">850</span>
+                </a>
+                <a href="../user/notifications.html" class="icon-btn">
+                    <span class="material-symbols-outlined">notifications</span>
+                </a>
+            </div>
+        </header>
 
-            <!-- Stories Section -->
-            <section class="stories-section">
-                <div class="section-header" style="padding-right: var(--space-5);">
-                    <h2 class="section-title">Success Stories</h2>
-                    <a href="../stories/success-stories.html"
-                        style="font-size: var(--text-xs); font-weight: 700; color: var(--color-primary); text-decoration: none;">View
-                        All →</a>
-                </div>
-                <div class="stories-row">
-                    <div class="story-item stagger-item">
-                        <div class="story-avatar add">
-                            <span class="material-symbols-outlined">add</span>
-                        </div>
-                        <span class="story-name">Add New</span>
+        <!-- Progress Navbar Ribbon -->
+        <div class="progress-ribbon">
+            <div class="progress-ribbon-inner">
+                <!-- XP Progress -->
+                <a href="../user/profile.html" class="xp-section">
+                    <div class="xp-info">
+                        <span class="xp-level">
+                            <span class="level-badge">LVL 12</span>
+                            <span class="xp-text">2,450 / 3,000 XP</span>
+                        </span>
                     </div>
-                    <a href="../stories/story-priya.html" class="story-item stagger-item"
-                        style="text-decoration: none; color: inherit;">
-                        <div class="story-avatar">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuApkHqu9en_dVgoUQ5TxuxRwSW6yU7PlEVw7qMyX8NYJDg5JUimrQSXFdhHGR7Ud2rtjzu9TqorwH8tqn4yq11F-adrhv8T3hnPTMvRdQ-v3SZWx1-8DrFuTzQST64A5ZZq8xq-yoUiNvp-gHkAnPzdsCJR_pOBj-7tSGs4IiPI9oXnbKHMS34Bt4v54Q6TNgD0u3_T1dsJPK3GntZKruZiOGgQeu27ZTXDWSkfiLbcEZphBARRLRjk3i0msDHXE1vMz2nlqIHfcWI"
-                                alt="Priya">
-                        </div>
-                        <span class="story-name">Priya</span>
-                    </a>
-                    <a href="../stories/story-ananya.html" class="story-item stagger-item"
-                        style="text-decoration: none; color: inherit;">
-                        <div class="story-avatar">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaty_8pOqc7WeTqO76RukZ3Q9Cu4hm3fT0oobm0S3iSXOLkk7vU7OdBTR7rqtWTDxq7n3HWGvhJkArrC3wQ5E8WSSZAZG47KC9tVeSMqpf9-2ecnQN2fhwlMEDTgymlE_I2zeC46rTtdDlWTvOv_jH-wO5999W4Ymj7gGvLDIoG6_cwMxxntShFa630lbKpRUbn4tWrfvOi9Nt8L1XnHh157VZGMMcL4r7lSiHoCVetm6FO1GtAoVNRTDC-XDYPLFvjn6-DOSdz-4"
-                                alt="Ananya">
-                        </div>
-                        <span class="story-name">Ananya</span>
-                    </a>
-                    <a href="../stories/story-rahul.html" class="story-item stagger-item"
-                        style="text-decoration: none; color: inherit;">
-                        <div class="story-avatar">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh2UC2A0xMi9I7nN3x-If9ZJ7sdFv9hXhw989YFXZbrVy9p-D8C_iSqcEkJYoRxTvnO3v1YGF_LSoVoci4aVNT5E9_F4CS6sF4P1cRTgARYXUvLPn602HQ3hh-T5dGBBTWSAgZ5fSusqof6XmjE-BqoyYv9ESOGFb6lMEFcnQNvvCIrITCLbcHW1tfqtkgPJFFUz9XRtUNAlzGkLEybpwBd0Bc2UHEXdUBtsvHN7O-OSl5EQfa2q22sdFpvE-IxPlMdTSkObxv7jY"
-                                alt="Rahul">
-                        </div>
-                        <span class="story-name">Rahul</span>
-                    </a>
-                    <div class="story-item stagger-item">
-                        <div class="story-avatar inactive">
-                            <div
-                                style="width: 100%; height: 100%; background: var(--color-surface-card); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: var(--text-sm); color: var(--color-text-muted);">
-                                AK</div>
-                        </div>
-                        <span class="story-name">Arjun</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Compact Scan Card -->
-            <section class="scan-card-section">
-                <div class="scan-card" id="scan-card" onclick="openCameraModal()">
-                    <div class="scan-card-content">
-                        <div class="scan-card-icon-wrap">
-                            <span class="material-symbols-outlined icon">qr_code_scanner</span>
-                        </div>
-                        <div class="scan-card-text">
-                            <h3 class="scan-card-title">Scan Item</h3>
-                            <p class="scan-card-subtitle">AI identifies your item & suggests upcycle ideas</p>
-                        </div>
-                        <div class="scan-card-arrow">
-                            <span class="material-symbols-outlined icon">arrow_forward</span>
-                        </div>
-                    </div>
-                    <div class="upload-row">
-                        <label class="upload-btn" for="file-upload" onclick="event.stopPropagation()">
-                            <span class="material-symbols-outlined icon">photo_library</span>
-                            Upload Photo
-                        </label>
-                        <button class="upload-btn" onclick="event.stopPropagation(); openCameraModal()">
-                            <span class="material-symbols-outlined icon">photo_camera</span>
-                            Open Camera
-                        </button>
-                    </div>
-                </div>
-                <input type="file" id="file-upload" accept="image/*" onchange="handleFileUpload(event)">
-                <canvas id="capture-canvas"></canvas>
-            </section>
-
-            <!-- Leaderboard Snippet -->
-            <section class="leaderboard-snippet">
-                <a href="../gamification/leaderboard.html" class="leaderboard-card">
-                    <div class="leaderboard-card-header">
-                        <div class="leaderboard-card-title">
-                            <span class="material-symbols-outlined icon">leaderboard</span>
-                            <span>Campus Ranking</span>
-                        </div>
-                        <div class="leaderboard-card-action">
-                            View All
-                            <span class="material-symbols-outlined icon">chevron_right</span>
-                        </div>
-                    </div>
-
-                    <div class="leaderboard-list-snippet">
-                        <!-- Top 3 Players -->
-                        <div class="leaderboard-row">
-                            <div class="lb-rank">1</div>
-                            <div class="lb-avatar">
-                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKpUQ4iADzLq-ccOV1CPZoSFuDlTjC6me7On072Iu604MKDrc41FIze13cZoInG53M0oSRrSE1CAoSrq8HyQV1JbWWpqr7JsurQ6x7U7tvwByuZZXv2xNWV1lTXlhGEbcHXMuCD_g6j7mz42NtjjON0kXjQa-1bmaF4QLxvBoeKgC4oJJpn_o0LKGzDV84b3x_kORdU19P-KzHxHih9YN3myehOa4v0W6YOx0Un6th8GN223vCsjikY9glwStv5holxulY-zTl2uE"
-                                    alt="Eco_Beast">
-                            </div>
-                            <div class="lb-info">
-                                <div class="lb-name">Eco_Beast 👑</div>
-                                <div class="lb-dept">Computer Science</div>
-                            </div>
-                            <div class="lb-points">4.2k</div>
-                        </div>
-
-                        <div class="leaderboard-row">
-                            <div class="lb-rank">2</div>
-                            <div class="lb-avatar">
-                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaty_8pOqc7WeTqO76RukZ3Q9Cu4hm3fT0oobm0S3iSXOLkk7vU7OdBTR7rqtWTDxq7n3HWGvhJkArrC3wQ5E8WSSZAZG47KC9tVeSMqpf9-2ecnQN2fhwlMEDTgymlE_I2zeC46rTtdDlWTvOv_jH-wO5999W4Ymj7gGvLDIoG6_cwMxxntShFa630lbKpRUbn4tWrfvOi9Nt8L1XnHh157VZGMMcL4r7lSiHoCVetm6FO1GtAoVNRTDC-XDYPLFvjn6-DOSdz-4"
-                                    alt="GreenMachine">
-                            </div>
-                            <div class="lb-info">
-                                <div class="lb-name">GreenMachine</div>
-                                <div class="lb-dept">Biology Dept</div>
-                            </div>
-                            <div class="lb-points">3.9k</div>
-                        </div>
-
-                        <div class="leaderboard-row">
-                            <div class="lb-rank">3</div>
-                            <div class="lb-avatar">
-                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuApkHqu9en_dVgoUQ5TxuxRwSW6yU7PlEVw7qMyX8NYJDg5JUimrQSXFdhHGR7Ud2rtjzu9TqorwH8tqn4yq11F-adrhv8T3hnPTMvRdQ-v3SZWx1-8DrFuTzQST64A5ZZq8xq-yoUiNvp-gHkAnPzdsCJR_pOBj-7tSGs4IiPI9oXnbKHMS34Bt4v54Q6TNgD0u3_T1dsJPK3GntZKruZiOGgQeu27ZTXDWSkfiLbcEZphBARRLRjk3i0msDHXE1vMz2nlqIHfcWI"
-                                    alt="SustainSara">
-                            </div>
-                            <div class="lb-info">
-                                <div class="lb-name">SustainSara</div>
-                                <div class="lb-dept">Arts Dept</div>
-                            </div>
-                            <div class="lb-points">3.6k</div>
-                        </div>
-                    </div>
-
-                    <!-- Your Rank Bar -->
-                    <div class="leaderboard-your-rank">
-                        <div class="your-rank-info">
-                            <div class="your-rank-badge">24</div>
-                            <div class="your-rank-text">
-                                <span class="your-rank-label">Your Rank</span>
-                                <span class="your-rank-motivate">Keep pushing! 🔥</span>
-                            </div>
-                        </div>
-                        <div class="your-rank-points">
-                            <div class="your-rank-pts-label">Total Pts</div>
-                            <div class="your-rank-pts-value">850</div>
+                    <div class="xp-bar-container">
+                        <div class="xp-bar">
+                            <div class="xp-bar-fill" style="width: 82%;"></div>
+                            <div class="xp-bar-glow"></div>
                         </div>
                     </div>
                 </a>
-            </section>
 
-            <!-- Redeem Coins Card -->
-            <section class="redeem-snippet" style="padding: 0 var(--space-4); margin-bottom: 100px;">
-                <a href="../rewards/redeem.html" class="redeem-card stagger-item" style="
+                <!-- Quick Action Pills -->
+                <div class="progress-actions">
+                    <a href="../gamification/missions.html" class="progress-pill missions-pill">
+                        <div class="pill-icon-wrap">
+                            <span class="material-symbols-outlined icon">target</span>
+                            <span class="notification-dot">2</span>
+                        </div>
+                        <div class="pill-content">
+                            <span class="pill-label">Missions</span>
+                            <span class="pill-value">2 Active</span>
+                        </div>
+                        <span class="material-symbols-outlined arrow-icon">chevron_right</span>
+                    </a>
+
+                    <a href="../gamification/achievements.html" class="progress-pill badges-pill">
+                        <div class="pill-icon-wrap">
+                            <span class="material-symbols-outlined icon">emoji_events</span>
+                        </div>
+                        <div class="pill-content">
+                            <span class="pill-label">Badges</span>
+                            <span class="pill-value">8 Earned</span>
+                        </div>
+                        <span class="material-symbols-outlined arrow-icon">chevron_right</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stories Section -->
+        <section class="stories-section">
+            <div class="section-header" style="padding-right: var(--space-5);">
+                <h2 class="section-title">Success Stories</h2>
+                <a href="../stories/success-stories.html"
+                    style="font-size: var(--text-xs); font-weight: 700; color: var(--color-primary); text-decoration: none;">View
+                    All →</a>
+            </div>
+            <div class="stories-row">
+                <div class="story-item stagger-item">
+                    <div class="story-avatar add">
+                        <span class="material-symbols-outlined">add</span>
+                    </div>
+                    <span class="story-name">Add New</span>
+                </div>
+                <a href="../stories/story-priya.html" class="story-item stagger-item"
+                    style="text-decoration: none; color: inherit;">
+                    <div class="story-avatar">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuApkHqu9en_dVgoUQ5TxuxRwSW6yU7PlEVw7qMyX8NYJDg5JUimrQSXFdhHGR7Ud2rtjzu9TqorwH8tqn4yq11F-adrhv8T3hnPTMvRdQ-v3SZWx1-8DrFuTzQST64A5ZZq8xq-yoUiNvp-gHkAnPzdsCJR_pOBj-7tSGs4IiPI9oXnbKHMS34Bt4v54Q6TNgD0u3_T1dsJPK3GntZKruZiOGgQeu27ZTXDWSkfiLbcEZphBARRLRjk3i0msDHXE1vMz2nlqIHfcWI"
+                            alt="Priya">
+                    </div>
+                    <span class="story-name">Priya</span>
+                </a>
+                <a href="../stories/story-ananya.html" class="story-item stagger-item"
+                    style="text-decoration: none; color: inherit;">
+                    <div class="story-avatar">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaty_8pOqc7WeTqO76RukZ3Q9Cu4hm3fT0oobm0S3iSXOLkk7vU7OdBTR7rqtWTDxq7n3HWGvhJkArrC3wQ5E8WSSZAZG47KC9tVeSMqpf9-2ecnQN2fhwlMEDTgymlE_I2zeC46rTtdDlWTvOv_jH-wO5999W4Ymj7gGvLDIoG6_cwMxxntShFa630lbKpRUbn4tWrfvOi9Nt8L1XnHh157VZGMMcL4r7lSiHoCVetm6FO1GtAoVNRTDC-XDYPLFvjn6-DOSdz-4"
+                            alt="Ananya">
+                    </div>
+                    <span class="story-name">Ananya</span>
+                </a>
+                <a href="../stories/story-rahul.html" class="story-item stagger-item"
+                    style="text-decoration: none; color: inherit;">
+                    <div class="story-avatar">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh2UC2A0xMi9I7nN3x-If9ZJ7sdFv9hXhw989YFXZbrVy9p-D8C_iSqcEkJYoRxTvnO3v1YGF_LSoVoci4aVNT5E9_F4CS6sF4P1cRTgARYXUvLPn602HQ3hh-T5dGBBTWSAgZ5fSusqof6XmjE-BqoyYv9ESOGFb6lMEFcnQNvvCIrITCLbcHW1tfqtkgPJFFUz9XRtUNAlzGkLEybpwBd0Bc2UHEXdUBtsvHN7O-OSl5EQfa2q22sdFpvE-IxPlMdTSkObxv7jY"
+                            alt="Rahul">
+                    </div>
+                    <span class="story-name">Rahul</span>
+                </a>
+                <div class="story-item stagger-item">
+                    <div class="story-avatar inactive">
+                        <div
+                            style="width: 100%; height: 100%; background: var(--color-surface-card); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: var(--text-sm); color: var(--color-text-muted);">
+                            AK</div>
+                    </div>
+                    <span class="story-name">Arjun</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Compact Scan Card -->
+        <section class="scan-card-section">
+            <div class="scan-card" id="scan-card" onclick="openCameraModal()">
+                <div class="scan-card-content">
+                    <div class="scan-card-icon-wrap">
+                        <span class="material-symbols-outlined icon">qr_code_scanner</span>
+                    </div>
+                    <div class="scan-card-text">
+                        <h3 class="scan-card-title">Scan Item</h3>
+                        <p class="scan-card-subtitle">AI identifies your item & suggests upcycle ideas</p>
+                    </div>
+                    <div class="scan-card-arrow">
+                        <span class="material-symbols-outlined icon">arrow_forward</span>
+                    </div>
+                </div>
+                <div class="upload-row">
+                    <label class="upload-btn" for="file-upload" onclick="event.stopPropagation()">
+                        <span class="material-symbols-outlined icon">photo_library</span>
+                        Upload Photo
+                    </label>
+                    <button class="upload-btn" onclick="event.stopPropagation(); openCameraModal()">
+                        <span class="material-symbols-outlined icon">photo_camera</span>
+                        Open Camera
+                    </button>
+                </div>
+            </div>
+            <input type="file" id="file-upload" accept="image/*" onchange="handleFileUpload(event)">
+            <canvas id="capture-canvas"></canvas>
+        </section>
+
+        <!-- Leaderboard Snippet -->
+        <section class="leaderboard-snippet">
+            <a href="../gamification/leaderboard.html" class="leaderboard-card">
+                <div class="leaderboard-card-header">
+                    <div class="leaderboard-card-title">
+                        <span class="material-symbols-outlined icon">leaderboard</span>
+                        <span>Campus Ranking</span>
+                    </div>
+                    <div class="leaderboard-card-action">
+                        View All
+                        <span class="material-symbols-outlined icon">chevron_right</span>
+                    </div>
+                </div>
+
+                <div class="leaderboard-list-snippet">
+                    <!-- Top 3 Players -->
+                    <div class="leaderboard-row">
+                        <div class="lb-rank">1</div>
+                        <div class="lb-avatar">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKpUQ4iADzLq-ccOV1CPZoSFuDlTjC6me7On072Iu604MKDrc41FIze13cZoInG53M0oSRrSE1CAoSrq8HyQV1JbWWpqr7JsurQ6x7U7tvwByuZZXv2xNWV1lTXlhGEbcHXMuCD_g6j7mz42NtjjON0kXjQa-1bmaF4QLxvBoeKgC4oJJpn_o0LKGzDV84b3x_kORdU19P-KzHxHih9YN3myehOa4v0W6YOx0Un6th8GN223vCsjikY9glwStv5holxulY-zTl2uE"
+                                alt="Eco_Beast">
+                        </div>
+                        <div class="lb-info">
+                            <div class="lb-name">Eco_Beast 👑</div>
+                            <div class="lb-dept">Computer Science</div>
+                        </div>
+                        <div class="lb-points">4.2k</div>
+                    </div>
+
+                    <div class="leaderboard-row">
+                        <div class="lb-rank">2</div>
+                        <div class="lb-avatar">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaty_8pOqc7WeTqO76RukZ3Q9Cu4hm3fT0oobm0S3iSXOLkk7vU7OdBTR7rqtWTDxq7n3HWGvhJkArrC3wQ5E8WSSZAZG47KC9tVeSMqpf9-2ecnQN2fhwlMEDTgymlE_I2zeC46rTtdDlWTvOv_jH-wO5999W4Ymj7gGvLDIoG6_cwMxxntShFa630lbKpRUbn4tWrfvOi9Nt8L1XnHh157VZGMMcL4r7lSiHoCVetm6FO1GtAoVNRTDC-XDYPLFvjn6-DOSdz-4"
+                                alt="GreenMachine">
+                        </div>
+                        <div class="lb-info">
+                            <div class="lb-name">GreenMachine</div>
+                            <div class="lb-dept">Biology Dept</div>
+                        </div>
+                        <div class="lb-points">3.9k</div>
+                    </div>
+
+                    <div class="leaderboard-row">
+                        <div class="lb-rank">3</div>
+                        <div class="lb-avatar">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuApkHqu9en_dVgoUQ5TxuxRwSW6yU7PlEVw7qMyX8NYJDg5JUimrQSXFdhHGR7Ud2rtjzu9TqorwH8tqn4yq11F-adrhv8T3hnPTMvRdQ-v3SZWx1-8DrFuTzQST64A5ZZq8xq-yoUiNvp-gHkAnPzdsCJR_pOBj-7tSGs4IiPI9oXnbKHMS34Bt4v54Q6TNgD0u3_T1dsJPK3GntZKruZiOGgQeu27ZTXDWSkfiLbcEZphBARRLRjk3i0msDHXE1vMz2nlqIHfcWI"
+                                alt="SustainSara">
+                        </div>
+                        <div class="lb-info">
+                            <div class="lb-name">SustainSara</div>
+                            <div class="lb-dept">Arts Dept</div>
+                        </div>
+                        <div class="lb-points">3.6k</div>
+                    </div>
+                </div>
+
+                <!-- Your Rank Bar -->
+                <div class="leaderboard-your-rank">
+                    <div class="your-rank-info">
+                        <div class="your-rank-badge">24</div>
+                        <div class="your-rank-text">
+                            <span class="your-rank-label">Your Rank</span>
+                            <span class="your-rank-motivate">Keep pushing! 🔥</span>
+                        </div>
+                    </div>
+                    <div class="your-rank-points">
+                        <div class="your-rank-pts-label">Total Pts</div>
+                        <div class="your-rank-pts-value">850</div>
+                    </div>
+                </div>
+            </a>
+        </section>
+
+        <!-- Redeem Coins Card -->
+        <section class="redeem-snippet" style="padding: 0 var(--space-4); margin-bottom: 100px;">
+            <a href="../rewards/redeem.html" class="redeem-card stagger-item" style="
                 display: block;
                 text-decoration: none;
                 color: inherit;
@@ -1427,16 +261,16 @@
                 overflow: hidden;
                 transition: all var(--transition-base);
             ">
-                    <div style="
+                <div style="
                     position: absolute;
                     top: -20px;
                     right: -20px;
                     font-size: 80px;
                     opacity: 0.1;
                 ">🪙</div>
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <div style="display: flex; align-items: center; gap: var(--space-4);">
-                            <div style="
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: var(--space-4);">
+                        <div style="
                             width: 56px;
                             height: 56px;
                             background: rgba(251, 191, 36, 0.2);
@@ -1445,434 +279,434 @@
                             align-items: center;
                             justify-content: center;
                         ">
-                                <span class="material-symbols-outlined"
-                                    style="font-size: 28px; color: #FBBF24;">redeem</span>
-                            </div>
-                            <div>
-                                <div
-                                    style="font-size: var(--text-lg); font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 2px;">
-                                    Use Your Coins
-                                </div>
-                                <div style="font-size: var(--text-sm); color: var(--color-text-muted);">
-                                    Redeem rewards, discounts & more
-                                </div>
-                            </div>
+                            <span class="material-symbols-outlined"
+                                style="font-size: 28px; color: #FBBF24;">redeem</span>
                         </div>
-                        <div style="display: flex; align-items: center; gap: var(--space-3);">
-                            <div style="text-align: right;">
-                                <div style="font-size: var(--text-2xl); font-weight: 900; color: #FBBF24;">850</div>
-                                <div
-                                    style="font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase;">
-                                    coins</div>
+                        <div>
+                            <div
+                                style="font-size: var(--text-lg); font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 2px;">
+                                Use Your Coins
                             </div>
-                            <span class="material-symbols-outlined" style="color: #FBBF24;">chevron_right</span>
+                            <div style="font-size: var(--text-sm); color: var(--color-text-muted);">
+                                Redeem rewards, discounts & more
+                            </div>
                         </div>
                     </div>
-                </a>
-            </section>
-
-
-            <div class="camera-modal" id="camera-modal">
-                <div class="camera-modal-header">
-                    <h2 class="camera-modal-title">
-                        <span class="material-symbols-outlined icon">auto_awesome</span>
-                        AI Scanner
-                    </h2>
-                    <button class="camera-modal-close" onclick="closeCameraModal()">
-                        <span class="material-symbols-outlined">close</span>
-                    </button>
-                </div>
-                <div class="camera-modal-body">
-                    <video id="camera-video" class="camera-modal-video" autoplay playsinline muted></video>
-
-                    <div class="camera-modal-overlay">
-                        <div class="camera-modal-viewfinder">
-                            <div class="modal-corner tl"></div>
-                            <div class="modal-corner tr"></div>
-                            <div class="modal-corner bl"></div>
-                            <div class="modal-corner br"></div>
-                            <div class="camera-modal-scan-line"></div>
+                    <div style="display: flex; align-items: center; gap: var(--space-3);">
+                        <div style="text-align: right;">
+                            <div style="font-size: var(--text-2xl); font-weight: 900; color: #FBBF24;">850</div>
+                            <div
+                                style="font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase;">
+                                coins</div>
                         </div>
-                    </div>
-
-                    <div class="camera-modal-controls">
-                        <button class="modal-control-btn" id="modal-flash-btn" title="Toggle flash">
-                            <span class="material-symbols-outlined">flash_off</span>
-                        </button>
-                        <button class="modal-control-btn" id="modal-flip-btn" title="Switch camera">
-                            <span class="material-symbols-outlined">flip_camera_ios</span>
-                        </button>
-                        <button class="modal-control-btn" id="modal-settings-btn" title="AI Settings"
-                            onclick="showApiKeyModal()">
-                            <span class="material-symbols-outlined">tune</span>
-                        </button>
+                        <span class="material-symbols-outlined" style="color: #FBBF24;">chevron_right</span>
                     </div>
                 </div>
-                <div class="camera-modal-footer">
-                    <button class="modal-capture-btn" id="modal-capture-btn" onclick="performScan()">
-                        <span class="material-symbols-outlined icon">photo_camera</span>
-                        <span>Capture & Scan</span>
+            </a>
+        </section>
+
+
+        <div class="camera-modal" id="camera-modal">
+            <div class="camera-modal-header">
+                <h2 class="camera-modal-title">
+                    <span class="material-symbols-outlined icon">auto_awesome</span>
+                    AI Scanner
+                </h2>
+                <button class="camera-modal-close" onclick="closeCameraModal()">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="camera-modal-body">
+                <video id="camera-video" class="camera-modal-video" autoplay playsinline muted></video>
+
+                <div class="camera-modal-overlay">
+                    <div class="camera-modal-viewfinder">
+                        <div class="modal-corner tl"></div>
+                        <div class="modal-corner tr"></div>
+                        <div class="modal-corner bl"></div>
+                        <div class="modal-corner br"></div>
+                        <div class="camera-modal-scan-line"></div>
+                    </div>
+                </div>
+
+                <div class="camera-modal-controls">
+                    <button class="modal-control-btn" id="modal-flash-btn" title="Toggle flash">
+                        <span class="material-symbols-outlined">flash_off</span>
                     </button>
-                    <label class="modal-upload-link" for="modal-file-upload">
-                        <span class="material-symbols-outlined icon">photo_library</span>
-                        Or upload from gallery
-                    </label>
-                    <input type="file" id="modal-file-upload" accept="image/*" style="display: none;"
-                        onchange="handleFileUpload(event)">
+                    <button class="modal-control-btn" id="modal-flip-btn" title="Switch camera">
+                        <span class="material-symbols-outlined">flip_camera_ios</span>
+                    </button>
+                    <button class="modal-control-btn" id="modal-settings-btn" title="AI Settings"
+                        onclick="showApiKeyModal()">
+                        <span class="material-symbols-outlined">tune</span>
+                    </button>
                 </div>
             </div>
-
-            <!-- Bottom Navigation -->
-            <nav class="bottom-nav">
-                <ul class="nav-list">
-                    <li class="nav-item">
-                        <a href="home.html" class="nav-link active">
-                            <span class="material-symbols-outlined icon icon-filled">home</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="../marketplace/marketplace.html" class="nav-link">
-                            <span class="material-symbols-outlined icon">search</span>
-                        </a>
-                    </li>
-                    <li class="nav-item nav-add-btn">
-                        <a href="#" class="icon-btn" onclick="openCameraModal(); return false;">
-                            <span class="material-symbols-outlined icon">add</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="../user/messages.html" class="nav-link">
-                            <span class="material-symbols-outlined icon">chat_bubble</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="../user/profile.html" class="nav-link">
-                            <span class="material-symbols-outlined icon">person</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="camera-modal-footer">
+                <button class="modal-capture-btn" id="modal-capture-btn" onclick="performScan()">
+                    <span class="material-symbols-outlined icon">photo_camera</span>
+                    <span>Capture & Scan</span>
+                </button>
+                <label class="modal-upload-link" for="modal-file-upload">
+                    <span class="material-symbols-outlined icon">photo_library</span>
+                    Or upload from gallery
+                </label>
+                <input type="file" id="modal-file-upload" accept="image/*" style="display: none;"
+                    onchange="handleFileUpload(event)">
+            </div>
         </div>
 
-        <!-- Noise Overlay -->
-        <div class="noise-overlay"></div>
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="home.html" class="nav-link active">
+                        <span class="material-symbols-outlined icon icon-filled">home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../marketplace/marketplace.html" class="nav-link">
+                        <span class="material-symbols-outlined icon">search</span>
+                    </a>
+                </li>
+                <li class="nav-item nav-add-btn">
+                    <a href="#" class="icon-btn" onclick="openCameraModal(); return false;">
+                        <span class="material-symbols-outlined icon">add</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../user/messages.html" class="nav-link">
+                        <span class="material-symbols-outlined icon">chat_bubble</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../user/profile.html" class="nav-link">
+                        <span class="material-symbols-outlined icon">person</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
-        <!-- Firebase SDK -->
-        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-        <script src="../../js/firebase-config.js"></script>
-        <script src="../../js/services/database.js"></script>
-        <script src="../../js/services/scanner.js?v=2"></script>
-        <script src="../../js/services/gamification.js"></script>
-        <script src="../../js/app.js"></script>
-        <script src="../../js/scanner.js"></script>
-        <script>
-            // Load user greeting
-            async function loadUserGreeting() {
-                const userId = getCurrentUserId();
-                if (!userId) return;
+    <!-- Noise Overlay -->
+    <div class="noise-overlay"></div>
 
-                try {
-                    const userDoc = await db.collection('users').doc(userId).get();
-                    if (userDoc.exists) {
-                        const user = userDoc.data();
-                        // Update greeting if element exists
-                        const greetingTitle = document.querySelector('.greeting-title');
-                        if (greetingTitle && user.name) {
-                            greetingTitle.textContent = `Hi, ${user.name}!`;
-                        }
-                        // Update leaderboard "You" name
-                        const lbYou = document.querySelector('.lb-name.you');
-                        if (lbYou && user.name) {
-                            lbYou.textContent = user.name + ' (You)';
-                        }
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="../../js/firebase-config.js"></script>
+    <script src="../../js/services/database.js"></script>
+    <script src="../../js/services/scanner.js?v=2"></script>
+    <script src="../../js/services/gamification.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/scanner.js"></script>
+    <script>
+        // Load user greeting
+        async function loadUserGreeting() {
+            const userId = getCurrentUserId();
+            if (!userId) return;
+
+            try {
+                const userDoc = await db.collection('users').doc(userId).get();
+                if (userDoc.exists) {
+                    const user = userDoc.data();
+                    // Update greeting if element exists
+                    const greetingTitle = document.querySelector('.greeting-title');
+                    if (greetingTitle && user.name) {
+                        greetingTitle.textContent = `Hi, ${user.name}!`;
                     }
-                } catch (error) {
-                    console.error('Error loading user greeting:', error);
+                    // Update leaderboard "You" name
+                    const lbYou = document.querySelector('.lb-name.you');
+                    if (lbYou && user.name) {
+                        lbYou.textContent = user.name + ' (You)';
+                    }
                 }
+            } catch (error) {
+                console.error('Error loading user greeting:', error);
+            }
+        }
+
+        // Load on auth
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                loadUserGreeting();
+            }
+        });
+    </script>
+    <script>
+        let cameraStarted = false;
+        let flashOn = false;
+        let cameraModalOpen = false;
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const video = document.getElementById('camera-video');
+            const canvas = document.getElementById('capture-canvas');
+
+            // Initialize scanner
+            await window.reloopScanner.init(video, canvas);
+
+            // Check if API key is set
+            if (!window.reloopScanner.apiKey) {
+                document.getElementById('modal-settings-btn')?.classList.add('active');
             }
 
-            // Load on auth
-            firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    loadUserGreeting();
-                }
-            });
-        </script>
-        <script>
-            let cameraStarted = false;
-            let flashOn = false;
-            let cameraModalOpen = false;
+            // Setup modal control event listeners
+            setupModalControls();
+        });
 
-            // Initialize on page load
-            document.addEventListener('DOMContentLoaded', async () => {
+        // Open camera modal
+        async function openCameraModal() {
+            const modal = document.getElementById('camera-modal');
+            modal.classList.add('active');
+            cameraModalOpen = true;
+            document.body.style.overflow = 'hidden';
+            await startCamera();
+        }
+
+        // Close camera modal
+        function closeCameraModal() {
+            const modal = document.getElementById('camera-modal');
+            modal.classList.remove('active');
+            cameraModalOpen = false;
+            document.body.style.overflow = ''; // Restore scroll
+
+            // Stop camera when closing
+            if (window.reloopScanner && cameraStarted) {
+                window.reloopScanner.stopCamera();
+                cameraStarted = false;
+            }
+        }
+
+        // Start camera
+        async function startCamera() {
+            try {
                 const video = document.getElementById('camera-video');
-                const canvas = document.getElementById('capture-canvas');
 
-                // Initialize scanner
-                await window.reloopScanner.init(video, canvas);
+                // Try to start camera
+                await window.reloopScanner.startCamera();
+                cameraStarted = true;
+                showToast('Camera ready', 'success');
 
-                // Check if API key is set
-                if (!window.reloopScanner.apiKey) {
-                    document.getElementById('modal-settings-btn')?.classList.add('active');
+            } catch (error) {
+                console.error('Camera start error:', error);
+                showToast('Camera access denied. Please enable camera permissions.', 'error');
+            }
+        }
+
+        // Setup modal controls
+        function setupModalControls() {
+            // Toggle camera (front/back)
+            document.getElementById('modal-flip-btn')?.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                if (cameraStarted) {
+                    await window.reloopScanner.toggleCamera();
+                    const video = document.getElementById('camera-video');
+                    video.classList.toggle('front-camera', window.reloopScanner.facingMode === 'user');
+                    showToast('Camera switched', 'success');
                 }
-
-                // Setup modal control event listeners
-                setupModalControls();
             });
 
-            // Open camera modal
-            async function openCameraModal() {
-                const modal = document.getElementById('camera-modal');
-                modal.classList.add('active');
-                cameraModalOpen = true;
-                document.body.style.overflow = 'hidden';
-                await startCamera();
-            }
+            // Toggle flash (if supported)
+            document.getElementById('modal-flash-btn')?.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                flashOn = !flashOn;
+                const flashBtn = document.getElementById('modal-flash-btn');
+                const icon = flashBtn.querySelector('.material-symbols-outlined');
 
-            // Close camera modal
-            function closeCameraModal() {
-                const modal = document.getElementById('camera-modal');
-                modal.classList.remove('active');
-                cameraModalOpen = false;
-                document.body.style.overflow = ''; // Restore scroll
+                if (flashOn) {
+                    icon.textContent = 'flash_on';
+                    flashBtn.classList.add('active');
 
-                // Stop camera when closing
-                if (window.reloopScanner && cameraStarted) {
-                    window.reloopScanner.stopCamera();
-                    cameraStarted = false;
-                }
-            }
-
-            // Start camera
-            async function startCamera() {
-                try {
-                    const video = document.getElementById('camera-video');
-
-                    // Try to start camera
-                    await window.reloopScanner.startCamera();
-                    cameraStarted = true;
-                    showToast('Camera ready', 'success');
-
-                } catch (error) {
-                    console.error('Camera start error:', error);
-                    showToast('Camera access denied. Please enable camera permissions.', 'error');
-                }
-            }
-
-            // Setup modal controls
-            function setupModalControls() {
-                // Toggle camera (front/back)
-                document.getElementById('modal-flip-btn')?.addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    if (cameraStarted) {
-                        await window.reloopScanner.toggleCamera();
-                        const video = document.getElementById('camera-video');
-                        video.classList.toggle('front-camera', window.reloopScanner.facingMode === 'user');
-                        showToast('Camera switched', 'success');
-                    }
-                });
-
-                // Toggle flash (if supported)
-                document.getElementById('modal-flash-btn')?.addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    flashOn = !flashOn;
-                    const flashBtn = document.getElementById('modal-flash-btn');
-                    const icon = flashBtn.querySelector('.material-symbols-outlined');
-
-                    if (flashOn) {
-                        icon.textContent = 'flash_on';
-                        flashBtn.classList.add('active');
-
-                        // Try to enable flash
-                        if (window.reloopScanner.stream) {
-                            const track = window.reloopScanner.stream.getVideoTracks()[0];
-                            const capabilities = track.getCapabilities?.();
-                            if (capabilities?.torch) {
-                                await track.applyConstraints({ advanced: [{ torch: true }] });
-                            }
+                    // Try to enable flash
+                    if (window.reloopScanner.stream) {
+                        const track = window.reloopScanner.stream.getVideoTracks()[0];
+                        const capabilities = track.getCapabilities?.();
+                        if (capabilities?.torch) {
+                            await track.applyConstraints({ advanced: [{ torch: true }] });
                         }
-                    } else {
-                        icon.textContent = 'flash_off';
-                        flashBtn.classList.remove('active');
-
-                        // Turn off flash
-                        if (window.reloopScanner.stream) {
-                            const track = window.reloopScanner.stream.getVideoTracks()[0];
-                            const capabilities = track.getCapabilities?.();
-                            if (capabilities?.torch) {
-                                await track.applyConstraints({ advanced: [{ torch: false }] });
-                            }
-                        }
-                    }
-                });
-
-                // Close modal on escape key
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && cameraModalOpen) {
-                        closeCameraModal();
-                    }
-                });
-            }
-
-            // Perform scan using Hugging Face AI
-            async function performScan() {
-                // Start camera if not started
-                if (!cameraStarted) {
-                    await startCamera();
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                }
-
-                // Show scanning overlay
-                const overlay = showScanningOverlay();
-
-                try {
-                    // Capture frame from video
-                    const video = document.getElementById('camera-video');
-                    const canvas = document.getElementById('capture-canvas');
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    canvas.getContext('2d').drawImage(video, 0, 0);
-                    const imageBase64 = canvas.toDataURL('image/jpeg', 0.8);
-
-                    // Use AIScannerService (Hugging Face) for analysis
-                    if (typeof AIScannerService !== 'undefined') {
-                        const result = await AIScannerService.analyzeImage(imageBase64);
-                        if (result.success) {
-                            // Add captured image to result
-                            result.item.capturedImage = imageBase64;
-                            AIScannerService.storeResult(result.item);
-                            closeCameraModal();
-                            window.location.href = '../scanner/result-dynamic.html';
-                        } else {
-                            throw new Error(result.error || 'Analysis failed');
-                        }
-                    } else {
-                        throw new Error('Scanner service not loaded');
-                    }
-
-                } catch (error) {
-                    console.error('Scan error:', error);
-                    hideScanningOverlay();
-                    showToast(error.message || 'Scan failed. Please try again.', 'error');
-                }
-            }
-
-            // Handle file upload - Uses real AI scanning
-            async function handleFileUpload(event) {
-                const file = event.target.files[0];
-                if (!file) return;
-
-                // Close modal if open
-                if (cameraModalOpen) {
-                    closeCameraModal();
-                }
-
-                // Show loading
-                const overlay = showScanningOverlay();
-
-                try {
-                    // Read file as base64
-                    const reader = new FileReader();
-                    reader.onload = async (e) => {
-                        try {
-                            // Use AIScannerService for analysis
-                            if (typeof AIScannerService !== 'undefined') {
-                                const result = await AIScannerService.analyzeImage(e.target.result);
-                                if (result.success) {
-                                    // Add captured image to result
-                                    result.item.capturedImage = e.target.result;
-                                    AIScannerService.storeResult(result.item);
-                                    window.location.href = '../scanner/result-dynamic.html';
-                                } else {
-                                    throw new Error(result.error || 'Analysis failed');
-                                }
-                            } else {
-                                // Fallback to scanning animation
-                                window.location.href = '../scanner/scanning.html';
-                            }
-                        } catch (err) {
-                            console.error('Scan error:', err);
-                            hideScanningOverlay();
-                            showToast('Failed to analyze image. Please try again.', 'error');
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                } catch (error) {
-                    console.error('Upload error:', error);
-                    hideScanningOverlay();
-                    showToast('Failed to upload image.', 'error');
-                }
-
-                // Reset file input
-                event.target.value = '';
-            }
-
-            // Cleanup on page unload
-            window.addEventListener('beforeunload', () => {
-                if (window.reloopScanner) {
-                    window.reloopScanner.stopCamera();
-                }
-            });
-        </script>
-        <script>
-            // Update greeting with user name
-            async function updateGreeting() {
-                let name = localStorage.getItem('reloop_userName');
-
-                // If name is found and valid, show it
-                if (name && name !== 'Friend' && name !== 'User') {
-                    setGreeting(name);
-                    return;
-                }
-
-                // Fallback: Fetch directly if name is missing/default
-                const user = firebase.auth().currentUser;
-                if (user) {
-                    console.log('Fetching user profile for greeting fallback...');
-                    try {
-                        const doc = await db.collection('users').doc(user.uid).get();
-                        if (doc.exists) {
-                            const userData = doc.data();
-                            name = userData.name || 'Friend';
-                            localStorage.setItem('reloop_userName', name);
-                            setGreeting(name);
-                        }
-                    } catch (e) {
-                        console.error('Error fetching name fallback:', e);
-                        setGreeting('Friend');
                     }
                 } else {
-                    // Not logged in yet, wait for auth state change
+                    icon.textContent = 'flash_off';
+                    flashBtn.classList.remove('active');
+
+                    // Turn off flash
+                    if (window.reloopScanner.stream) {
+                        const track = window.reloopScanner.stream.getVideoTracks()[0];
+                        const capabilities = track.getCapabilities?.();
+                        if (capabilities?.torch) {
+                            await track.applyConstraints({ advanced: [{ torch: false }] });
+                        }
+                    }
+                }
+            });
+
+            // Close modal on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && cameraModalOpen) {
+                    closeCameraModal();
+                }
+            });
+        }
+
+        // Perform scan using Hugging Face AI
+        async function performScan() {
+            // Start camera if not started
+            if (!cameraStarted) {
+                await startCamera();
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+
+            // Show scanning overlay
+            const overlay = showScanningOverlay();
+
+            try {
+                // Capture frame from video
+                const video = document.getElementById('camera-video');
+                const canvas = document.getElementById('capture-canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0);
+                const imageBase64 = canvas.toDataURL('image/jpeg', 0.8);
+
+                // Use AIScannerService (Hugging Face) for analysis
+                if (typeof AIScannerService !== 'undefined') {
+                    const result = await AIScannerService.analyzeImage(imageBase64);
+                    if (result.success) {
+                        // Add captured image to result
+                        result.item.capturedImage = imageBase64;
+                        AIScannerService.storeResult(result.item);
+                        closeCameraModal();
+                        window.location.href = '../scanner/result-dynamic.html';
+                    } else {
+                        throw new Error(result.error || 'Analysis failed');
+                    }
+                } else {
+                    throw new Error('Scanner service not loaded');
+                }
+
+            } catch (error) {
+                console.error('Scan error:', error);
+                hideScanningOverlay();
+                showToast(error.message || 'Scan failed. Please try again.', 'error');
+            }
+        }
+
+        // Handle file upload - Uses real AI scanning
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Close modal if open
+            if (cameraModalOpen) {
+                closeCameraModal();
+            }
+
+            // Show loading
+            const overlay = showScanningOverlay();
+
+            try {
+                // Read file as base64
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    try {
+                        // Use AIScannerService for analysis
+                        if (typeof AIScannerService !== 'undefined') {
+                            const result = await AIScannerService.analyzeImage(e.target.result);
+                            if (result.success) {
+                                // Add captured image to result
+                                result.item.capturedImage = e.target.result;
+                                AIScannerService.storeResult(result.item);
+                                window.location.href = '../scanner/result-dynamic.html';
+                            } else {
+                                throw new Error(result.error || 'Analysis failed');
+                            }
+                        } else {
+                            // Fallback to scanning animation
+                            window.location.href = '../scanner/scanning.html';
+                        }
+                    } catch (err) {
+                        console.error('Scan error:', err);
+                        hideScanningOverlay();
+                        showToast('Failed to analyze image. Please try again.', 'error');
+                    }
+                };
+                reader.readAsDataURL(file);
+            } catch (error) {
+                console.error('Upload error:', error);
+                hideScanningOverlay();
+                showToast('Failed to upload image.', 'error');
+            }
+
+            // Reset file input
+            event.target.value = '';
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (window.reloopScanner) {
+                window.reloopScanner.stopCamera();
+            }
+        });
+    </script>
+    <script>
+        // Update greeting with user name
+        async function updateGreeting() {
+            let name = localStorage.getItem('reloop_userName');
+
+            // If name is found and valid, show it
+            if (name && name !== 'Friend' && name !== 'User') {
+                setGreeting(name);
+                return;
+            }
+
+            // Fallback: Fetch directly if name is missing/default
+            const user = firebase.auth().currentUser;
+            if (user) {
+                console.log('Fetching user profile for greeting fallback...');
+                try {
+                    const doc = await db.collection('users').doc(user.uid).get();
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        name = userData.name || 'Friend';
+                        localStorage.setItem('reloop_userName', name);
+                        setGreeting(name);
+                    }
+                } catch (e) {
+                    console.error('Error fetching name fallback:', e);
                     setGreeting('Friend');
                 }
+            } else {
+                // Not logged in yet, wait for auth state change
+                setGreeting('Friend');
             }
+        }
 
-            function setGreeting(name) {
-                const greetingEl = document.querySelector('.greeting-title');
-                if (greetingEl) {
-                    greetingEl.innerHTML = `Hello, <br> <span style="color: var(--color-primary);">${name}</span>`;
-                }
+        function setGreeting(name) {
+            const greetingEl = document.getElementById('user-greeting-name');
+            if (greetingEl) {
+                greetingEl.textContent = name;
             }
+        }
 
-            // Run on load
-            document.addEventListener('DOMContentLoaded', updateGreeting);
+        // Run on load
+        document.addEventListener('DOMContentLoaded', updateGreeting);
 
-            // Listen for profile load event (from firebase-config.js)
-            window.addEventListener('userProfileLoaded', (e) => {
-                if (e.detail && e.detail.name) {
-                    setGreeting(e.detail.name);
-                }
-            });
+        // Listen for profile load event (from firebase-config.js)
+        window.addEventListener('userProfileLoaded', (e) => {
+            if (e.detail && e.detail.name) {
+                setGreeting(e.detail.name);
+            }
+        });
 
-            // Also listen for auth state change right here as a backup
-            firebase.auth().onAuthStateChanged(user => {
-                if (user && (!localStorage.getItem('reloop_userName') || localStorage.getItem('reloop_userName') === 'Friend')) {
-                    updateGreeting();
-                }
-            });
-        </script>
-    </body>
+        // Also listen for auth state change right here as a backup
+        firebase.auth().onAuthStateChanged(user => {
+            if (user && (!localStorage.getItem('reloop_userName') || localStorage.getItem('reloop_userName') === 'Friend')) {
+                updateGreeting();
+            }
+        });
+    </script>
+</body>
 
 </html>
