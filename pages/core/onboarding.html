@@ -1438,32 +1438,24 @@
                     </div>
                 </div>
             </div>
-            margin-top: 10px;
-            ">
-            Use Demo Account
-            </button>
-            </form>
-        </div>
-    </div>
-    </div>
-    </div>
 
-    <!-- Footer -->
-    <div class="onboarding-footer">
-        <div class="footer-content">
-            <div class="dots-indicator">
-                <div class="dot active" data-slide="1"></div>
-                <div class="dot" data-slide="2"></div>
-                <div class="dot" data-slide="3"></div>
-                <div class="dot" data-slide="4"></div>
+
+            <!-- Footer -->
+            <div class="onboarding-footer">
+                <div class="footer-content">
+                    <div class="dots-indicator">
+                        <div class="dot active" data-slide="1"></div>
+                        <div class="dot" data-slide="2"></div>
+                        <div class="dot" data-slide="3"></div>
+                        <div class="dot" data-slide="4"></div>
+                    </div>
+                    <button class="next-btn" id="next-btn" onclick="nextSlide()">
+                        <span id="btn-text">NEXT</span>
+                        <span class="material-symbols-outlined icon" id="btn-icon">arrow_forward</span>
+                    </button>
+                </div>
             </div>
-            <button class="next-btn" id="next-btn" onclick="nextSlide()">
-                <span id="btn-text">NEXT</span>
-                <span class="material-symbols-outlined icon" id="btn-icon">arrow_forward</span>
-            </button>
         </div>
-    </div>
-    </div>
     </div>
 
     <!-- Noise Overlay -->
@@ -1476,58 +1468,74 @@
     <script src="../../js/firebase-config.js"></script>
     <script src="../../js/services/auth.js"></script>
 
-    function updateSlide() {
-    // Update slides
-    document.querySelectorAll('.slide').forEach((slide, index) => {
-    slide.classList.remove('active');
-    if (index + 1 === currentSlide) {
-    slide.classList.add('active');
-    }
-    });
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 4;
 
-    // Update dots
-    document.querySelectorAll('.dot').forEach((dot, index) => {
-    dot.classList.remove('active');
-    if (index + 1 === currentSlide) {
-    dot.classList.add('active');
-    }
-    });
+        function updateSlide() {
+            // Update slides
+            document.querySelectorAll('.slide').forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index + 1 === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
 
-    // Update button
-    const btnText = document.getElementById('btn-text');
-    const btnIcon = document.getElementById('btn-icon');
+            // Update dots
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index + 1 === currentSlide) {
+                    dot.classList.add('active');
+                }
+            });
 
-    if (currentSlide === totalSlides) {
-    btnText.textContent = 'ENTER';
-    btnIcon.textContent = 'login';
-    } else if (currentSlide === totalSlides - 1) {
-    btnText.textContent = 'GET STARTED';
-    btnIcon.textContent = 'rocket_launch';
-    } else {
-    btnText.textContent = 'NEXT';
-    btnIcon.textContent = 'arrow_forward';
-    }
-    }
+            // Update button
+            const btnText = document.getElementById('btn-text');
+            const btnIcon = document.getElementById('btn-icon');
 
-    function nextSlide() {
-    if (currentSlide < totalSlides) { currentSlide++; updateSlide(); } else { // On last slide - Go to Home
-        window.location.href='home.html' ; } } function skipOnboarding() { window.location.href='home.html' ; } // Check
-        if already logged in on page load document.addEventListener('DOMContentLoaded', ()=> {
-        if (typeof auth !== 'undefined') {
-        auth.onAuthStateChanged((user) => {
-        if (user) {
-        window.location.href = 'home.html';
+            if (currentSlide === totalSlides) {
+                btnText.textContent = 'ENTER';
+                btnIcon.textContent = 'login';
+            } else if (currentSlide === totalSlides - 1) {
+                btnText.textContent = 'GET STARTED';
+                btnIcon.textContent = 'rocket_launch';
+            } else {
+                btnText.textContent = 'NEXT';
+                btnIcon.textContent = 'arrow_forward';
+            }
         }
-        });
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlide();
+            } else {
+                // On last slide - Go to Home
+                window.location.href = 'home.html';
+            }
         }
+
+        function skipOnboarding() {
+            window.location.href = 'home.html';
+        }
+
+        // Check if already logged in on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof auth !== 'undefined') {
+                auth.onAuthStateChanged((user) => {
+                    if (user) {
+                        window.location.href = 'home.html';
+                    }
+                });
+            }
         });
 
         // Allow clicking on dots to navigate
         document.querySelectorAll('.dot').forEach(dot => {
-        dot.addEventListener('click', () => {
-        currentSlide = parseInt(dot.dataset.slide);
-        updateSlide();
-        });
+            dot.addEventListener('click', () => {
+                currentSlide = parseInt(dot.dataset.slide);
+                updateSlide();
+            });
         });
 
         // Touch swipe support
@@ -1535,40 +1543,44 @@
         let touchEndX = 0;
 
         document.querySelector('.slides-container').addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
+            touchStartX = e.changedTouches[0].screenX;
         }, { passive: true });
 
         document.querySelector('.slides-container').addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
         }, { passive: true });
 
         function handleSwipe() {
-        const swipeThreshold = 50;
-        const diff = touchStartX - touchEndX;
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
 
-        if (Math.abs(diff) > swipeThreshold) {
-        if (diff > 0 && currentSlide < totalSlides) { // Swipe left - next slide currentSlide++; updateSlide(); } else
-            if (diff < 0 && currentSlide> 1) {
-            // Swipe right - previous slide
-            currentSlide--;
-            updateSlide();
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0 && currentSlide < totalSlides) {
+                    // Swipe left - next slide
+                    currentSlide++;
+                    updateSlide();
+                } else if (diff < 0 && currentSlide > 1) {
+                    // Swipe right - previous slide
+                    currentSlide--;
+                    updateSlide();
+                }
             }
-            }
-            }
+        }
 
-            // Keyboard navigation
-            document.addEventListener('keydown', e => {
+
+        // Keyboard navigation
+        document.addEventListener('keydown', e => {
             if (e.key === 'ArrowRight' || e.key === ' ') {
-            nextSlide();
+                nextSlide();
             } else if (e.key === 'ArrowLeft' && currentSlide > 1) {
-            currentSlide--;
-            updateSlide();
+                currentSlide--;
+                updateSlide();
             } else if (e.key === 'Escape') {
-            skipOnboarding();
+                skipOnboarding();
             }
-            });
-            </script>
+        });
+    </script>
 </body>
 
 </html>
