@@ -24,13 +24,30 @@ window.auth = auth;
 window.db = db;
 
 // Auth state observer
-auth.onAuthStateChanged((user) => {
+auth.onAuthStateChanged(async (user) => {
     if (user) {
         console.log('User logged in:', user.uid);
         localStorage.setItem('reloop_userId', user.uid);
+
+        // Fetch user profile to get name
+        try {
+            const doc = await db.collection('users').doc(user.uid).get();
+            if (doc.exists) {
+                const userData = doc.data();
+                localStorage.setItem('reloop_userName', userData.name || 'User');
+
+                // Dispatch event for UI updates
+                window.dispatchEvent(new CustomEvent('userProfileLoaded', {
+                    detail: { name: userData.name }
+                }));
+            }
+        } catch (error) {
+            console.error('Error fetching user profile in auth observer:', error);
+        }
     } else {
         console.log('User logged out');
         localStorage.removeItem('reloop_userId');
+        localStorage.removeItem('reloop_userName');
     }
 });
 
