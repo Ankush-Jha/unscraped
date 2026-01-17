@@ -599,7 +599,12 @@
                 }
             } catch (error) {
                 console.error('[RequestTrade] Error:', error);
-                showToast('Failed to send trade request');
+                
+                // Detailed error logging
+                if (window.db) console.log('[RequestTrade] DB status: Connected');
+                else console.error('[RequestTrade] DB status: Missing window.db');
+                
+                showToast('Failed to send trade request: ' + (error.message || 'Unknown error'));
                 btn.disabled = false;
                 btnText.textContent = 'Request Trade';
             }

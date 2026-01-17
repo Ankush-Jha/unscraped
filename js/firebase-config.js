@@ -15,8 +15,13 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // Export services
+// Export services
 const auth = firebase.auth();
 const db = firebase.firestore();
+
+// Make globally available
+window.auth = auth;
+window.db = db;
 
 // Auth state observer
 auth.onAuthStateChanged((user) => {

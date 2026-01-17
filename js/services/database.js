@@ -202,7 +202,9 @@ const DatabaseService = {
             };
         } catch (error) {
             console.error('[Trade] Error creating trade:', error);
-            return { success: false, error: error.message };
+            // More detailed error for debugging
+            if (error.code) console.error('[Trade] Error Code:', error.code);
+            return { success: false, error: 'Failed to create trade: ' + error.message };
         }
     },
 
