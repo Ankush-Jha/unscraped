@@ -489,156 +489,301 @@
     <script src="../../js/services/database.js"></script>
     <script src="../../js/app.js"></script>
 
-    <script>
-        // Get listing ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const listingId = urlParams.get('id');
-        let currentListing = null;
+    // MOCK DATA FOR DEMO
+    const MOCK_LISTINGS = [
+    {
+    id: 'item-1',
+    title: 'Ceramic Vase (Hand-painted)',
+    category: 'Furniture',
+    price: 150,
+    condition: 'Like New',
+    size: '12" Height',
+    images: ['../../images/ceramic-vase.png'],
+    seller: {
+    id: 'demo-ankush',
+    name: 'Ankush Jha',
+    campus: 'ReLoop Campus',
+    avatar: 'https://ui-avatars.com/api/?name=Ankush+Jha&background=22c358&color=fff',
+    co2Saved: 115,
+    itemsTraded: 42
+    },
+    description: 'Beautiful ceramic vase, perfect for flowers or shelf decor. Hand-painted with sustainable pigments.
+    Originally purchased from a local artist in 2024.',
+    impactFacts: 'Ceramic production is energy-intensive. Reusing this vase prevents approximately 2.8kg of CO2
+    emissions and saves 15L of water used in clay processing.'
+    },
+    {
+    id: 'item-2',
+    title: 'Minimalist Desk Lamp',
+    category: 'Furniture',
+    price: 85,
+    condition: 'Good',
+    size: 'Adjustable',
+    images: ['../../images/desk-lamp.png'],
+    seller: {
+    id: 'user-2',
+    name: 'Unnati Asthana',
+    campus: 'East Wing',
+    avatar: 'https://ui-avatars.com/api/?name=Unnati+Asthana&background=random&color=fff',
+    co2Saved: 85,
+    itemsTraded: 28
+    },
+    description: 'Warm light lamp, great for studying. Comes with a high-efficiency LED bulb. Minimalist design fits any
+    dorm setup.',
+    impactFacts: 'E-waste is the world\'s fastest-growing trash stream. Keeping this lamp out of the landfill prevents
+    toxic heavy metals (like lead and mercury) from leaching into the soil.'
+    },
+    {
+    id: 'item-3',
+    title: 'Data Structures & Algorithms',
+    category: 'Books',
+    price: 45,
+    condition: 'Used',
+    size: 'Paperback',
+    images: ['../../images/study-books.png'],
+    seller: {
+    id: 'demo-ankush',
+    name: 'Ankush Jha',
+    campus: 'ReLoop Campus',
+    avatar: 'https://ui-avatars.com/api/?name=Ankush+Jha&background=22c358&color=fff',
+    co2Saved: 115,
+    itemsTraded: 42
+    },
+    description: 'The definitive guide for CS students. Includes notes on Big O notation and common interview patterns.
+    Essential for the upcoming semester!',
+    impactFacts: 'Producing a single paperback book requires about 2.7kg of CO2 and 7L of water. Recycling this book
+    saves nearly 2kg of CO2 compared to buying new.'
+    },
+    {
+    id: 'item-4',
+    title: 'Noise Cancelling Headphones',
+    category: 'Electronics',
+    price: 220,
+    condition: 'Fair',
+    size: 'Over-ear',
+    images: ['../../images/headphones.png'],
+    seller: {
+    id: 'user-3',
+    name: 'Uransh',
+    campus: 'North Quad',
+    avatar: 'https://ui-avatars.com/api/?name=Uransh&background=random&color=fff',
+    co2Saved: 64,
+    itemsTraded: 19
+    },
+    description: 'Great sound quality for focus sessions. Bluetooth connectivity works perfectly. Earpads show minor
+    wear but are still very comfortable.',
+    impactFacts: 'High-end electronics contain rare Earth minerals like Neodymium. Extending the life of these
+    headphones reduces the demand for destructive mining operations.'
+    },
+    {
+    id: 'item-5',
+    title: 'Stainless Electric Kettle',
+    category: 'Kitchen',
+    price: 60,
+    condition: 'New',
+    size: '1.5 Liters',
+    images: ['../../images/electric-kettle.png'],
+    seller: {
+    id: 'user-4',
+    name: 'Rudrakh Bairagi',
+    campus: 'West Block',
+    avatar: 'https://ui-avatars.com/api/?name=Rudrakh+Bairagi&background=random&color=fff',
+    co2Saved: 42,
+    itemsTraded: 11
+    },
+    description: 'Fast-boil technology. Auto-shutoff for safety. Sleek stainless steel finish. Perfect for tea, coffee,
+    or instant noodles.',
+    impactFacts: 'Reusing kitchen appliances prevents the carbon-intensive smelting of virgin stainless steel. This
+    trade saves roughly 5.5kg of CO2 emissions.'
+    },
+    {
+    id: 'item-6',
+    title: 'High-speed USB-C Charger',
+    category: 'Electronics',
+    price: 25,
+    condition: 'Like New',
+    size: '20W Fast',
+    images: ['../../images/phone-charger.png'],
+    seller: {
+    id: 'user-5',
+    name: 'Mikey Trades',
+    campus: 'ReLoop Campus',
+    avatar: 'https://ui-avatars.com/api/?name=Mikey+Trades&background=random&color=fff',
+    co2Saved: 98,
+    itemsTraded: 34
+    },
+    description: 'Fast charging for all your devices. Compact design, perfect for travel. High-quality build that won\'t
+    overheat.',
+    impactFacts: 'Billions of chargers end up in landfills every year. By trading this, you\'re actively reducing the
+    global demand for plastic-cased electronics.'
+    }
+    ];
 
-        // Load listing data
-        async function loadListing() {
-            if (!listingId) {
-                console.log('No listing ID provided, showing demo data');
-                return;
-            }
+    // Load listing data
+    async function loadListing() {
+    // Check MOCK data first
+    let listing = MOCK_LISTINGS.find(l => l.id === listingId);
 
-            try {
-                const listing = await DatabaseService.getListing(listingId);
-                if (!listing) {
-                    showToast('Listing not found');
-                    return;
-                }
+    if (!listing) {
+    console.log('Listing not found in mocks, trying DB...');
+    try {
+    listing = await DatabaseService.getListing(listingId);
+    } catch (e) {
+    console.error('DB fetch fail');
+    }
+    }
 
-                currentListing = listing;
+    if (!listing) {
+    console.log('Using default fallback data');
+    // Use a default from the list if still not found
+    listing = MOCK_LISTINGS[0];
+    }
 
-                // Update UI with listing data
-                document.querySelector('.product-title').textContent = listing.title;
-                document.querySelector('.price-coins').innerHTML = `
-                    <span class="material-symbols-outlined icon icon-filled">eco</span>
-                    ${listing.price}
-                `;
+    currentListing = listing;
+    console.log('Displaying item:', listing.title);
 
-                // Update image if available
-                if (listing.images && listing.images.length > 0) {
-                    document.querySelector('.product-hero img').src = listing.images[0];
-                }
+    // Update UI
+    document.querySelector('.product-title').textContent = listing.title;
+    document.querySelector('.price-coins').innerHTML = `
+    <span class="material-symbols-outlined icon icon-filled">eco</span>
+    ${listing.price}
+    `;
 
-                // Update condition
-                const conditionEl = document.querySelector('.detail-value');
-                if (conditionEl) conditionEl.textContent = listing.condition || 'Good';
+    if (listing.images && listing.images.length > 0) {
+    document.querySelector('.product-hero img').src = listing.images[0];
+    }
 
-                // Update description
-                const descEl = document.querySelector('.description-text');
-                if (descEl && listing.description) descEl.textContent = listing.description;
+    // Update Details
+    const detailValues = document.querySelectorAll('.detail-value');
+    if (detailValues[0]) detailValues[0].textContent = listing.condition || 'New';
+    if (detailValues[1]) detailValues[1].textContent = listing.size || 'N/A';
 
-                // Update seller info
-                if (listing.seller) {
-                    document.querySelector('.seller-name').textContent = `@${listing.seller.name || 'Seller'}`;
+    // Update description
+    const descEl = document.querySelector('.description-text');
+    if (descEl) descEl.textContent = listing.description;
 
-                    // Avatar
-                    const avatarImg = document.querySelector('.seller-avatar img');
-                    if (avatarImg && listing.seller.avatar) {
-                        avatarImg.src = listing.seller.avatar;
-                    }
+    // NEW: Add Impact Insight Section if facts are available
+    if (listing.impactFacts) {
+    let impactCard = document.getElementById('impact-insight-card');
+    if (!impactCard) {
+    impactCard = document.createElement('div');
+    impactCard.id = 'impact-insight-card';
+    impactCard.className = 'description-card stagger-item';
+    impactCard.style.border = '2px solid var(--color-primary)';
+    impactCard.style.background = 'rgba(34, 195, 88, 0.05)';
+    impactCard.innerHTML = `
+    <div class="description-header" style="color: var(--color-primary);">
+        <span class="material-symbols-outlined icon">eco</span>
+        Impact Insight
+    </div>
+    <p class="description-text" style="color: var(--color-text-primary); font-weight: 500; font-style: italic;">
+        ${listing.impactFacts}
+    </p>
+    `;
+    document.querySelector('.description-card').parentNode.insertBefore(impactCard,
+    document.querySelector('.description-card'));
+    }
+    }
 
-                    // Badge/Campus (reusing badge slot for campus or verification)
-                    const badgeEl = document.querySelector('.seller-badge');
-                    if (badgeEl) {
-                        badgeEl.innerHTML = `
-                            <span class="material-symbols-outlined icon icon-filled">location_on</span>
-                            ${listing.seller.campus || 'Campus'}
-                        `;
-                    }
+    // Update seller info
+    if (listing.seller) {
+    document.querySelector('.seller-name').textContent = `@${listing.seller.name || 'Seller'}`;
+    const avatarImg = document.querySelector('.seller-avatar img');
+    if (avatarImg) {
+    avatarImg.src = listing.seller.avatar ||
+    `https://ui-avatars.com/api/?name=${listing.seller.name}&background=random&color=fff`;
+    }
 
-                    // Stats
-                    const co2El = document.getElementById('seller-co2');
-                    const tradesEl = document.getElementById('seller-trades');
+    const badgeEl = document.querySelector('.seller-badge');
+    if (badgeEl) {
+    badgeEl.innerHTML = `
+    <span class="material-symbols-outlined icon icon-filled">location_on</span>
+    ${listing.seller.campus || 'Campus'}
+    `;
+    }
 
-                    if (co2El) co2El.textContent = (listing.seller.co2Saved || 0) + 'kg';
-                    if (tradesEl) tradesEl.textContent = listing.seller.itemsTraded || 0;
-                }
+    const co2El = document.getElementById('seller-co2');
+    const tradesEl = document.getElementById('seller-trades');
+    if (co2El) co2El.textContent = (listing.seller.co2Saved || 0) + 'kg';
+    if (tradesEl) tradesEl.textContent = listing.seller.itemsTraded || 0;
+    }
+    }
 
-                console.log('Loaded listing:', listing);
-            } catch (error) {
-                console.error('Error loading listing:', error);
-            }
-        }
+    // Request trade
+    async function requestTrade() {
+    console.log('[RequestTrade] Starting...');
 
-        // Request trade
-        async function requestTrade() {
-            console.log('[RequestTrade] Starting...');
+    if (!getCurrentUserId()) {
+    alert('Please log in to request a trade');
+    window.location.href = '../core/onboarding.html';
+    return;
+    }
 
-            if (!getCurrentUserId()) {
-                alert('Please log in to request a trade');
-                window.location.href = '../core/onboarding.html';
-                return;
-            }
+    if (!listingId || !currentListing) {
+    showToast('Cannot request trade - listing data missing');
+    console.error('[RequestTrade] Missing data:', { listingId, currentListing });
+    return;
+    }
 
-            if (!listingId || !currentListing) {
-                showToast('Cannot request trade - listing data missing');
-                console.error('[RequestTrade] Missing data:', { listingId, currentListing });
-                return;
-            }
+    // Check if user is trying to trade their own item
+    if (currentListing.sellerId === getCurrentUserId()) {
+    showToast('You cannot trade your own item');
+    console.warn('[RequestTrade] Cannot trade own item');
+    return;
+    }
 
-            // Check if user is trying to trade their own item
-            if (currentListing.sellerId === getCurrentUserId()) {
-                showToast('You cannot trade your own item');
-                console.warn('[RequestTrade] Cannot trade own item');
-                return;
-            }
+    const btn = document.getElementById('trade-btn');
+    const btnText = document.getElementById('trade-btn-text');
+    btn.disabled = true;
+    btnText.textContent = 'Requesting...';
 
-            const btn = document.getElementById('trade-btn');
-            const btnText = document.getElementById('trade-btn-text');
-            btn.disabled = true;
-            btnText.textContent = 'Requesting...';
+    try {
+    console.log('[RequestTrade] Calling createTradeRequest...');
+    const result = await DatabaseService.createTradeRequest(
+    listingId,
+    currentListing.sellerId
+    );
 
-            try {
-                console.log('[RequestTrade] Calling createTradeRequest...');
-                const result = await DatabaseService.createTradeRequest(
-                    listingId,
-                    currentListing.sellerId
-                );
+    console.log('[RequestTrade] Result:', result);
 
-                console.log('[RequestTrade] Result:', result);
+    if (result.success) {
+    showToast('Trade request sent! Opening chat...');
 
-                if (result.success) {
-                    showToast('Trade request sent! Opening chat...');
+    // Redirect to the chat with the conversation ID
+    setTimeout(() => {
+    if (result.conversationId) {
+    console.log('[RequestTrade] Redirecting to chat:', result.conversationId);
+    window.location.href = `../user/chat.html?id=${result.conversationId}`;
+    } else {
+    console.log('[RequestTrade] Redirecting to messages list');
+    window.location.href = '../user/messages.html';
+    }
+    }, 500);
+    } else {
+    showToast(result.error || 'Failed to send trade request');
+    btn.disabled = false;
+    btnText.textContent = 'Request Trade';
+    }
+    } catch (error) {
+    console.error('[RequestTrade] Error:', error);
 
-                    // Redirect to the chat with the conversation ID
-                    setTimeout(() => {
-                        if (result.conversationId) {
-                            console.log('[RequestTrade] Redirecting to chat:', result.conversationId);
-                            window.location.href = `../user/chat.html?id=${result.conversationId}`;
-                        } else {
-                            console.log('[RequestTrade] Redirecting to messages list');
-                            window.location.href = '../user/messages.html';
-                        }
-                    }, 500);
-                } else {
-                    showToast(result.error || 'Failed to send trade request');
-                    btn.disabled = false;
-                    btnText.textContent = 'Request Trade';
-                }
-            } catch (error) {
-                console.error('[RequestTrade] Error:', error);
+    // Detailed error logging
+    if (window.db) console.log('[RequestTrade] DB status: Connected');
+    else console.error('[RequestTrade] DB status: Missing window.db');
 
-                // Detailed error logging
-                if (window.db) console.log('[RequestTrade] DB status: Connected');
-                else console.error('[RequestTrade] DB status: Missing window.db');
+    showToast('Failed to send trade request: ' + (error.message || 'Unknown error'));
+    btn.disabled = false;
+    btnText.textContent = 'Request Trade';
+    }
+    }
 
-                showToast('Failed to send trade request: ' + (error.message || 'Unknown error'));
-                btn.disabled = false;
-                btnText.textContent = 'Request Trade';
-            }
-        }
-
-        // Load listing on page load
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                console.log('User logged in:', user.uid);
-            }
-            loadListing();
-        });
+    // Load listing on page load
+    firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+    console.log('User logged in:', user.uid);
+    }
+    loadListing();
+    });
     </script>
 </body>
 

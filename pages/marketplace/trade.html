@@ -496,6 +496,82 @@
     <div class="noise-overlay"></div>
 
     <script src="../../js/app.js"></script>
+    <script>
+        // MOCK DATA (Same as marketplace/item pages)
+        const MOCK_LISTINGS = [
+            {
+                id: 'item-1',
+                title: 'Ceramic Vase (Hand-painted)',
+                price: 150,
+                images: ['../../images/ceramic-vase.png'],
+                seller: { name: 'Ankush Jha' }
+            },
+            {
+                id: 'item-2',
+                title: 'Minimalist Desk Lamp',
+                price: 85,
+                images: ['../../images/desk-lamp.png'],
+                seller: { name: 'Unnati Asthana' }
+            },
+            {
+                id: 'item-3',
+                title: 'Data Structures & Algorithms',
+                price: 45,
+                images: ['../../images/study-books.png'],
+                seller: { name: 'Ankush Jha' }
+            },
+            {
+                id: 'item-4',
+                title: 'Noise Cancelling Headphones',
+                price: 220,
+                images: ['../../images/headphones.png'],
+                seller: { name: 'Uransh' }
+            },
+            {
+                id: 'item-5',
+                title: 'Stainless Electric Kettle',
+                price: 60,
+                images: ['../../images/electric-kettle.png'],
+                seller: { name: 'Rudrakh Bairagi' }
+            },
+            {
+                id: 'item-6',
+                title: 'High-speed USB-C Charger',
+                price: 25,
+                images: ['../../images/phone-charger.png'],
+                seller: { name: 'Mikey Trades' }
+            }
+        ];
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const listingId = urlParams.get('id');
+        const userBalance = 850;
+
+        function loadTradeData() {
+            const listing = MOCK_LISTINGS.find(l => l.id === listingId) || MOCK_LISTINGS[0];
+
+            // Update Visuals
+            document.querySelectorAll('.trade-item-image img').forEach(img => img.src = listing.images[0]);
+            document.querySelectorAll('.trade-item-value')[0].textContent = `${listing.price} Coins`;
+            document.querySelectorAll('.trade-item-value')[1].textContent = listing.title.split(' ')[0];
+
+            // Update Summary
+            document.querySelector('.item-thumb img').src = listing.images[0];
+            document.querySelector('.item-title').textContent = listing.title;
+            document.querySelector('.item-seller').textContent = `Sold by @${listing.seller.name.replace(/\s/g, '')}`;
+            document.querySelector('.item-price').textContent = `${listing.price} Coins`;
+
+            // Update Balance
+            document.querySelector('.balance-amount .value').textContent = userBalance;
+            document.querySelector('.balance-after .value').textContent = `${userBalance - listing.price} Coins`;
+
+            // Update Final Total
+            document.querySelectorAll('.summary-value')[0].textContent = `${listing.price} Coins`;
+            document.querySelectorAll('.summary-value')[2].textContent = `${listing.price} Coins`;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadTradeData);
+    </script>
 </body>
 
 </html>
