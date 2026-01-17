@@ -764,19 +764,81 @@
             ]);
         });
 
-        // Load listings from Firestore
-        async function loadListings() {
-            try {
-                allListings = await DatabaseService.getListings({ limit: 20 });
-                renderListings();
-            } catch (error) {
-                console.error('Error loading listings:', error);
+        // MOCK DATA FOR DEMO
+        const MOCK_LISTINGS = [
+            {
+                id: 'item-1',
+                title: 'Ceramic Vase (Hand-painted)',
+                category: 'Furniture',
+                price: 150,
+                condition: 'Like New',
+                images: ['../../images/ceramic-vase.png'],
+                seller: { id: 'demo-ankush', name: 'Ankush Jha', campus: 'ReLoop Campus' },
+                description: 'Beautiful ceramic vase, perfect for flowers or shelf decor.'
+            },
+            {
+                id: 'item-2',
+                title: 'Minimalist Desk Lamp',
+                category: 'Furniture',
+                price: 85,
+                condition: 'Good',
+                images: ['../../images/desk-lamp.png'],
+                seller: { id: 'user-2', name: 'Unnati Asthana', campus: 'East Wing' },
+                description: 'Warm light lamp, great for studying.'
+            },
+            {
+                id: 'item-3',
+                title: 'Data Structures & Algorithms',
+                category: 'Books',
+                price: 45,
+                condition: 'Used',
+                images: ['../../images/study-books.png'],
+                seller: { id: 'demo-ankush', name: 'Ankush Jha', campus: 'ReLoop Campus' },
+                description: 'The definitive guide. Some highlighting inside.'
+            },
+            {
+                id: 'item-4',
+                title: 'Noise Cancelling Headphones',
+                category: 'Electronics',
+                price: 220,
+                condition: 'Fair',
+                images: ['../../images/headphones.png'],
+                seller: { id: 'user-3', name: 'Uransh', campus: 'North Quad' },
+                description: 'Great sound, slightly worn pads.'
+            },
+            {
+                id: 'item-5',
+                title: 'Stainless Electric Kettle',
+                category: 'Kitchen',
+                price: 60,
+                condition: 'New',
+                images: ['../../images/electric-kettle.png'],
+                seller: { id: 'user-4', name: 'Rudrakh Bairagi', campus: 'West Block' },
+                description: 'Brand new, never used. 1.5L capacity.'
+            },
+            {
+                id: 'item-6',
+                title: 'High-speed USB-C Charger',
+                category: 'Electronics',
+                price: 25,
+                condition: 'Like New',
+                images: ['../../images/phone-charger.png'],
+                seller: { id: 'user-5', name: 'Mikey Trades', campus: 'ReLoop Campus' },
+                description: 'Fast charging for all your devices.'
             }
+        ];
+
+        // Load listings (Hardcoded for demo)
+        async function loadListings() {
+            console.log('Forcing Mock Listings...');
+            allListings = MOCK_LISTINGS;
+            renderListings();
         }
 
         // Render listings to the grid
         function renderListings() {
-            const currentUserId = getCurrentUserId();
+            // FORCE CURRENT USER ID AS ANKUSH FOR DEMO
+            const currentUserId = 'demo-ankush';
 
             // Filter by category and search
             let filtered = allListings;
@@ -801,8 +863,6 @@
 
             // 1. Render Public Listings (Near You)
             const publicGrid = document.getElementById('public-listings-grid');
-            const publicCount = document.querySelector('.products-section .section-header .section-link'); // reusing this for count if needed, or just relying on grid empty state
-
             if (publicGrid) {
                 if (otherListings.length === 0) {
                     publicGrid.innerHTML = `
@@ -821,19 +881,18 @@
 
             if (myListings.length > 0) {
                 if (!dynamicSection) {
-                    // Create section before the public section
                     const publicSection = document.querySelector('.products-section');
                     dynamicSection = document.createElement('section');
                     dynamicSection.id = 'dynamic-listings';
                     dynamicSection.className = 'products-section';
                     dynamicSection.style.marginBottom = 'var(--space-6)';
                     dynamicSection.innerHTML = `
-                        <div class="products-header">
-                            <span class="products-title">
-                                <span class="material-symbols-outlined icon" style="color: var(--color-primary);">storefront</span>
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <span class="material-symbols-outlined icon" style="color: var(--color-primary); vertical-align: middle;">storefront</span>
                                 Your Marketplace
-                            </span>
-                            <span class="products-count" id="my-listings-count">0 items</span>
+                            </h2>
+                            <span class="section-link" id="my-listings-count">0 items</span>
                         </div>
                         <div class="products-grid" id="my-listings-grid"></div>
                     `;
@@ -847,8 +906,17 @@
                 myGrid.innerHTML = myListings.map(listing => createListingCard(listing)).join('');
 
             } else if (dynamicSection) {
-                // Remove section if no listings
                 dynamicSection.remove();
+            }
+        }
+
+        // Load deals (Hardcoded for demo)
+        async function loadDeals() {
+            const container = document.getElementById('deals-grid');
+            if (container) {
+                // Take specific items for deals
+                const dealItems = [MOCK_LISTINGS[4], MOCK_LISTINGS[1], MOCK_LISTINGS[2]];
+                container.innerHTML = dealItems.map(listing => createDealCard(listing)).join('');
             }
         }
 
@@ -876,24 +944,6 @@
                     </div>
                 </a>
             `;
-        }
-
-        // Render listings to the grid
-        async function loadDeals() {
-            try {
-                // For now, just take 3 random or recent listings from the same source
-                // In a real app, this would query a specific 'on_sale' or 'expiring_soon' index
-                const deals = await DatabaseService.getListings({ limit: 3 });
-                const container = document.getElementById('deals-grid');
-
-                if (container && deals.length > 0) {
-                    container.innerHTML = deals.map(listing => createDealCard(listing)).join('');
-                } else if (container) {
-                    container.innerHTML = '<div style="padding:15px; color:var(--color-text-muted);">No active deals</div>';
-                }
-            } catch (error) {
-                console.error('Error loading deals:', error);
-            }
         }
 
         function createDealCard(listing) {
