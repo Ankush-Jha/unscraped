@@ -566,90 +566,66 @@
     <script>
         let currentSortBy = 'xp';
 
-        // Load leaderboard from Firebase
+        // Load leaderboard from Firebase (HARDCODED FOR DEMO)
         async function loadLeaderboard() {
             const listContainer = document.querySelector('.leaderboard-list');
-            const topPlayerCard = document.querySelector('.top-player-card');
 
-            // Show loading state
-            listContainer.innerHTML = '<div class="loading-state" style="text-align: center; padding: var(--space-8); color: var(--color-text-muted);">Loading rankings...</div>';
+            // HARDCODED MVP SQUAD
+            const squad = [
+                { name: 'Ankush Jha', xp: 15400, co2Saved: 150.5, level: 18, avatar: 'https://ui-avatars.com/api/?name=Ankush+Jha&background=22c358&color=fff', dept: 'Top Trader' },
+                { name: 'Unnati Asthana', xp: 13500, co2Saved: 130.0, level: 16, avatar: 'https://ui-avatars.com/api/?name=Unnati+Asthana&background=random&color=fff', dept: 'ReLoop Pro' },
+                { name: 'Uransh', xp: 11200, co2Saved: 95.5, level: 14, avatar: 'https://ui-avatars.com/api/?name=Uransh&background=random&color=fff', dept: 'Sustainability' },
+                { name: 'Rudrakh Bairagi', xp: 9800, co2Saved: 75.0, level: 12, avatar: 'https://ui-avatars.com/api/?name=Rudrakh+Bairagi&background=random&color=fff', dept: 'Eco Warrior' },
+                { name: 'GreenQueen', xp: 8500, co2Saved: 60.5, level: 10, avatar: 'https://ui-avatars.com/api/?name=Green+Queen&background=random&color=fff', dept: 'Recycler' },
+                { name: 'EcoMaster', xp: 7200, co2Saved: 50.0, level: 9, avatar: 'https://ui-avatars.com/api/?name=Eco+Master&background=random&color=fff', dept: 'Green Team' },
+                { name: 'PlanetPat', xp: 6400, co2Saved: 42.0, level: 8, avatar: 'https://ui-avatars.com/api/?name=Planet+Pat&background=random&color=fff', dept: 'Cleanup Crew' }
+            ];
 
-            try {
-                const leaderboard = await GamificationService.getLeaderboard(currentSortBy, 50);
+            // 1. Update Top Player Card (Ankush Jha)
+            const top = squad[0];
+            document.querySelector('.top-username').textContent = top.name;
+            document.querySelector('.top-points .value').textContent = formatPoints(currentSortBy === 'xp' ? top.xp : top.co2Saved);
+            document.querySelector('.level-badge').textContent = `Lvl ${top.level}`;
+            document.querySelector('.top-avatar img').src = top.avatar;
 
-                if (leaderboard.length === 0) {
-                    listContainer.innerHTML = '<div class="empty-state" style="text-align: center; padding: var(--space-8); color: var(--color-text-muted);">No users yet. Be the first!</div>';
-                    return;
-                }
+            // 2. Generate List for Ranks 2+
+            let listHTML = '';
+            for (let i = 1; i < squad.length; i++) {
+                const player = squad[i];
+                const value = currentSortBy === 'xp' ? player.xp : player.co2Saved;
+                const opacity = Math.max(0.6, 1 - (i * 0.05));
 
-                // Update top player card
-                const top = leaderboard[0];
-                document.querySelector('.top-username').textContent = top.name || 'Champion';
-                document.querySelector('.top-points .value').textContent = formatPoints(currentSortBy === 'xp' ? top.xp : top.co2Saved);
-                document.querySelector('.level-badge').textContent = `Lvl ${top.level || 1}`;
-
-                // Generate leaderboard list HTML (ranks 2-50)
-                let listHTML = '';
-                for (let i = 1; i < leaderboard.length; i++) {
-                    const player = leaderboard[i];
-                    const value = currentSortBy === 'xp' ? (player.xp || 0) : (player.co2Saved || 0);
-                    const opacity = Math.max(0.6, 1 - (i * 0.02));
-
-                    listHTML += `
-                        <div class="leaderboard-item stagger-item" style="opacity: ${opacity};">
-                            <div class="rank-number">${i + 1}</div>
-                            <div class="player-avatar">
-                                <img src="${player.avatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(player.name || 'User') + '&background=2eb867&color=000'}" alt="${player.name}">
-                            </div>
-                            <div class="player-info">
-                                <div class="player-name">${player.name || 'User'}</div>
-                                <div class="player-dept">${player.campus || 'ReLoop Campus'}</div>
-                            </div>
-                            <div class="player-points">
-                                <span class="material-symbols-outlined icon">${currentSortBy === 'xp' ? 'stars' : 'eco'}</span>
-                                <span class="value">${formatPoints(value)}</span>
-                            </div>
+                listHTML += `
+                    <div class="leaderboard-item stagger-item" style="opacity: ${opacity};">
+                        <div class="rank-number">${i + 1}</div>
+                        <div class="player-avatar">
+                            <img src="${player.avatar}" alt="${player.name}">
                         </div>
-                    `;
-                }
-
-                listContainer.innerHTML = listHTML;
-
-                // Update current user's rank
-                await updateCurrentUserRank();
-
-                console.log('Loaded leaderboard:', leaderboard.length, 'users');
-            } catch (error) {
-                console.error('Error loading leaderboard:', error);
-                listContainer.innerHTML = '<div class="error-state" style="text-align: center; padding: var(--space-8); color: #ff6b6b;">Error loading rankings. Please try again.</div>';
+                        <div class="player-info">
+                            <div class="player-name">${player.name}</div>
+                            <div class="player-dept">${player.dept}</div>
+                        </div>
+                        <div class="player-points">
+                            <span class="material-symbols-outlined icon">${currentSortBy === 'xp' ? 'stars' : 'eco'}</span>
+                            <span class="value">${formatPoints(value)}</span>
+                        </div>
+                    </div>
+                `;
             }
+            listContainer.innerHTML = listHTML;
+            console.log('Loaded HARDCODED leaderboard');
+
+            // Update Your Rank Card (Always Ankush for Demo)
+            updateCurrentUserRank();
         }
 
         // Update current user's rank card
         async function updateCurrentUserRank() {
-            const userId = getCurrentUserId();
-            if (!userId) return;
-
-            try {
-                const rankData = await GamificationService.getUserRank(userId, currentSortBy);
-                const userDoc = await db.collection('users').doc(userId).get();
-
-                if (rankData && userDoc.exists) {
-                    const user = userDoc.data();
-                    document.querySelector('.your-rank-number').textContent = rankData.rank;
-                    document.querySelector('.your-points-value').textContent = formatPoints(rankData.value);
-                    document.querySelector('.your-label').textContent = user.name || 'You';
-
-                    // Update motivation message based on rank
-                    const motivation = rankData.rank <= 10 ? "You're on fire! 🔥" :
-                                      rankData.rank <= 25 ? "Almost there! 💪" :
-                                      rankData.rank <= 50 ? "Keep pushing! 🚀" :
-                                      "Keep going! 🌱";
-                    document.querySelector('.your-motivation').textContent = motivation;
-                }
-            } catch (error) {
-                console.error('Error getting user rank:', error);
-            }
+            // Hardcoded as Rank 1 (Ankush)
+            document.querySelector('.your-rank-number').textContent = '1';
+            document.querySelector('.your-points-value').textContent = '15.4k';
+            document.querySelector('.your-label').textContent = 'Ankush Jha';
+            document.querySelector('.your-motivation').textContent = "You're the Champion! 🏆";
         }
 
         // Format points
@@ -663,11 +639,11 @@
         // Toggle sort between XP and CO2
         function toggleSort() {
             currentSortBy = currentSortBy === 'xp' ? 'co2Saved' : 'xp';
-            
+
             // Update subtitle
             const subtitle = document.querySelector('.leaderboard-subtitle');
             subtitle.textContent = currentSortBy === 'xp' ? 'Top 50 by XP' : 'Top 50 by CO2 Saved';
-            
+
             // Update icon in top player card
             const topIcon = document.querySelector('.top-points .icon');
             topIcon.textContent = currentSortBy === 'xp' ? 'trophy' : 'eco';
@@ -703,10 +679,15 @@
         });
 
         // Load on auth state change
+        // FORCE LOAD IMMEDIATELY
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Forcing Mock Leaderboard...');
+            loadLeaderboard();
+        });
+
+        // Disable standard listener
         firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                loadLeaderboard();
-            }
+            console.log('Auth check ignored on Leaderboard');
         });
     </script>
 </body>

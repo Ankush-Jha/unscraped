@@ -409,127 +409,23 @@
     <script src="../../js/app.js"></script>
 
     <script>
-        let allConversations = [];
-        let currentFilter = 'all';
+        // MOCK DATA OVERRIDE
+        // We are keeping the static HTML conversations for the demo.
+        console.log('Loaded Static Demo Messages');
 
-        // Load conversations from Firebase
-        async function loadConversations(filter = 'all') {
-            const chatList = document.querySelector('.chat-list');
-            currentFilter = filter;
-
-            try {
-                const conversations = await DatabaseService.getConversations(filter);
-                allConversations = conversations;
-
-                if (conversations.length === 0) {
-                    chatList.innerHTML = `
-                        <div class="empty-state">
-                            <span class="material-symbols-outlined icon">chat_bubble</span>
-                            <div class="title">No messages yet</div>
-                            <div class="description">${filter === 'all'
-                            ? 'Start by browsing the marketplace and requesting a trade!'
-                            : filter === 'buying'
-                                ? 'You haven\'t requested any trades yet.'
-                                : 'No one has requested your items yet.'
-                        }</div>
-                        </div>
-                    `;
-                    updateBadge(0);
-                    return;
-                }
-
-                // Render conversations with role indicator
-                chatList.innerHTML = conversations.map((conv, index) => {
-                    const timeAgo = formatTimeAgo(conv.lastMessageAt?.toDate());
-                    const isUnread = false; // TODO: Implement real unread status
-                    const roleLabel = conv.role === 'buying' ? '🛒 Buying' : '💰 Selling';
-                    const listingImage = conv.listing?.images?.[0] || 'https://via.placeholder.com/40';
-                    const listingTitle = conv.listing?.title || 'Item';
-
-                    return `
-                        <a href="chat.html?id=${conv.id}" class="chat-item ${isUnread ? 'unread' : ''} stagger-item">
-                            <div class="chat-avatar ${isUnread ? 'unread' : ''}">
-                                <img src="${conv.otherUser.avatar || 'https://via.placeholder.com/56'}" alt="${conv.otherUser.name}">
-                                ${isUnread ? '<div class="online-dot"></div>' : ''}
-                            </div>
-                            <div class="chat-content">
-                                <div class="chat-header">
-                                    <span class="chat-name">@${conv.otherUser.name || 'User'}</span>
-                                    <span class="chat-time">${timeAgo}</span>
-                                </div>
-                                <div class="chat-preview">
-                                    <span class="chat-message">${conv.lastMessage || 'New conversation'}</span>
-                                    ${isUnread ? '<span class="unread-dot"></span>' : ''}
-                                </div>
-                                <div style="font-size: 10px; color: var(--color-primary); margin-top: 2px;">${roleLabel} • ${listingTitle}</div>
-                            </div>
-                            <div class="chat-product">
-                                <img src="${listingImage}" alt="${listingTitle}">
-                            </div>
-                        </a>
-                    `;
-                }).join('');
-
-                updateBadge(conversations.length);
-            } catch (error) {
-                console.error('Error loading conversations:', error);
-                // Keep demo content on error
-            }
-        }
-
-        // Format time ago
-        function formatTimeAgo(date) {
-            if (!date) return 'Just now';
-            const now = new Date();
-            const diff = now - date;
-            const minutes = Math.floor(diff / 60000);
-            const hours = Math.floor(diff / 3600000);
-            const days = Math.floor(diff / 86400000);
-
-            if (minutes < 1) return 'Just now';
-            if (minutes < 60) return `${minutes} min ago`;
-            if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-            if (days === 1) return 'Yesterday';
-            return `${days} days ago`;
-        }
-
-        // Update badge count
-        function updateBadge(count) {
-            const activeTab = document.querySelector('.chat-tab.active');
-            const badge = activeTab?.querySelector('.badge');
-            if (badge) {
-                badge.textContent = count;
-            }
-        }
-
-        // Chat tab switching with filtering
+        // Interaction logic for tabs (just visual)
         document.querySelectorAll('.chat-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-
-                const tabText = tab.textContent.trim().toLowerCase();
-                let filter = 'all';
-                if (tabText.includes('buying')) filter = 'buying';
-                else if (tabText.includes('selling')) filter = 'selling';
-
-                loadConversations(filter);
+                // In a real app we would filter here, but for demo we just show the static list
+                console.log('Tab clicked:', tab.textContent.trim());
             });
         });
 
         // Edit button
         document.querySelector('.page-header .icon-btn')?.addEventListener('click', () => {
             showToast('Select chats to manage');
-        });
-
-        // Load on auth state change
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                console.log('User logged in:', user.uid);
-                loadConversations('all');
-            } else {
-                console.log('No user logged in');
-            }
         });
     </script>
 </body>

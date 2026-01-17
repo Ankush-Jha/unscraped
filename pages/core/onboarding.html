@@ -1621,56 +1621,28 @@
             }
         }
 
-        // Handle Sign Up
+        // Handle Sign Up - MOCK BYPASS
         async function handleSignUp(event) {
             event.preventDefault();
-
-            const name = document.getElementById('signup-name').value.trim();
-            const email = document.getElementById('signup-email').value.trim();
-            const password = document.getElementById('signup-password').value;
-            const campus = 'ReLoop Campus'; // Hardcoded for single-campus MVP
-
-            if (!name || !email || !password) {
-                showAuthError('Please fill in all fields');
-                return;
-            }
-
             setAuthLoading(true);
-            document.getElementById('auth-error').classList.remove('show');
 
-            const result = await AuthService.signUp(email, password, name, campus);
-
-            if (result.success) {
+            // Simulating network delay
+            setTimeout(() => {
+                console.log('Mock Signup Successful');
                 window.location.href = 'home.html';
-            } else {
-                setAuthLoading(false);
-                showAuthError(result.error || 'Sign up failed. Please try again.');
-            }
+            }, 800);
         }
 
-        // Handle Login
+        // Handle Login - MOCK BYPASS
         async function handleLogin(event) {
             event.preventDefault();
-
-            const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value;
-
-            if (!email || !password) {
-                showAuthError('Please fill in all fields');
-                return;
-            }
-
             setAuthLoading(true);
-            document.getElementById('auth-error').classList.remove('show');
 
-            const result = await AuthService.signIn(email, password);
-
-            if (result.success) {
+            // Simulating network delay
+            setTimeout(() => {
+                console.log('Mock Login Successful');
                 window.location.href = 'home.html';
-            } else {
-                setAuthLoading(false);
-                showAuthError(result.error || 'Login failed. Check your credentials.');
-            }
+            }, 800);
         }
 
         // Check if already logged in on page load

@@ -1526,66 +1526,76 @@
     <script src="../../js/scanner.js"></script>
     <script>
         // Load user greeting
+        // Load user greeting - FORCE MOCK
         async function loadUserGreeting() {
-            const userId = getCurrentUserId();
-            if (!userId) return;
+            // FORCE MOCK DATA
+            const user = {
+                name: 'Ankush Jha',
+                coins: 1250,
+                xp: 5400,
+                level: 12
+            };
 
-            try {
-                const userDoc = await db.collection('users').doc(userId).get();
-                if (userDoc.exists) {
-                    const user = userDoc.data();
-                    // Update greeting if element exists
-                    const greetingTitle = document.querySelector('.greeting-title');
-                    if (greetingTitle && user.name) {
-                        greetingTitle.textContent = `Hi, ${user.name}!`;
-                    }
-                    // Update leaderboard "You" name
-                    const lbYou = document.querySelector('.lb-name.you');
-                    if (lbYou && user.name) {
-                        lbYou.textContent = user.name + ' (You)';
-                    }
-
-                    // Update coins
-                    const coinsEl = document.getElementById('user-total-coins');
-                    if (coinsEl) coinsEl.textContent = user.coins || 0;
-
-                    // Update Level and XP
-                    const levelBadge = document.getElementById('user-level-badge');
-                    const xpText = document.getElementById('user-xp-text');
-                    const xpBar = document.getElementById('user-xp-bar');
-
-                    if (levelBadge) levelBadge.textContent = 'LVL ' + (user.level || 1);
-
-                    // Logic to calculate max XP for next level (can import from GamificationService if available, else calc locally for now)
-                    // Assuming simplified levels derived from GamificationService structure seen earlier
-                    const currentLevel = user.level || 1;
-                    const xpPool = user.xp || 0;
-                    // Mock calculation based on typical level thresholds or fetch if GamificationService is available
-                    // For now, simple display
-                    if (xpText) xpText.textContent = `${xpPool} XP`;
-                    if (xpBar) {
-                        // Simple progress visual based on level (modulo 100 for example or just static fill until GamificationService is fully linked)
-                        // Better: Use GamificationService directly
-                        if (typeof GamificationService !== 'undefined') {
-                            const levelInfo = GamificationService.getLevelProgress(xpPool);
-                            if (levelInfo) {
-                                xpText.textContent = `${levelInfo.currentXP} / ${levelInfo.nextLevelXP} XP`;
-                                xpBar.style.width = `${levelInfo.progress}%`;
-                            }
-                        } else {
-                            xpBar.style.width = '10%'; // Default
-                        }
-                    }
-
-                    // Update Leaderboard Snippet
-                    await loadLeaderboardSnippet(userId);
-
-                }
-            } catch (error) {
-                console.error('Error loading user greeting:', error);
+            // Update greeting if element exists
+            const greetingTitle = document.querySelector('.greeting-title');
+            if (greetingTitle) {
+                greetingTitle.textContent = `Hi, ${user.name}!`;
             }
+
+            // Update coins
+            const coinsEl = document.getElementById('user-total-coins');
+            if (coinsEl) coinsEl.textContent = user.coins;
+
+            // Update Level and XP
+            const levelBadge = document.getElementById('user-level-badge');
+            const xpText = document.getElementById('user-xp-text');
+            const xpBar = document.getElementById('user-xp-bar');
+
+            if (levelBadge) levelBadge.textContent = 'LVL ' + user.level;
+
+            if (xpText) xpText.textContent = `${user.xp} XP`;
+            if (xpBar) {
+                // Approximate progress for Level 12 (Mock)
+                xpBar.style.width = '45%';
+            }
+
+            // Update Leaderboard Snippet
+            await updateLeaderboardSnippet();
         }
 
+        async function updateLeaderboardSnippet() {
+            const listEl = document.querySelector('.leaderboard-list-snippet');
+            if (!listEl) return;
+
+            // HARDCODED MVP LEADERBOARD (Top 5)
+            const squad = [
+                { name: 'Ankush Jha', xp: 15400, rank: 1, avatar: 'https://ui-avatars.com/api/?name=Ankush+Jha&background=22c358&color=fff' },
+                { name: 'Unnati Asthana', xp: 13500, rank: 2, avatar: 'https://ui-avatars.com/api/?name=Unnati+Asthana&background=random&color=fff' },
+                { name: 'Uransh', xp: 11200, rank: 3, avatar: 'https://ui-avatars.com/api/?name=Uransh&background=random&color=fff' },
+                { name: 'Rudrakh Bairagi', xp: 9800, rank: 4, avatar: 'https://ui-avatars.com/api/?name=Rudrakh+Bairagi&background=random&color=fff' },
+                { name: 'GreenQueen', xp: 8500, rank: 5, avatar: 'https://ui-avatars.com/api/?name=Green+Queen&background=random&color=fff' },
+            ];
+
+            let html = '';
+            squad.forEach(user => {
+                const isYou = user.name === 'Ankush Jha'; // Demo assumption
+                html += `
+                    <div class="leaderboard-row ${isYou ? 'highlight' : ''}">
+                        <div class="lb-rank ${isYou ? 'you' : ''}">#${user.rank}</div>
+                        <div class="lb-avatar ${isYou ? 'you' : ''}">
+                            <img src="${user.avatar}" alt="${user.name}">
+                        </div>
+                        <div class="lb-info">
+                            <div class="lb-name ${isYou ? 'you' : ''}">${user.name} ${isYou ? '(YOU)' : ''}</div>
+                            <div class="lb-dept">${isYou ? 'Top Trader' : 'ReLoop Pro'}</div>
+                        </div>
+                        <div class="lb-points ${isYou ? 'you' : ''}">${user.xp.toLocaleString()}</div>
+                    </div>
+                `;
+            });
+
+            listEl.innerHTML = html;
+        }
         // Load Leaderboard Snippet
         async function loadLeaderboardSnippet(currentUserId) {
             try {
@@ -1878,60 +1888,15 @@
         });
     </script>
     <script>
-        // Update greeting with user name
-        async function updateGreeting() {
-            let name = localStorage.getItem('reloop_userName');
-
-            // If name is found and valid, show it
-            if (name && name !== 'Friend' && name !== 'User') {
-                setGreeting(name);
-                return;
-            }
-
-            // Fallback: Fetch directly if name is missing/default
-            const user = firebase.auth().currentUser;
-            if (user) {
-                console.log('Fetching user profile for greeting fallback...');
-                try {
-                    const doc = await db.collection('users').doc(user.uid).get();
-                    if (doc.exists) {
-                        const userData = doc.data();
-                        name = userData.name || 'Friend';
-                        localStorage.setItem('reloop_userName', name);
-                        setGreeting(name);
-                    }
-                } catch (e) {
-                    console.error('Error fetching name fallback:', e);
-                    setGreeting('Friend');
-                }
-            } else {
-                // Not logged in yet, wait for auth state change
-                setGreeting('Friend');
-            }
-        }
-
-        function setGreeting(name) {
-            const greetingEl = document.getElementById('user-greeting-name');
-            if (greetingEl) {
-                greetingEl.textContent = name;
-            }
-        }
-
-        // Run on load
-        document.addEventListener('DOMContentLoaded', updateGreeting);
-
-        // Listen for profile load event (from firebase-config.js)
-        window.addEventListener('userProfileLoaded', (e) => {
-            if (e.detail && e.detail.name) {
-                setGreeting(e.detail.name);
-            }
+        // Force User Greeting Load (Bypassing Firebase)
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Forcing Mock Greeting...');
+            loadUserGreeting();
         });
 
-        // Also listen for auth state change right here as a backup
+        // Disable standard listeners
         firebase.auth().onAuthStateChanged(user => {
-            if (user && (!localStorage.getItem('reloop_userName') || localStorage.getItem('reloop_userName') === 'Friend')) {
-                updateGreeting();
-            }
+            console.log('Auth check ignored on Home (Mock Mode)');
         });
     </script>
 </body>

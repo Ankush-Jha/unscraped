@@ -408,22 +408,22 @@
             <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card stagger-item">
-                    <span class="material-symbols-outlined bg-icon icon-filled">shopping_bag</span>
+                    <span class="material-symbols-outlined bg-icon icon-filled">recycling</span>
                     <div class="stat-value" id="stat-items-sold">-</div>
                     <div class="stat-label">Items Sold</div>
                 </div>
                 <div class="stat-card stagger-item">
-                    <span class="material-symbols-outlined bg-icon icon-filled">recycling</span>
+                    <span class="material-symbols-outlined bg-icon icon-filled">savings</span>
                     <div class="stat-value" id="stat-co2">-</div>
                     <div class="stat-label">Waste Diverted</div>
                 </div>
                 <div class="stat-card stagger-item">
-                    <span class="material-symbols-outlined bg-icon icon-filled">savings</span>
+                    <span class="material-symbols-outlined bg-icon icon-filled">emoji_events</span>
                     <div class="stat-value" id="stat-earned">-</div>
                     <div class="stat-label">Balance</div>
                 </div>
                 <div class="stat-card stagger-item">
-                    <span class="material-symbols-outlined bg-icon icon-filled">emoji_events</span>
+                    <span class="material-symbols-outlined bg-icon icon-filled">leaderboard</span>
                     <div class="stat-value" id="stat-rank">-</div>
                     <div class="stat-label">Global Rank</div>
                 </div>
@@ -580,77 +580,81 @@
     <script>
         // Load user profile from Firebase
         async function loadUserProfile() {
-            const userId = getCurrentUserId();
-            if (!userId) {
-                console.log('No user logged in');
-                return;
-            }
+            // FORCE MOCK DATA REGARDLESS OF AUTH
+            console.log('Forcing Mock Profile (Ankush Jha)...');
 
-            try {
-                let user = {};
-                // Force Mock Data if user doc missing or empty (for demo)
-                if (userDoc.exists) {
-                    user = userDoc.data();
-                } else {
-                    console.log('User doc not found, using full mock profile');
-                    user = {
-                        name: 'Eco Warrior',
-                        itemsTraded: 12,
-                        co2Saved: 24.5,
-                        coins: 850,
-                        xp: 2450
-                    };
+            const mockProfile = {
+                name: 'Ankush Jha',
+                email: 'demo@reloop.app',
+                campus: 'ReLoop Campus',
+                coins: 1250,
+                xp: 5400,
+                level: 12,
+                itemsTraded: 42,
+                co2Saved: 115.5,
+                joinDate: 'Jan 2026',
+                badges: ['early-adopter', 'sustainability-pioneer', 'top-trader'],
+                bio: '♻️ Reducing waste one trade at a time!',
+                rank: 1
+            };
+
+            let user = mockProfile;
+
+            // Update UI concurrently
+            requestAnimationFrame(async () => {
+                const usernameEl = document.querySelector('.username');
+                if (usernameEl) usernameEl.textContent = `@${user.name}`;
+
+                const coinValue = document.querySelector('.coin-value');
+                if (coinValue) coinValue.textContent = user.coins;
+
+                // Stats
+                const itemsEl = document.getElementById('stat-items-sold');
+                const co2El = document.getElementById('stat-co2');
+                const earnedEl = document.getElementById('stat-earned');
+                const rankEl = document.getElementById('stat-rank');
+
+                if (itemsEl) itemsEl.textContent = user.itemsTraded;
+                if (co2El) co2El.textContent = `${user.co2Saved}kg`;
+                if (earnedEl) earnedEl.textContent = user.coins;
+                if (rankEl) rankEl.textContent = `#${user.rank}`;
+
+                if (user.avatar) {
+                    const avatarImg = document.querySelector('.user-avatar img');
+                    if (avatarImg) avatarImg.src = `https://ui-avatars.com/api/?name=${user.name}&background=random&color=fff`;
                 }
+            });
 
-                // Update UI concurrently
-                requestAnimationFrame(async () => {
-                    document.querySelector('.username').textContent = `@${user.name || 'User'}`;
-                    const coinValue = document.querySelector('.coin-value');
-                    if (coinValue) coinValue.textContent = user.coins || 850;
+            // ALSO FORCE AUXILIARY DATA
+            loadLevelAndXP(null, user);
 
-                    // Stats
-                    const itemsEl = document.getElementById('stat-items-sold');
-                    const co2El = document.getElementById('stat-co2');
-                    const earnedEl = document.getElementById('stat-earned');
-                    const rankEl = document.getElementById('stat-rank');
+            // Badges (Hardcoded for demo)
+            const badgesCount = document.getElementById('badges-count');
+            if (badgesCount) badgesCount.textContent = "3/8";
 
-                    // Mock Data Fallback values
-                    const mockStats = {
-                        itemsTraded: 12,
-                        co2Saved: 24.5,
-                        coins: 850
-                    };
-
-                    if (itemsEl) itemsEl.textContent = (user.itemsTraded !== undefined) ? user.itemsTraded : mockStats.itemsTraded;
-                    if (co2El) co2El.textContent = `${(user.co2Saved !== undefined) ? user.co2Saved : mockStats.co2Saved}kg`;
-                    if (earnedEl) earnedEl.textContent = (user.coins !== undefined) ? user.coins : mockStats.coins;
-
-                    // Rank fetch with mock fallback
-                    if (rankEl) {
-                        try {
-                            const rankData = await GamificationService.getUserRank(userId);
-                            rankEl.textContent = rankData && rankData.rank ? `#${rankData.rank}` : 'Top 5%';
-                        } catch (e) {
-                            rankEl.textContent = 'Top 5%';
-                        }
-                    }
-
-                    if (user.avatar) {
-                        const avatarImg = document.querySelector('.user-avatar img');
-                        if (avatarImg) avatarImg.src = user.avatar;
-                    }
-                });
-
-                // Fetch auxiliary data in parallel
-                await Promise.all([
-                    loadLevelAndXP(userId, user),
-                    loadBadges(userId)
-                ]);
-
-                console.log('Loaded user profile fully');
-            } catch (error) {
-                console.error('Error loading user profile:', error);
+            const badgesGrid = document.getElementById('badges-grid');
+            if (badgesGrid) {
+                badgesGrid.innerHTML = `
+                    <div style="aspect-ratio: 1; background: rgba(46, 184, 103, 0.1); border: 2px solid var(--color-primary); border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: var(--space-2);" title="Early Adopter">
+                        <img src="../../images/badges/early-adopter.png" alt="Early Adopter" style="width: 48px; height: 48px; object-fit: contain; margin-bottom: 4px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                        <span style="font-size: 8px; font-weight: 700; text-transform: uppercase; margin-top: 2px;">Early</span>
+                    </div>
+                    <div style="aspect-ratio: 1; background: rgba(46, 184, 103, 0.1); border: 2px solid var(--color-primary); border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: var(--space-2);" title="Sustainability Pioneer">
+                        <img src="../../images/badges/pioneer.png" alt="Sustainability Pioneer" style="width: 48px; height: 48px; object-fit: contain; margin-bottom: 4px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                        <span style="font-size: 8px; font-weight: 700; text-transform: uppercase; margin-top: 2px;">Pioneer</span>
+                    </div>
+                    <div style="aspect-ratio: 1; background: rgba(46, 184, 103, 0.1); border: 2px solid var(--color-primary); border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: var(--space-2);" title="Top Trader">
+                        <img src="../../images/badges/top-trader.png" alt="Top Trader" style="width: 48px; height: 48px; object-fit: contain; margin-bottom: 4px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+                        <span style="font-size: 8px; font-weight: 700; text-transform: uppercase; margin-top: 2px;">Trader</span>
+                    </div>
+                    <div style="aspect-ratio: 1; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--color-border); border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: var(--space-2); opacity: 0.5; filter: grayscale(1);">
+                        <span class="material-symbols-outlined" style="font-size: 24px;">verified</span>
+                        <span style="font-size: 8px; font-weight: 700; text-transform: uppercase; margin-top: 4px;">Verified</span>
+                    </div>
+                 `;
             }
+
+            console.log('Loaded HARDCODED MVP profile (Bypassed Auth)');
         }
 
         // Load level and XP display
@@ -720,11 +724,14 @@
         });
 
         // Load on auth state change
+        // IMMEDIATE LOAD (Bypass Firebase Auth Wait)
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
+        });
+
+        // Still keep listener just in case, but it won't change anything now
         firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                console.log('User logged in:', user.uid);
-                loadUserProfile();
-            }
+            console.log('Auth check (ignored for demo):', user ? user.uid : 'null');
         });
     </script>
 </body>

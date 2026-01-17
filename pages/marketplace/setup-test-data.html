@@ -127,6 +127,9 @@
         <h2>Global Mock Data</h2>
         <p>Populate ALL users with mock stats and create fake leaderboard entries.</p>
         <button onclick="seedAllUsers()" style="background: #9C27B0; color: white;">Seed Everyone</button>
+        <button onclick="seedSpecificSquad()"
+            style="background: #2196F3; color: white; margin-top: 10px; display: block; width: 100%;">Seed Squad
+            Only</button>
     </div>
 
     <div class="card">
@@ -318,6 +321,51 @@
                 await Promise.all(fakeUpdates);
                 log('Created 5 fake leaderboard users.', 'success');
                 log('GLOBAL SEEDING COMPLETE!', 'success');
+
+            } catch (error) {
+                console.error("Seeding Error:", error);
+                log(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Seed Specific Squad (Ankush, Unnati, Uransh, Rudrakh)
+        async function seedSpecificSquad() {
+            try {
+                const logs = document.getElementById('log');
+                log('Starting squad seeding...', 'info');
+
+                const squad = [
+                    { id: 'user_ankush', name: 'Ankush Jha', xp: 15000, coins: 5000, itemsTraded: 55, co2Saved: 150.5, level: 18, badges: ['sustainability-pioneer', 'early-adopter'] },
+                    { id: 'user_unnati', name: 'Unnati Asthana', xp: 13500, coins: 4200, itemsTraded: 48, co2Saved: 130.0, level: 16, badges: ['early-adopter'] },
+                    { id: 'user_uransh', name: 'Uransh', xp: 11000, coins: 3500, itemsTraded: 35, co2Saved: 95.5, level: 14, badges: ['newcomer'] },
+                    { id: 'user_rudrakh', name: 'Rudrakh Bairagi', xp: 9500, coins: 2800, itemsTraded: 28, co2Saved: 75.0, level: 12, badges: ['newcomer'] }
+                ];
+
+                // 1. Delete old fake users if they exist (to clean up)
+                const oldFakes = ['fake_user_1', 'fake_user_2', 'fake_user_3', 'fake_user_4', 'fake_user_5'];
+                const deletePromises = oldFakes.map(id => db.collection('users').doc(id).delete());
+                await Promise.all(deletePromises);
+                log('Cleaned up old fake users.', 'info');
+
+                // 2. Create/Update Squad
+                const squadUpdates = squad.map((user, index) => {
+                    return db.collection('users').doc(user.id).set({
+                        name: user.name,
+                        xp: user.xp,
+                        coins: user.coins,
+                        itemsTraded: user.itemsTraded,
+                        co2Saved: user.co2Saved,
+                        level: user.level,
+                        badges: user.badges,
+                        photoURL: `https://ui-avatars.com/api/?name=${user.name}&background=random&color=fff`,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        rank: index + 1 // Ideally rank is dynamic, but this sets order
+                    });
+                });
+
+                await Promise.all(squadUpdates);
+                log('Created SQUAD profiles: Ankush, Unnati, Uransh, Rudrakh.', 'success');
+                log('SQUAD SEEDING COMPLETE!', 'success');
 
             } catch (error) {
                 console.error("Seeding Error:", error);
