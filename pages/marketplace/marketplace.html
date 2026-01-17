@@ -749,6 +749,7 @@
     <script src="../../js/firebase-config.js"></script>
     <script src="../../js/services/database.js"></script>
     <script src="../../js/app.js"></script>
+    <script src="../../js/marketplace-data.js"></script>
 
     <script>
         // State
@@ -764,74 +765,11 @@
             ]);
         });
 
-        // MOCK DATA FOR DEMO
-        const MOCK_LISTINGS = [
-            {
-                id: 'item-1',
-                title: 'Ceramic Vase (Hand-painted)',
-                category: 'Furniture',
-                price: 150,
-                condition: 'Like New',
-                images: ['../../images/ceramic-vase.png'],
-                seller: { id: 'demo-ankush', name: 'Ankush Jha', campus: 'ReLoop Campus' },
-                description: 'Beautiful ceramic vase, perfect for flowers or shelf decor.'
-            },
-            {
-                id: 'item-2',
-                title: 'Minimalist Desk Lamp',
-                category: 'Furniture',
-                price: 85,
-                condition: 'Good',
-                images: ['../../images/desk-lamp.png'],
-                seller: { id: 'user-2', name: 'Unnati Asthana', campus: 'East Wing' },
-                description: 'Warm light lamp, great for studying.'
-            },
-            {
-                id: 'item-3',
-                title: 'Data Structures & Algorithms',
-                category: 'Books',
-                price: 45,
-                condition: 'Used',
-                images: ['../../images/study-books.png'],
-                seller: { id: 'demo-ankush', name: 'Ankush Jha', campus: 'ReLoop Campus' },
-                description: 'The definitive guide. Some highlighting inside.'
-            },
-            {
-                id: 'item-4',
-                title: 'Noise Cancelling Headphones',
-                category: 'Electronics',
-                price: 220,
-                condition: 'Fair',
-                images: ['../../images/headphones.png'],
-                seller: { id: 'user-3', name: 'Uransh', campus: 'North Quad' },
-                description: 'Great sound, slightly worn pads.'
-            },
-            {
-                id: 'item-5',
-                title: 'Stainless Electric Kettle',
-                category: 'Kitchen',
-                price: 60,
-                condition: 'New',
-                images: ['../../images/electric-kettle.png'],
-                seller: { id: 'user-4', name: 'Rudrakh Bairagi', campus: 'West Block' },
-                description: 'Brand new, never used. 1.5L capacity.'
-            },
-            {
-                id: 'item-6',
-                title: 'High-speed USB-C Charger',
-                category: 'Electronics',
-                price: 25,
-                condition: 'Like New',
-                images: ['../../images/phone-charger.png'],
-                seller: { id: 'user-5', name: 'Mikey Trades', campus: 'ReLoop Campus' },
-                description: 'Fast charging for all your devices.'
-            }
-        ];
-
         // Load listings (Hardcoded for demo)
         async function loadListings() {
             console.log('Forcing Mock Listings...');
-            allListings = MOCK_LISTINGS;
+            // MOCK_LISTINGS is now loaded from js/marketplace-data.js
+            allListings = window.MOCK_LISTINGS || [];
             renderListings();
         }
 
@@ -915,7 +853,8 @@
             const container = document.getElementById('deals-grid');
             if (container) {
                 // Take specific items for deals
-                const dealItems = [MOCK_LISTINGS[4], MOCK_LISTINGS[1], MOCK_LISTINGS[2]];
+                const listings = window.MOCK_LISTINGS || [];
+                const dealItems = [listings[4], listings[1], listings[2]].filter(Boolean);
                 container.innerHTML = dealItems.map(listing => createDealCard(listing)).join('');
             }
         }
@@ -923,7 +862,7 @@
         // Helper to create card HTML
         function createListingCard(listing) {
             return `
-                <a href="item.html?id=${listing.id}" class="product-card stagger-item fade-in">
+                <a href="item-detail.html?id=${listing.id}" class="product-card stagger-item fade-in">
                     <div class="product-image-container">
                         <img class="product-image" src="${listing.images?.[0] || '../../images/placeholder.png'}" alt="${listing.title}">
                         ${listing.condition === 'New' ? '<span class="product-badge" style="background: var(--color-primary); color: #000;">New</span>' : ''}
@@ -952,7 +891,7 @@
             const originalPrice = Math.floor(listing.price * (1 + discount / 100));
 
             return `
-                <a href="item.html?id=${listing.id}" class="deal-card stagger-item">
+                <a href="item-detail.html?id=${listing.id}" class="deal-card stagger-item">
                     <div class="deal-image-container">
                         <img class="deal-image" src="${listing.images?.[0] || '../../images/placeholder.png'}" alt="${listing.title}">
                         <span class="deal-badge">
