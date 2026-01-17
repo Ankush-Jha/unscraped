@@ -1510,13 +1510,16 @@
 
                 if (result.success) {
                     console.log('Demo signup success');
-                    // Seed this new demo user with some coins/data immediately
+                    // Seed this new demo user with impressive MVP stats
                     await db.collection('users').doc(result.user.uid).update({
-                        coins: 500,
-                        itemsTraded: 5,
-                        co2Saved: 12.5,
-                        level: 3,
-                        xp: 850
+                        coins: 850,
+                        itemsTraded: 12,
+                        co2Saved: 24.5,
+                        level: 8,
+                        xp: 2450,
+                        badges: ['newcomer', 'early-adopter', 'sustainability-pioneer'],
+                        campus: 'ReLoop Campus',
+                        bio: 'Passionate about upcycling and reducing campus waste! ♻️'
                     });
                     window.location.href = 'home.html';
                 } else {
