@@ -1376,103 +1376,93 @@
                 </div>
             </div>
 
-            <!-- Slide 4: Sign Up / Login -->
+            <!-- Slide 4: Welcome Demo User -->
             <div class="slide" id="slide-4">
                 <div class="slide-content">
                     <div class="text-content" style="margin-bottom: var(--space-6);">
                         <h1 class="slide-headline all-green" style="font-size: 2rem;">
-                            Almost There!
+                            Welcome,<br>Ankush Jha!
                         </h1>
                         <p class="slide-description">
-                            Create your account to start trading and saving the planet.
+                            Your profile is ready. Start trading and saving the planet today.
                         </p>
                     </div>
 
-                    <div class="auth-container">
-                        <!-- Auth Tabs -->
-                        <div class="auth-tabs">
-                            <button class="auth-tab active" onclick="switchAuthTab('signup')">Sign Up</button>
-                            <button class="auth-tab" onclick="switchAuthTab('login')">Login</button>
+                    <div class="auth-container" style="display: flex; flex-direction: column; gap: var(--space-4);">
+
+                        <!-- Demo Profile Card -->
+                        <div style="
+                            background: var(--color-surface-dark);
+                            border: 1px solid var(--color-border);
+                            border-radius: var(--radius-2xl);
+                            padding: var(--space-4);
+                            display: flex;
+                            align-items: center;
+                            gap: var(--space-4);
+                         ">
+                            <div
+                                style="width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--color-primary); overflow: hidden;">
+                                <img src="https://ui-avatars.com/api/?name=Ankush+Jha&background=22c358&color=fff"
+                                    alt="Ankush Jha" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div>
+                                <div style="font-size: var(--text-lg); font-weight: 900;">Ankush Jha</div>
+                                <div style="font-size: var(--text-sm); color: var(--color-text-muted);">ReLoop Campus
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Error Message -->
-                        <div id="auth-error" class="auth-error"></div>
+                        <!-- Enter Button -->
+                        <button onclick="window.location.href='home.html'" style="
+                            width: 100%;
+                            background: var(--color-primary); 
+                            color: #000;
+                            padding: 16px;
+                            border: none;
+                            border-radius: var(--radius-xl);
+                            font-size: var(--text-lg);
+                            font-weight: 900;
+                            text-transform: uppercase;
+                            letter-spacing: 0.05em;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 8px;
+                            box-shadow: 0 4px 12px rgba(34, 195, 88, 0.4);
+                        ">
+                            Enter ReLoop
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </button>
 
-                        <!-- Loading State -->
-                        <div id="auth-loading" class="auth-loading">
-                            <div class="spinner"></div>
-                            <span style="color: var(--color-text-secondary);">Creating your account...</span>
-                        </div>
-
-                        <!-- Sign Up Form (Single Campus - Hardcoded) -->
-                        <form id="signup-form" class="auth-form" onsubmit="handleSignUp(event)">
-                            <div class="form-group">
-                                <label class="form-label">Name</label>
-                                <input type="text" id="signup-name" class="form-input-auth" placeholder="Your name"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Email</label>
-                                <input type="email" id="signup-email" class="form-input-auth"
-                                    placeholder="your@email.edu" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Password</label>
-                                <input type="password" id="signup-password" class="form-input-auth"
-                                    placeholder="Min 6 characters" minlength="6" required>
-                            </div>
-                        </form>
-
-                        <!-- Login Form -->
-                        <form id="login-form" class="auth-form hidden" onsubmit="handleLogin(event)">
-                            <div class="form-group">
-                                <label class="form-label">Email</label>
-                                <input type="email" id="login-email" class="form-input-auth"
-                                    placeholder="your@email.edu" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Password</label>
-                                <input type="password" id="login-password" class="form-input-auth"
-                                    placeholder="Your password" required>
-                            </div>
-
-                            <div style="text-align: center; margin-top: 10px;">
-                                <span style="font-size: 11px; color: rgba(255,255,255,0.4);">OR</span>
-                            </div>
-
-                            <button type="button" onclick="handleDemoLogin()" style="
-                                background: rgba(34, 195, 88, 0.1); 
-                                border: 1px solid var(--color-primary); 
-                                color: var(--color-primary);
-                                padding: 12px;
-                                border-radius: var(--radius-xl);
-                                font-weight: 700;
-                                cursor: pointer;
-                                margin-top: 10px;
-                            ">
-                                Use Demo Account
-                            </button>
-                        </form>
                     </div>
                 </div>
             </div>
+            margin-top: 10px;
+            ">
+            Use Demo Account
+            </button>
+            </form>
         </div>
+    </div>
+    </div>
+    </div>
 
-        <!-- Footer -->
-        <div class="onboarding-footer">
-            <div class="footer-content">
-                <div class="dots-indicator">
-                    <div class="dot active" data-slide="1"></div>
-                    <div class="dot" data-slide="2"></div>
-                    <div class="dot" data-slide="3"></div>
-                    <div class="dot" data-slide="4"></div>
-                </div>
-                <button class="next-btn" id="next-btn" onclick="nextSlide()">
-                    <span id="btn-text">NEXT</span>
-                    <span class="material-symbols-outlined icon" id="btn-icon">arrow_forward</span>
-                </button>
+    <!-- Footer -->
+    <div class="onboarding-footer">
+        <div class="footer-content">
+            <div class="dots-indicator">
+                <div class="dot active" data-slide="1"></div>
+                <div class="dot" data-slide="2"></div>
+                <div class="dot" data-slide="3"></div>
+                <div class="dot" data-slide="4"></div>
             </div>
+            <button class="next-btn" id="next-btn" onclick="nextSlide()">
+                <span id="btn-text">NEXT</span>
+                <span class="material-symbols-outlined icon" id="btn-icon">arrow_forward</span>
+            </button>
         </div>
+    </div>
     </div>
     </div>
 
@@ -1486,182 +1476,58 @@
     <script src="../../js/firebase-config.js"></script>
     <script src="../../js/services/auth.js"></script>
 
-    <script>
-        let currentSlide = 1;
-        const totalSlides = 4;
-        let currentAuthMode = 'signup';
+    function updateSlide() {
+    // Update slides
+    document.querySelectorAll('.slide').forEach((slide, index) => {
+    slide.classList.remove('active');
+    if (index + 1 === currentSlide) {
+    slide.classList.add('active');
+    }
+    });
 
-        // Handle Demo Login
-        async function handleDemoLogin() {
-            setAuthLoading(true);
-            const demoEmail = 'demobuyer@reloop.app';
-            const demoPass = 'demobuyer123';
+    // Update dots
+    document.querySelectorAll('.dot').forEach((dot, index) => {
+    dot.classList.remove('active');
+    if (index + 1 === currentSlide) {
+    dot.classList.add('active');
+    }
+    });
 
-            // Try login first
-            let result = await AuthService.signIn(demoEmail, demoPass);
+    // Update button
+    const btnText = document.getElementById('btn-text');
+    const btnIcon = document.getElementById('btn-icon');
 
-            if (result.success) {
-                console.log('Demo login success');
-                window.location.href = 'home.html';
-            } else {
-                console.log('Demo login failed, trying signup...', result.error);
-                // If login fails (user doesn't exist), try sign up
-                result = await AuthService.signUp(demoEmail, demoPass, 'Demo User', 'ReLoop Campus');
+    if (currentSlide === totalSlides) {
+    btnText.textContent = 'ENTER';
+    btnIcon.textContent = 'login';
+    } else if (currentSlide === totalSlides - 1) {
+    btnText.textContent = 'GET STARTED';
+    btnIcon.textContent = 'rocket_launch';
+    } else {
+    btnText.textContent = 'NEXT';
+    btnIcon.textContent = 'arrow_forward';
+    }
+    }
 
-                if (result.success) {
-                    console.log('Demo signup success');
-                    // Seed this new demo user with impressive MVP stats
-                    await db.collection('users').doc(result.user.uid).update({
-                        coins: 850,
-                        itemsTraded: 12,
-                        co2Saved: 24.5,
-                        level: 8,
-                        xp: 2450,
-                        badges: ['newcomer', 'early-adopter', 'sustainability-pioneer'],
-                        campus: 'ReLoop Campus',
-                        bio: 'Passionate about upcycling and reducing campus waste! ♻️'
-                    });
-                    window.location.href = 'home.html';
-                } else {
-                    setAuthLoading(false);
-                    showAuthError('Demo login failed. Please try manual signup. ' + result.error);
-                }
-            }
+    function nextSlide() {
+    if (currentSlide < totalSlides) { currentSlide++; updateSlide(); } else { // On last slide - Go to Home
+        window.location.href='home.html' ; } } function skipOnboarding() { window.location.href='home.html' ; } // Check
+        if already logged in on page load document.addEventListener('DOMContentLoaded', ()=> {
+        if (typeof auth !== 'undefined') {
+        auth.onAuthStateChanged((user) => {
+        if (user) {
+        window.location.href = 'home.html';
         }
-
-        function updateSlide() {
-            // Update slides
-            document.querySelectorAll('.slide').forEach((slide, index) => {
-                slide.classList.remove('active');
-                if (index + 1 === currentSlide) {
-                    slide.classList.add('active');
-                }
-            });
-
-            // Update dots
-            document.querySelectorAll('.dot').forEach((dot, index) => {
-                dot.classList.remove('active');
-                if (index + 1 === currentSlide) {
-                    dot.classList.add('active');
-                }
-            });
-
-            // Update button
-            const btnText = document.getElementById('btn-text');
-            const btnIcon = document.getElementById('btn-icon');
-
-            if (currentSlide === totalSlides) {
-                btnText.textContent = currentAuthMode === 'signup' ? 'SIGN UP' : 'LOGIN';
-                btnIcon.textContent = 'login';
-            } else if (currentSlide === totalSlides - 1) {
-                btnText.textContent = 'GET STARTED';
-                btnIcon.textContent = 'rocket_launch';
-            } else {
-                btnText.textContent = 'NEXT';
-                btnIcon.textContent = 'arrow_forward';
-            }
+        });
         }
-
-        function nextSlide() {
-            if (currentSlide < totalSlides) {
-                currentSlide++;
-                updateSlide();
-            } else {
-                // On auth slide - submit the form
-                if (currentAuthMode === 'signup') {
-                    document.getElementById('signup-form').requestSubmit();
-                } else {
-                    document.getElementById('login-form').requestSubmit();
-                }
-            }
-        }
-
-        function skipOnboarding() {
-            // Check if user is already logged in
-            if (typeof auth !== 'undefined' && auth.currentUser) {
-                window.location.href = 'home.html';
-            } else {
-                // Skip to auth slide
-                currentSlide = totalSlides;
-                updateSlide();
-            }
-        }
-
-        // Auth tab switching
-        function switchAuthTab(mode) {
-            currentAuthMode = mode;
-            document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelector(`.auth-tab:${mode === 'signup' ? 'first-child' : 'last-child'}`).classList.add('active');
-
-            document.getElementById('signup-form').classList.toggle('hidden', mode !== 'signup');
-            document.getElementById('login-form').classList.toggle('hidden', mode !== 'login');
-            document.getElementById('auth-error').classList.remove('show');
-
-            updateSlide();
-        }
-
-        // Show error
-        function showAuthError(message) {
-            const errorEl = document.getElementById('auth-error');
-            errorEl.textContent = message;
-            errorEl.classList.add('show');
-        }
-
-        // Show/hide loading
-        function setAuthLoading(loading) {
-            const loadingEl = document.getElementById('auth-loading');
-            const forms = document.querySelectorAll('.auth-form');
-
-            if (loading) {
-                loadingEl.classList.add('show');
-                forms.forEach(f => f.style.display = 'none');
-            } else {
-                loadingEl.classList.remove('show');
-                document.getElementById(currentAuthMode + '-form').style.display = 'flex';
-            }
-        }
-
-        // Handle Sign Up - MOCK BYPASS
-        async function handleSignUp(event) {
-            event.preventDefault();
-            setAuthLoading(true);
-
-            // Simulating network delay
-            setTimeout(() => {
-                console.log('Mock Signup Successful');
-                window.location.href = 'home.html';
-            }, 800);
-        }
-
-        // Handle Login - MOCK BYPASS
-        async function handleLogin(event) {
-            event.preventDefault();
-            setAuthLoading(true);
-
-            // Simulating network delay
-            setTimeout(() => {
-                console.log('Mock Login Successful');
-                window.location.href = 'home.html';
-            }, 800);
-        }
-
-        // Check if already logged in on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof auth !== 'undefined') {
-                auth.onAuthStateChanged((user) => {
-                    if (user) {
-                        window.location.href = 'home.html';
-                    }
-                });
-            }
         });
 
         // Allow clicking on dots to navigate
         document.querySelectorAll('.dot').forEach(dot => {
-            dot.addEventListener('click', () => {
-                currentSlide = parseInt(dot.dataset.slide);
-                updateSlide();
-            });
+        dot.addEventListener('click', () => {
+        currentSlide = parseInt(dot.dataset.slide);
+        updateSlide();
+        });
         });
 
         // Touch swipe support
@@ -1669,43 +1535,40 @@
         let touchEndX = 0;
 
         document.querySelector('.slides-container').addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
+        touchStartX = e.changedTouches[0].screenX;
         }, { passive: true });
 
         document.querySelector('.slides-container').addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
         }, { passive: true });
 
         function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
 
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && currentSlide < totalSlides) {
-                    // Swipe left - next slide
-                    currentSlide++;
-                    updateSlide();
-                } else if (diff < 0 && currentSlide > 1) {
-                    // Swipe right - previous slide
-                    currentSlide--;
-                    updateSlide();
-                }
+        if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0 && currentSlide < totalSlides) { // Swipe left - next slide currentSlide++; updateSlide(); } else
+            if (diff < 0 && currentSlide> 1) {
+            // Swipe right - previous slide
+            currentSlide--;
+            updateSlide();
             }
-        }
+            }
+            }
 
-        // Keyboard navigation
-        document.addEventListener('keydown', e => {
+            // Keyboard navigation
+            document.addEventListener('keydown', e => {
             if (e.key === 'ArrowRight' || e.key === ' ') {
-                nextSlide();
+            nextSlide();
             } else if (e.key === 'ArrowLeft' && currentSlide > 1) {
-                currentSlide--;
-                updateSlide();
+            currentSlide--;
+            updateSlide();
             } else if (e.key === 'Escape') {
-                skipOnboarding();
+            skipOnboarding();
             }
-        });
-    </script>
+            });
+            </script>
 </body>
 
 </html>
