@@ -47,9 +47,21 @@
 ## 📱 Screenshots
 
 <p align="center">
-  <img src="https://via.placeholder.com/200x400?text=Home" width="200" alt="Home"/>
-  <img src="https://via.placeholder.com/200x400?text=Marketplace" width="200" alt="Marketplace"/>
-  <img src="https://via.placeholder.com/200x400?text=Scanner" width="200" alt="Scanner"/>
+  <img src="screenshots/home.png" width="180" alt="Home Screen"/>
+  <img src="screenshots/marketplace.png" width="180" alt="Marketplace"/>
+  <img src="screenshots/scanner.png" width="180" alt="AI Scanner"/>
+  <img src="screenshots/leaderboard.png" width="180" alt="Leaderboard"/>
+</p>
+
+<p align="center">
+  <img src="screenshots/profile.png" width="180" alt="Profile - Year in Green"/>
+  <img src="screenshots/onboarding.png" width="180" alt="Onboarding"/>
+</p>
+
+### 🎬 Demo Walkthrough
+
+<p align="center">
+  <img src="screenshots/demo.webp" width="300" alt="App Demo Walkthrough"/>
 </p>
 
 ---
