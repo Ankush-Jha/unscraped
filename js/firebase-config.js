@@ -1,14 +1,15 @@
 // Firebase Configuration for ReLoop
-// Your Firebase project credentials
+// Replace with your own Firebase project credentials
+// Get these from: https://console.firebase.google.com/project/_/settings/general/
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBcxBs4Ayq18qcFZVpAbttuJ4SEhPvPbeU",
-    authDomain: "reloopmvp.firebaseapp.com",
-    projectId: "reloopmvp",
-    storageBucket: "reloopmvp.firebasestorage.app",
-    messagingSenderId: "467784088979",
-    appId: "1:467784088979:web:b7581dddbf4ddb55f43c66",
-    measurementId: "G-0N7WEDM8D8"
+    apiKey: "YOUR_FIREBASE_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.firebasestorage.app",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID",
+    measurementId: "YOUR_MEASUREMENT_ID"
 };
 
 // Initialize Firebase
