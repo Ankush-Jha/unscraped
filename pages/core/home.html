@@ -2,43 +2,65 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - ReLoop</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Reloop - Home</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
-        rel="stylesheet">
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="../../css/styles.css">
-
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&amp;family=Space+Grotesk:wght@600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#2eb867",
+                        background: "#0a0a0a",
+                        surface: "#1a1a1a",
+                        nav: "#000000",
+                        "surface-highlight": "#262626",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#131f18"
+                    },
+                    fontFamily: {
+                        display: "Space Grotesk",
+                        body: ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    boxShadow: {
+                        neon: "0 0 20px rgba(16, 185, 129, 0.25)",
+                        "purple-glow": "0 0 25px rgba(168, 85, 247, 0.2)"
+                    }
+                }
+            }
+        };
+    </script>
     <style>
-        .greeting-section {
-            padding: var(--space-4) var(--space-5);
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
 
-        .greeting-label {
-            font-size: var(--text-xs);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--color-text-muted);
-            margin-bottom: var(--space-1);
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
-        .greeting-title {
-            font-size: var(--text-2xl);
-            font-weight: 900;
-            letter-spacing: -0.02em;
+        body {
+            background-color: #0a0a0a;
+            min-height: max(884px, 100dvh);
         }
     </style>
+    <!-- Old Styles (Commented out to prevent conflict) -->
+    <!-- <link rel="stylesheet" href="../../css/styles.css"> -->
 </head>
 <style>
     .stories-section {
@@ -1184,251 +1206,124 @@
 </style>
 </head>
 
-<body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-title">
-                <span class="header-subtitle">ReLoop</span>
-                <h1 class="header-main">Namaste, <span id="user-greeting-name" style="color: inherit;">Friend</span>
+<body class="bg-background text-white font-body selection:bg-primary selection:text-black tracking-tight antialiased">
+    <div class="max-w-md mx-auto min-h-screen relative flex flex-col pb-24 bg-background">
+        <header class="pt-8 pb-4 px-6 flex justify-between items-center z-10">
+            <div class="flex flex-col">
+                <span class="text-xs font-bold tracking-wider text-primary mb-1 uppercase">Reloop</span>
+                <h1 class="text-3xl font-display font-extrabold text-white tracking-tight">
+                    Namaste, <span id="user-greeting-name">Friend</span>
                 </h1>
             </div>
-            <div class="header-actions">
-                <a href="../rewards/redeem.html" class="coin-badge" style="text-decoration: none; color: inherit;">
-                    <span class="material-symbols-outlined icon icon-filled">eco</span>
-                    <span class="value coin-value" id="user-total-coins">...</span>
-                </a>
-                <a href="../user/notifications.html" class="icon-btn">
-                    <span class="material-symbols-outlined">notifications</span>
-                </a>
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 bg-primary px-4 py-2 rounded-full shadow-neon">
+                    <i class="ph-fill ph-coins text-black text-lg"></i>
+                    <span class="font-display font-bold text-sm text-black" id="user-total-coins">...</span>
+                </div>
+                <button
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-surface border border-white/10 text-white hover:bg-white/10 transition-colors relative">
+                    <i class="ph-bold ph-bell text-xl"></i>
+                    <span
+                        class="absolute top-2 right-2.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-surface"></span>
+                </button>
             </div>
         </header>
-
-        <!-- Progress Navbar Ribbon -->
-        <div class="progress-ribbon">
-            <div class="progress-ribbon-inner">
-                <!-- XP Progress -->
-                <a href="../user/profile.html" class="xp-section">
-                    <div class="xp-info">
-                        <span class="xp-level">
-                            <span class="level-badge" id="user-level-badge">...</span>
-                            <span class="xp-text" id="user-xp-text">... / ... XP</span>
-                        </span>
-                    </div>
-                    <div class="xp-bar-container">
-                        <div class="xp-bar">
-                            <div class="xp-bar-fill" id="user-xp-bar" style="width: 0%;"></div>
-                            <div class="xp-bar-glow"></div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Quick Action Pills -->
-                <div class="progress-actions">
-                    <a href="../gamification/missions.html" class="progress-pill missions-pill">
-                        <div class="pill-icon-wrap">
-                            <span class="material-symbols-outlined icon">target</span>
-                            <span class="notification-dot">2</span>
-                        </div>
-                        <div class="pill-content">
-                            <span class="pill-label">Missions</span>
-                            <span class="pill-value">2 Active</span>
-                        </div>
-                        <span class="material-symbols-outlined arrow-icon">chevron_right</span>
-                    </a>
-
-                    <a href="../gamification/achievements.html" class="progress-pill badges-pill">
-                        <div class="pill-icon-wrap">
-                            <span class="material-symbols-outlined icon">emoji_events</span>
-                        </div>
-                        <div class="pill-content">
-                            <span class="pill-label">Badges</span>
-                            <span class="pill-value">8 Earned</span>
-                        </div>
-                        <span class="material-symbols-outlined arrow-icon">chevron_right</span>
-                    </a>
+        <main class="flex-1 px-6 flex flex-col gap-6 mt-2">
+            <section class="relative group">
+                <div
+                    class="absolute -inset-0.5 bg-gradient-to-r from-primary to-emerald-900 rounded-3xl blur opacity-20 group-hover:opacity-30 transition duration-500">
                 </div>
-            </div>
-        </div>
-
-        <!-- Stories Section -->
-        <section class="stories-section">
-            <div class="section-header" style="padding-right: var(--space-5);">
-                <h2 class="section-title">Success Stories</h2>
-                <a href="../stories/success-stories.html"
-                    style="font-size: var(--text-xs); font-weight: 700; color: var(--color-primary); text-decoration: none;">View
-                    All →</a>
-            </div>
-            <div class="stories-row">
-                <div class="story-item stagger-item">
-                    <div class="story-avatar add">
-                        <span class="material-symbols-outlined">add</span>
+                <div
+                    class="relative bg-surface rounded-3xl p-6 border border-white/10 flex flex-col justify-between h-[320px] overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none">
                     </div>
-                    <span class="story-name">Add New</span>
-                </div>
-                <a href="../stories/story-priya.html" class="story-item stagger-item"
-                    style="text-decoration: none; color: inherit;">
-                    <div class="story-avatar">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuApkHqu9en_dVgoUQ5TxuxRwSW6yU7PlEVw7qMyX8NYJDg5JUimrQSXFdhHGR7Ud2rtjzu9TqorwH8tqn4yq11F-adrhv8T3hnPTMvRdQ-v3SZWx1-8DrFuTzQST64A5ZZq8xq-yoUiNvp-gHkAnPzdsCJR_pOBj-7tSGs4IiPI9oXnbKHMS34Bt4v54Q6TNgD0u3_T1dsJPK3GntZKruZiOGgQeu27ZTXDWSkfiLbcEZphBARRLRjk3i0msDHXE1vMz2nlqIHfcWI"
-                            alt="Priya">
-                    </div>
-                    <span class="story-name">Priya</span>
-                </a>
-                <a href="../stories/story-ananya.html" class="story-item stagger-item"
-                    style="text-decoration: none; color: inherit;">
-                    <div class="story-avatar">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaty_8pOqc7WeTqO76RukZ3Q9Cu4hm3fT0oobm0S3iSXOLkk7vU7OdBTR7rqtWTDxq7n3HWGvhJkArrC3wQ5E8WSSZAZG47KC9tVeSMqpf9-2ecnQN2fhwlMEDTgymlE_I2zeC46rTtdDlWTvOv_jH-wO5999W4Ymj7gGvLDIoG6_cwMxxntShFa630lbKpRUbn4tWrfvOi9Nt8L1XnHh157VZGMMcL4r7lSiHoCVetm6FO1GtAoVNRTDC-XDYPLFvjn6-DOSdz-4"
-                            alt="Ananya">
-                    </div>
-                    <span class="story-name">Ananya</span>
-                </a>
-                <a href="../stories/story-rahul.html" class="story-item stagger-item"
-                    style="text-decoration: none; color: inherit;">
-                    <div class="story-avatar">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh2UC2A0xMi9I7nN3x-If9ZJ7sdFv9hXhw989YFXZbrVy9p-D8C_iSqcEkJYoRxTvnO3v1YGF_LSoVoci4aVNT5E9_F4CS6sF4P1cRTgARYXUvLPn602HQ3hh-T5dGBBTWSAgZ5fSusqof6XmjE-BqoyYv9ESOGFb6lMEFcnQNvvCIrITCLbcHW1tfqtkgPJFFUz9XRtUNAlzGkLEybpwBd0Bc2UHEXdUBtsvHN7O-OSl5EQfa2q22sdFpvE-IxPlMdTSkObxv7jY"
-                            alt="Rahul">
-                    </div>
-                    <span class="story-name">Rahul</span>
-                </a>
-                <div class="story-item stagger-item">
-                    <div class="story-avatar inactive">
+                    <div class="relative z-10">
                         <div
-                            style="width: 100%; height: 100%; background: var(--color-surface-card); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: var(--text-sm); color: var(--color-text-muted);">
-                            AK</div>
+                            class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-5 border border-primary/20">
+                            <i class="ph-fill ph-scan text-3xl text-primary"></i>
+                        </div>
+                        <h2 class="text-4xl font-display font-extrabold mb-3 text-white tracking-tight">Scan Item</h2>
+                        <p class="text-gray-400 text-sm font-medium leading-relaxed max-w-[240px]">
+                            AI identifies your item &amp; suggests upcycle ideas instantly.
+                        </p>
                     </div>
-                    <span class="story-name">Arjun</span>
+                    <div class="grid grid-cols-2 gap-3 mt-auto relative z-10">
+                        <label for="file-upload"
+                            class="cursor-pointer flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl border border-white/10 hover:bg-white/5 transition-colors bg-transparent text-white font-bold tracking-tight">
+                            <i class="ph-bold ph-image text-lg"></i>
+                            <span>Upload</span>
+                        </label>
+                        <button onclick="openCameraModal()"
+                            class="flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-primary text-black font-extrabold hover:brightness-110 transition-colors shadow-neon tracking-tight">
+                            <i class="ph-fill ph-camera text-lg"></i>
+                            <span>Camera</span>
+                        </button>
+                    </div>
                 </div>
+            </section>
+            <section class="grid grid-cols-2 gap-4">
+                <div
+                    class="bg-surface p-5 rounded-2xl border border-white/10 flex flex-col justify-between h-36 relative overflow-hidden group hover:border-primary/30 transition-colors">
+                    <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="ph-fill ph-leaf text-6xl text-primary"></i>
+                    </div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                            <i class="ph-fill ph-leaf"></i>
+                        </div>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Impact</span>
+                    </div>
+                    <div>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-3xl font-display font-extrabold text-white tracking-tight">12.5</span>
+                            <span class="text-sm font-bold text-gray-500">kg</span>
+                        </div>
+                        <p class="text-xs font-medium text-gray-500 mt-1">CO2 Saved</p>
+                    </div>
+                </div>
+                <div
+                    class="bg-surface p-5 rounded-2xl border border-white/10 flex flex-col justify-between h-36 relative overflow-hidden group hover:border-yellow-500/30 transition-colors">
+                    <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="ph-fill ph-trophy text-6xl text-yellow-500"></i>
+                    </div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <div
+                            class="w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-500">
+                            <i class="ph-fill ph-trophy"></i>
+                        </div>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
+                            id="user-level-badge">Level ...</span>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex justify-between text-xs font-bold text-gray-500">
+                            <span id="user-xp-text">... XP</span>
+                        </div>
+                        <div class="w-full bg-white/10 rounded-full h-2.5 overflow-hidden">
+                            <div id="user-xp-bar"
+                                class="bg-gradient-to-r from-primary to-emerald-400 h-full rounded-full"
+                                style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div
+                class="bg-surface rounded-xl p-4 flex items-center gap-4 border border-purple-500/50 shadow-purple-glow relative overflow-hidden">
+                <div class="absolute right-0 top-0 bottom-0 w-1 bg-purple-500"></div>
+                <div
+                    class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-lg">
+                    <i class="ph-fill ph-lightning text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-base font-extrabold text-white mb-0.5 tracking-tight">Daily Streak!</h4>
+                    <p class="text-xs font-medium text-gray-400">You're on a <span
+                            class="text-purple-400 font-bold">5-day streak</span>. Keep it up!</p>
+                </div>
+                <i class="ph-bold ph-caret-right ml-auto text-gray-500"></i>
             </div>
-        </section>
-
-        <!-- Compact Scan Card -->
-        <section class="scan-card-section">
-            <div class="scan-card" id="scan-card" onclick="openCameraModal()">
-                <div class="scan-card-content">
-                    <div class="scan-card-icon-wrap">
-                        <span class="material-symbols-outlined icon">qr_code_scanner</span>
-                    </div>
-                    <div class="scan-card-text">
-                        <h3 class="scan-card-title">Scan Item</h3>
-                        <p class="scan-card-subtitle">AI identifies your item & suggests upcycle ideas</p>
-                    </div>
-                    <div class="scan-card-arrow">
-                        <span class="material-symbols-outlined icon">arrow_forward</span>
-                    </div>
-                </div>
-                <div class="upload-row">
-                    <label class="upload-btn" for="file-upload" onclick="event.stopPropagation()">
-                        <span class="material-symbols-outlined icon">photo_library</span>
-                        Upload Photo
-                    </label>
-                    <button class="upload-btn" onclick="event.stopPropagation(); openCameraModal()">
-                        <span class="material-symbols-outlined icon">photo_camera</span>
-                        Open Camera
-                    </button>
-                </div>
-            </div>
-            <input type="file" id="file-upload" accept="image/*" onchange="handleFileUpload(event)">
-            <canvas id="capture-canvas"></canvas>
-        </section>
-
-        <!-- Leaderboard Snippet -->
-        <section class="leaderboard-snippet">
-            <a href="../gamification/leaderboard.html" class="leaderboard-card">
-                <div class="leaderboard-card-header">
-                    <div class="leaderboard-card-title">
-                        <span class="material-symbols-outlined icon">leaderboard</span>
-                        <span>Campus Ranking</span>
-                    </div>
-                    <div class="leaderboard-card-action">
-                        View All
-                        <span class="material-symbols-outlined icon">chevron_right</span>
-                    </div>
-                </div>
-
-                <div class="leaderboard-list-snippet" id="leaderboard-preview-list">
-                    <!-- Dynamic Leaderboard Rows Will Be Loaded Here -->
-                    <div class="leaderboard-row"
-                        style="justify-content: center; padding: 20px; color: var(--color-text-muted);">
-                        Loading leaderboard...
-                    </div>
-                </div>
-
-                <!-- Your Rank Bar -->
-                <div class="leaderboard-your-rank">
-                    <div class="your-rank-info">
-                        <div class="your-rank-badge" id="user-rank-badge">-</div>
-                        <div class="your-rank-text">
-                            <span class="your-rank-label">Your Rank</span>
-                            <span class="your-rank-motivate">Keep pushing! 🔥</span>
-                        </div>
-                    </div>
-                    <div class="your-rank-points">
-                        <div class="your-rank-pts-label">Total Pts</div>
-                        <div class="your-rank-pts-value" id="user-rank-points">...</div>
-                    </div>
-                </div>
-            </a>
-        </section>
-
-        <!-- Redeem Coins Card -->
-        <section class="redeem-snippet" style="padding: 0 var(--space-4); margin-bottom: 100px;">
-            <a href="../rewards/redeem.html" class="redeem-card stagger-item" style="
-                display: block;
-                text-decoration: none;
-                color: inherit;
-                background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.1) 100%);
-                border: 2px solid rgba(251, 191, 36, 0.4);
-                border-radius: var(--radius-2xl);
-                padding: var(--space-5);
-                position: relative;
-                overflow: hidden;
-                transition: all var(--transition-base);
-            ">
-                <div style="
-                    position: absolute;
-                    top: -20px;
-                    right: -20px;
-                    font-size: 80px;
-                    opacity: 0.1;
-                ">🪙</div>
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <div style="display: flex; align-items: center; gap: var(--space-4);">
-                        <div style="
-                            width: 56px;
-                            height: 56px;
-                            background: rgba(251, 191, 36, 0.2);
-                            border-radius: var(--radius-xl);
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                        ">
-                            <span class="material-symbols-outlined"
-                                style="font-size: 28px; color: #FBBF24;">redeem</span>
-                        </div>
-                        <div>
-                            <div
-                                style="font-size: var(--text-lg); font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 2px;">
-                                Use Your Coins
-                            </div>
-                            <div style="font-size: var(--text-sm); color: var(--color-text-muted);">
-                                Redeem rewards, discounts & more
-                            </div>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: var(--space-3);">
-                        <div style="text-align: right;">
-                            <div style="font-size: var(--text-2xl); font-weight: 900; color: #FBBF24;">850</div>
-                            <div
-                                style="font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase;">
-                                coins</div>
-                        </div>
-                        <span class="material-symbols-outlined" style="color: #FBBF24;">chevron_right</span>
-                    </div>
-                </div>
-            </a>
-        </section>
-
-
+        </main>
+        <input type="file" id="file-upload" accept="image/*" onchange="handleFileUpload(event)" style="display: none;">
+        <canvas id="capture-canvas" style="display: none;"></canvas>
         <div class="camera-modal" id="camera-modal">
             <div class="camera-modal-header">
                 <h2 class="camera-modal-title">
@@ -1479,41 +1374,39 @@
             </div>
         </div>
 
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <ul class="nav-list">
-                <li class="nav-item">
-                    <a href="home.html" class="nav-link active">
-                        <span class="material-symbols-outlined icon icon-filled">home</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="../marketplace/marketplace.html" class="nav-link">
-                        <span class="material-symbols-outlined icon">search</span>
-                    </a>
-                </li>
-                <li class="nav-item nav-add-btn">
-                    <a href="#" class="icon-btn" onclick="openCameraModal(); return false;">
-                        <span class="material-symbols-outlined icon">add</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="../user/messages.html" class="nav-link">
-                        <span class="material-symbols-outlined icon">chat_bubble</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="../user/profile.html" class="nav-link">
-                        <span class="material-symbols-outlined icon">person</span>
-                    </a>
-                </li>
-            </ul>
+        <nav class="fixed bottom-0 left-0 right-0 bg-nav border-t border-white/10 max-w-md mx-auto z-50 pb-safe">
+            <div class="flex justify-between items-center px-6 py-4">
+                <a class="flex flex-col items-center gap-1.5 text-primary group" href="home.html">
+                    <i class="ph-fill ph-house text-2xl group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[10px] font-bold tracking-wide">HOME</span>
+                </a>
+                <a class="flex flex-col items-center gap-1.5 text-gray-500 hover:text-white transition-colors group"
+                    href="../marketplace/marketplace.html">
+                    <i class="ph-bold ph-shopping-bag text-2xl group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[10px] font-bold tracking-wide">MARKET</span>
+                </a>
+                <a class="flex flex-col items-center justify-center -mt-8" href="#"
+                    onclick="openCameraModal(); return false;">
+                    <div
+                        class="w-14 h-14 bg-surface border border-white/20 rounded-full flex items-center justify-center text-primary shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:scale-105 hover:border-primary transition-all">
+                        <i class="ph-bold ph-plus text-2xl"></i>
+                    </div>
+                </a>
+                <a class="flex flex-col items-center gap-1.5 text-gray-500 hover:text-white transition-colors relative group"
+                    href="../user/messages.html">
+                    <i class="ph-bold ph-chat-circle text-2xl group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[10px] font-bold tracking-wide">CHAT</span>
+                    <span class="absolute top-0 right-1 w-2 h-2 bg-primary rounded-full border-2 border-nav"></span>
+                </a>
+                <a class="flex flex-col items-center gap-1.5 text-gray-500 hover:text-white transition-colors group"
+                    href="../user/profile.html">
+                    <i class="ph-bold ph-user text-2xl group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[10px] font-bold tracking-wide">PROFILE</span>
+                </a>
+            </div>
+            <div class="h-6"></div>
         </nav>
     </div>
-
-    <!-- Noise Overlay -->
-    <div class="noise-overlay"></div>
-
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -1537,9 +1430,10 @@
             };
 
             // Update greeting if element exists
-            const greetingTitle = document.querySelector('.greeting-title');
-            if (greetingTitle) {
-                greetingTitle.textContent = `Hi, ${user.name}!`;
+            // Update greeting if element exists
+            const greetingName = document.getElementById('user-greeting-name');
+            if (greetingName) {
+                greetingName.textContent = user.name;
             }
 
             // Update coins
